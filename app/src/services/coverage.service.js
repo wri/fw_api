@@ -1,6 +1,8 @@
 const logger = require('logger');
 const { RWAPIMicroservice } = require('rw-api-microservice-node');
 const deserializer = require('serializers/deserializer');
+const axios = require("axios");
+const loggedInUserService = require("./LoggedInUserService");
 
 class CoverageService {
 
@@ -8,11 +10,16 @@ class CoverageService {
         const uri = `/coverage/intersect?geostore=${geostoreId}${slugs ? `&slugs=${slugs}` : ''}`;
         logger.info('Getting coverage with geostore id and uri', geostoreId, uri);
         try {
-            const coverage = await RWAPIMicroservice.requestToMicroservice({
-                uri,
+            const baseURL = process.env.GEOSTORE_API_URL;
+            const response = await axios.default({
+                baseURL,
+                url: uri,
                 method: 'GET',
-                json: true
+                headers: {
+                    authorization: loggedInUserService.token
+                }
             });
+            const coverage = response.data;
             logger.info('Got coverage', coverage);
             return deserializer(coverage);
         } catch (e) {

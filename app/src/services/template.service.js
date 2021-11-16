@@ -1,17 +1,24 @@
 const logger = require('logger');
 const { RWAPIMicroservice } = require('rw-api-microservice-node');
 const deserializer = require('serializers/deserializer');
+const axios = require("axios");
+const loggedInUserService = require("./LoggedInUserService");
 
 class TemplateService {
 
     static async getTemplate(templateId) {
         logger.info('Getting template with id', templateId);
         try {
-            const template = await RWAPIMicroservice.requestToMicroservice({
-                uri: `/reports/${templateId}`,
+            const baseURL = process.env.FORMS_API_URL;
+            const response = await axios.default({
+                baseURL,
+                url: `/reports/${templateId}`,
                 method: 'GET',
-                json: true
+                headers: {
+                    authorization: loggedInUserService.token
+                }
             });
+            const template = response.data;
             logger.info('Got template', template);
             return deserializer(template);
         } catch (e) {

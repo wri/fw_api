@@ -1,4 +1,4 @@
-version: "3"
+version: "3.5"
 services:
   develop:
     build: .
@@ -8,13 +8,21 @@ services:
     environment:
       PORT: 4400
       NODE_PATH: app/src
-      CT_REGISTER_MODE: auto
-      CT_URL: http://mymachine:9000
-      LOCAL_URL: http://mymachine:4400
-      CT_TOKEN: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Im1pY3Jvc2VydmljZSIsImNyZWF0ZWRBdCI6IjIwMTYtMDktMTQifQ.IRCIRm1nfIQTfda_Wb6Pg-341zhV8soAgzw7dd5HxxQ
+      CT_URL: https://api.resourcewatch.org
+      LOCAL_URL: http://127.0.0.1:4400
+      FORMS_API_URL: http://fw-forms-develop:4401/api/v1
+      AREAS_API_URL: https://api.resourcewatch.org
+      GEOSTORE_API_URL: https://api.resourcewatch.org
       API_VERSION: v1
       FASTLY_ENABLED: "false"
     command: develop
     volumes:
       - ./app:/opt/forest-watcher/app
-
+    networks:
+      - gfw-fw-network
+      - gfw-network
+networks:
+  gfw-fw-network:
+    name: gfw-fw-network
+  gfw-network:
+    name: gfw-network

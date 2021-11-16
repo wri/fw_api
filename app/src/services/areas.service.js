@@ -1,9 +1,10 @@
+const axios = require('axios');
 const logger = require('logger');
-const { RWAPIMicroservice } = require('rw-api-microservice-node');
 const { createReadStream } = require('fs');
 const CoverageService = require('services/coverage.service');
 const GeoStoreService = require('services/geostore.service');
 const config = require('config');
+const loggedInUserService = require('./LoggedInUserService');
 
 const ALERTS_SUPPORTED = config.get('alertsSupported');
 
@@ -12,11 +13,16 @@ class AreasService {
     static async getUserAreas(userId) {
         logger.info('Get user areas', userId);
         try {
-            const areas = await RWAPIMicroservice.requestToMicroservice({
-                uri: `/area/fw/${userId}`,
+            let baseURL = process.env.AREAS_API_URL;
+            const response = await axios.default({
+                baseURL,
+                url: `/area/fw`,
                 method: 'GET',
-                json: true
+                headers: {
+                    authorization: loggedInUserService.token
+                }
             });
+            const areas = response.data;
             logger.info('User areas', areas);
             return areas && areas.data;
         } catch (e) {
@@ -50,15 +56,21 @@ class AreasService {
         }
         try {
             logger.info('Creating area with geostore and coverage ready');
-            area = await RWAPIMicroservice.requestToMicroservice({
-                uri: `/area/fw/${userId}`,
+            let baseURL = process.env.AREAS_API_URL;
+            const response = await axios.default({
+                baseURL,
+                url: `/area/fw/${userId}`,
                 method: 'POST',
-                body: {
+                headers: {
+                    authorization: loggedInUserService.token
+                },
+                data: {
                     name,
                     geostore: geostore.id,
                     image: createReadStream(image.path)
                 }
             });
+            area = response.data;
             logger.info('Area created', area);
             return { geostore, area: area.data, coverage };
         } catch (e) {

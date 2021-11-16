@@ -29,7 +29,6 @@ class ForestWatcherRouter {
 
     static async buildAreasResponse(areas = [], { geostoreObj, coverageObj } = {}) {
         const areasWithGeostore = areas.filter(area => area.attributes.geostore);
-
         const promises = [Promise.all(areasWithGeostore.map(area => (area.attributes.templateId
             ? TemplatesService.getTemplate(area.attributes.templateId)
             : null

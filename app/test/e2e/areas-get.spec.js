@@ -31,8 +31,8 @@ describe('Get areas', () => {
     it('Get all areas while being logged in should...', async () => {
         mockGetUserFromToken(USERS.USER);
 
-        nock(process.env.CT_URL)
-            .get(`/v1/area/fw/${USERS.USER.id}`)
+        nock(process.env.AREAS_API_URL)
+            .get(`/area/fw`)
             .reply(200, {
                 data: [
                     {
@@ -98,8 +98,8 @@ describe('Get areas', () => {
             }
         };
 
-        nock(process.env.CT_URL)
-            .get(`/v1/geostore/d653e4fc0ed07a65b9db9b13477566fe`)
+        nock(process.env.GEOSTORE_API_URL)
+            .get(`/geostore/d653e4fc0ed07a65b9db9b13477566fe`)
             .reply(200, {
                 data: {
                     type: 'geoStore',
@@ -114,8 +114,8 @@ describe('Get areas', () => {
             ]
         };
 
-        nock(process.env.CT_URL)
-            .get(`/v1/coverage/intersect?geostore=d653e4fc0ed07a65b9db9b13477566fe&slugs=umd_as_it_happens`)
+        nock(process.env.GEOSTORE_API_URL)
+            .get(`/coverage/intersect?geostore=d653e4fc0ed07a65b9db9b13477566fe&slugs=umd_as_it_happens`)
             .reply(200, {
                 data: {
                     type: 'coverages',

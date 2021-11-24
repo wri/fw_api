@@ -154,8 +154,8 @@ describe('Create area', () => {
             id: '6d6ca469dda60164c31ba5b3181aa254'
         };
 
-        nock(process.env.CT_URL)
-            .post('/v1/geostore', {
+        nock(process.env.GEOSTORE_API_URL)
+            .post('/geostore', {
                 geojson: {
                     type: 'Polygon',
                     coordinates: [[[80.57519943543053, 9.48478783138593], [80.56375534418066, 9.473895081628044], [80.57608635341853, 9.466049831323232], [80.58481247244907, 9.477507223783533], [80.57519943543053, 9.48478783138593]]]
@@ -189,13 +189,13 @@ describe('Create area', () => {
                 }
             });
 
-        nock(process.env.CT_URL)
-            .get('/v1/coverage/intersect')
+        nock(process.env.GEOSTORE_API_URL)
+            .get('/intersect')
             .query({ geostore: '6d6ca469dda60164c31ba5b3181aa254', slugs: 'umd_as_it_happens' })
             .reply(200, { data: { type: 'coverages', attributes: { layers: ['umd_as_it_happens'] } } });
 
-        nock(process.env.CT_URL)
-            .post(`/v1/area/fw/${USERS.USER.id}`, (body) => {
+        nock(process.env.AREAS_API_URL)
+            .post(`/area/fw/${USERS.USER.id}`, (body) => {
                 const expectedBody = {
                     name: 'TestArea',
                     geostore: '6d6ca469dda60164c31ba5b3181aa254'
@@ -225,8 +225,8 @@ describe('Create area', () => {
                 }
             });
 
-        nock(process.env.CT_URL)
-            .get('/v1/geostore/6d6ca469dda60164c31ba5b3181aa254')
+        nock(process.env.GEOSTORE_API_URL)
+            .get('/geostore/6d6ca469dda60164c31ba5b3181aa254')
             .reply(200, {
                 data: {
                     type: 'geoStore',
@@ -235,13 +235,13 @@ describe('Create area', () => {
                 }
             });
 
-        nock(process.env.CT_URL)
-            .get('/v1/coverage/intersect')
+        nock(process.env.GEOSTORE_API_URL)
+            .get('/coverage/intersect')
+            .twice()
             .query({ geostore: '6d6ca469dda60164c31ba5b3181aa254', slugs: 'umd_as_it_happens' })
             .reply(200, {
                 data: { type: 'coverages', attributes: { layers: ['umd_as_it_happens'] } }
             });
-
 
         const filename = 'image.png';
 

@@ -14,7 +14,6 @@ services:
       AREAS_API_URL: https://api.resourcewatch.org
       GEOSTORE_API_URL: https://api.resourcewatch.org
       API_VERSION: v1
-      FASTLY_ENABLED: "false"
     command: develop
     volumes:
       - ./app:/opt/forest-watcher/app

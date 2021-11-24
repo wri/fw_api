@@ -8,12 +8,11 @@ services:
     environment:
       PORT: 4400
       NODE_PATH: app/src
-      CT_REGISTER_MODE: auto
       NODE_ENV: test
-      CT_URL: http://mymachine:9000
-      LOCAL_URL: http://forest-watcher.fw.svc.cluster.local:4400
+      CT_URL: http://127.0.0.1:9000
+      LOCAL_URL: http://127.0.0.1:4400
+      FORMS_API_URL: http://127.0.0.1:9000
+      AREAS_API_URL: http://127.0.0.1:9000
+      GEOSTORE_API_URL: http://127.0.0.1:9000
       API_VERSION: v1
-      STAMPERY_TOKEN: token
-      CT_TOKEN: cttoken
-      FASTLY_ENABLED: "false"
     command: test

@@ -1,5 +1,4 @@
 const logger = require('logger');
-const { RWAPIMicroservice } = require('rw-api-microservice-node');
 const deserializer = require('serializers/deserializer');
 const axios = require("axios");
 const loggedInUserService = require("./LoggedInUserService");

@@ -1,0 +1,18 @@
+version: "3"
+services:
+  test:
+    build: .
+    ports:
+      - "4400:4400"
+    container_name: forest-watcher-test
+    environment:
+      PORT: 4400
+      NODE_PATH: app/src
+      NODE_ENV: test
+      CT_URL: http://127.0.0.1:9000
+      LOCAL_URL: http://127.0.0.1:4400
+      FORMS_API_URL: http://127.0.0.1:9000
+      AREAS_API_URL: http://127.0.0.1:9000
+      GEOSTORE_API_URL: http://127.0.0.1:9000
+      API_VERSION: v1
+    command: test

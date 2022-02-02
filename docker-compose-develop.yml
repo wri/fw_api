@@ -1,0 +1,27 @@
+version: "3.5"
+services:
+  develop:
+    build: .
+    ports:
+      - "4400:4400"
+    container_name: forest-watcher-develop
+    environment:
+      PORT: 4400
+      NODE_PATH: app/src
+      CT_URL: https://api.resourcewatch.org
+      LOCAL_URL: http://127.0.0.1:4400
+      FORMS_API_URL: http://fw-forms-develop:4401/api/v1
+      AREAS_API_URL: https://api.resourcewatch.org
+      GEOSTORE_API_URL: https://api.resourcewatch.org
+      API_VERSION: v1
+    command: develop
+    volumes:
+      - ./app:/opt/forest-watcher/app
+    networks:
+      - gfw-fw-network
+      - gfw-network
+networks:
+  gfw-fw-network:
+    name: gfw-fw-network
+  gfw-network:
+    name: gfw-network

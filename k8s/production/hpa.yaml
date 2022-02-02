@@ -1,0 +1,13 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  namespace: fw
+  name: forest-watcher-api
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1beta1
+    kind: Deployment
+    name: forest-watcher-api
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 50

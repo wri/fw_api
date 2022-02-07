@@ -106,7 +106,7 @@ describe("Get areas", function () {
       layers: ["umd_as_it_happens"]
     };
 
-    nock(config.get("geostoreAPI.url"))
+    nock(config.get("areasAPI.url"))
       .get(`/coverage/intersect?geostore=d653e4fc0ed07a65b9db9b13477566fe&slugs=umd_as_it_happens`)
       .reply(200, {
         data: {

@@ -2,9 +2,9 @@
 - [x] Simplify the configuration files
   - [x] Should only have default.json
   - [x] And then custom-environment-variables.json for environment variables
-- [ ] Align Docker’s ENV vars with the configuration files
-- [ ] Align the Docker Compose files for develop and test
-- [ ] Ensure the following ENV vars exist
-  - [ ] NODE_PATH
-  - [ ] NODE_ENV
-  - [ ] SUPPRESS_NO_CONFIG_WARNING = “true”
+- [x] Align Docker’s ENV vars with the configuration files
+- [x] Align the Docker Compose files for develop and test
+- [x] Ensure the following ENV vars exist
+  - [x] NODE_PATH
+  - [x] NODE_ENV
+  - [x] SUPPRESS_NO_CONFIG_WARNING = “true”

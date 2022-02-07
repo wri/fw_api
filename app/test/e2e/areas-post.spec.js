@@ -204,7 +204,7 @@ describe("Create area", function () {
         }
       });
 
-    nock(config.get("geostoreAPI.url"))
+    nock(config.get("areasAPI.url"))
       .post(`/area/fw/${USERS.USER.id}`, body => {
         const expectedBody = {
           name: "TestArea",

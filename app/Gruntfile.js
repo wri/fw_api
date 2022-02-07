@@ -6,10 +6,7 @@ module.exports = grunt => {
     express: {
       dev: {
         options: {
-          script: "app/index.js",
-          node_env: "dev",
-          port: process.env.PORT,
-          output: "started"
+          script: "app/index.js"
         }
       }
     },

@@ -16,7 +16,6 @@ COPY package.json /opt/$NAME/package.json
 COPY yarn.lock /opt/$NAME/yarn.lock
 RUN cd /opt/$NAME && yarn
 
-COPY entrypoint.sh /opt/$NAME/entrypoint.sh
 COPY config /opt/$NAME/config
 
 WORKDIR /opt/$NAME
@@ -28,4 +27,4 @@ RUN chown -R $USER:$USER /opt/$NAME
 EXPOSE 4400
 USER $USER
 
-ENTRYPOINT ["./entrypoint.sh"]
+CMD node app/index.js

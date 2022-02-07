@@ -9,7 +9,9 @@ services:
       PORT: 4400
       NODE_PATH: app/src
       NODE_ENV: test
-      CT_URL: http://127.0.0.1:9000
+      LOGGER_LEVEL: debug
+      SUPPRESS_NO_CONFIG_WARNING: "true"
+      CONTROL_TOWER_URL: http://127.0.0.1:9000
       LOCAL_URL: http://127.0.0.1:4400
       FORMS_API_URL: http://127.0.0.1:9000
       AREAS_API_URL: http://127.0.0.1:9000

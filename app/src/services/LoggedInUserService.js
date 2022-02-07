@@ -1,4 +1,5 @@
 const axios = require("axios");
+const config = require("config");
 const response_error = require("../responses/response.error");
 
 class LoggedInUserService {
@@ -25,7 +26,7 @@ class LoggedInUserService {
     }
     try {
       this.token = ctx.request.header.authorization;
-      let baseURL = process.env.CT_URL;
+      let baseURL = config.get("controlTower.url");
       const getUserDetailsRequestConfig = {
         method: "GET",
         baseURL,

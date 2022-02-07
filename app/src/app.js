@@ -1,4 +1,5 @@
 const Koa = require("koa");
+const config = require("config");
 const logger = require("logger");
 const koaLogger = require("koa-logger");
 const validate = require("koa-validate");
@@ -55,8 +56,8 @@ app.use(async (ctx, next) => {
 
 loader.loadRoutes(app);
 
-const server = app.listen(process.env.PORT, () => {});
+const server = app.listen(config.get("service.port"), () => {});
 
-logger.info("Server started in ", process.env.PORT);
+logger.info("Server started in ", config.get("service.port"));
 
 module.exports = server;

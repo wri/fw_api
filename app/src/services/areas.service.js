@@ -12,7 +12,7 @@ class AreasService {
   static async getUserAreas(userId) {
     logger.info("Get user areas", userId);
     try {
-      let baseURL = process.env.AREAS_API_URL;
+      let baseURL = config.get("areasAPI.url");
       const response = await axios.default({
         baseURL,
         url: `/area/fw`,
@@ -55,7 +55,7 @@ class AreasService {
     }
     try {
       logger.info("Creating area with geostore and coverage ready");
-      let baseURL = process.env.AREAS_API_URL;
+      let baseURL = config.get("areasAPI.url");
       const response = await axios.default({
         baseURL,
         url: `/area/fw/${userId}`,

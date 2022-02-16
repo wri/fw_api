@@ -1,15 +1,16 @@
-const JSONAPIDeserializer = require('jsonapi-serializer').Deserializer;
+const JSONAPIDeserializer = require("jsonapi-serializer").Deserializer;
 
-const deserializer = obj => new Promise((resolve, reject) => {
+const deserializer = obj =>
+  new Promise((resolve, reject) => {
     new JSONAPIDeserializer({
-        keyForAttribute: 'camelCase'
+      keyForAttribute: "camelCase"
     }).deserialize(obj, (err, data) => {
-        if (err) {
-            reject(err);
-            return;
-        }
-        resolve(data);
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(data);
     });
-});
+  });
 
 module.exports = deserializer;

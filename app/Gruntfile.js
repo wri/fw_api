@@ -1,84 +1,75 @@
-module.exports = (grunt) => {
+module.exports = grunt => {
+  grunt.file.setBase("..");
+  require("load-grunt-tasks")(grunt);
 
-    grunt.file.setBase('..');
-    // eslint-disable-next-line import/no-extraneous-dependencies
-    require('load-grunt-tasks')(grunt);
-
-    grunt.initConfig({
-
-        express: {
-            dev: {
-                options: {
-                    script: 'app/index.js',
-                    node_env: 'dev',
-                    port: process.env.PORT,
-                    output: 'started'
-                }
-            }
-        },
-
-        mochaTest: {
-            e2e: {
-                options: {
-                    reporter: 'spec',
-                    quiet: false,
-                    timeout: 10000,
-                    clearRequireCache: true,
-                },
-                src: ['app/test/e2e/**/*.spec.js']
-            }
-        },
-
-        watch: {
-            options: {
-                livereload: 35730
-            },
-            jssrc: {
-                files: [
-                    'app/src/**/*.js',
-                ],
-                tasks: ['express:dev'],
-                options: {
-                    spawn: false
-                }
-            },
-            e2eTest: {
-                files: [
-                    'app/test/e2e/**/*.spec.js',
-                ],
-                tasks: ['express:test', 'mochaTest:e2e'],
-                options: {
-                    spawn: true
-                }
-            },
-
-        },
-
-        nyc: {
-            cover: {
-                options: {
-                    include: ['app/src/**'],
-                    exclude: '*.test.*',
-                    reporter: ['lcov', 'text-summary'],
-                    reportDir: 'coverage',
-                    all: true
-                },
-                cmd: false,
-                args: ['grunt', '--gruntfile', 'app/Gruntfile.js', 'mochaTest:e2e']
-            }
+  grunt.initConfig({
+    express: {
+      dev: {
+        options: {
+          script: "app/index.js",
+          node_env: "dev",
+          port: process.env.PORT,
+          output: "started"
         }
-    });
+      }
+    },
 
-    grunt.registerTask('e2eTest', ['mochaTest:e2e']);
+    mochaTest: {
+      e2e: {
+        options: {
+          reporter: "spec",
+          quiet: false,
+          timeout: 10000,
+          clearRequireCache: true
+        },
+        src: ["app/test/e2e/**/*.spec.js"]
+      }
+    },
 
-    grunt.registerTask('e2eTestCoverage', ['mocha_nyc:coverage']);
+    watch: {
+      options: {
+        livereload: 35730
+      },
+      jssrc: {
+        files: ["app/src/**/*.js"],
+        tasks: ["express:dev"],
+        options: {
+          spawn: false
+        }
+      },
+      e2eTest: {
+        files: ["app/test/e2e/**/*.spec.js"],
+        tasks: ["express:test", "mochaTest:e2e"],
+        options: {
+          spawn: true
+        }
+      }
+    },
 
-    grunt.registerTask('e2eTest-watch', ['watch:e2eTest']);
+    nyc: {
+      cover: {
+        options: {
+          include: ["app/src/**"],
+          exclude: "*.test.*",
+          reporter: ["lcov", "text-summary"],
+          reportDir: "coverage",
+          all: true
+        },
+        cmd: false,
+        args: ["grunt", "--gruntfile", "app/Gruntfile.js", "mochaTest:e2e"]
+      }
+    }
+  });
 
-    grunt.registerTask('serve', ['express:dev', 'watch']);
+  grunt.registerTask("e2eTest", ["mochaTest:e2e"]);
 
-    grunt.registerTask('default', 'serve');
+  grunt.registerTask("e2eTestCoverage", ["mocha_nyc:coverage"]);
 
-    grunt.loadNpmTasks('grunt-simple-nyc');
+  grunt.registerTask("e2eTest-watch", ["watch:e2eTest"]);
 
+  grunt.registerTask("serve", ["express:dev", "watch"]);
+
+  grunt.registerTask("default", "serve");
+
+  grunt.loadNpmTasks("grunt-simple-nyc");
 };

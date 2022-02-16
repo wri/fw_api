@@ -1,10 +1,10 @@
-- [ ] Add .idea to .gitignore
-- [ ] Remove Travis and Jenkins files
-- [ ] Remove changelog
-- [ ] Remove K8S files
-- [ ] Remove NPM lock file
-- [ ] Remove eslint: airbnb, jsx, react
-- [ ] Remove husky and lint-staged configs
-- [ ] Add prettier and eslint to the project. Using eslint recommended config and 3SidedCube prettier config.
-    - [ ] Add lint npm script
-- [ ] Remove the remaining package.json scripts
+- [x] Add .idea to .gitignore
+- [x] Remove Travis and Jenkins files
+- [x] Remove changelog
+- [x] Remove K8S files
+- [x] Remove NPM lock file
+- [x] Remove eslint: airbnb, jsx, react
+- [x] Remove husky and lint-staged configs
+- [x] Add prettier and eslint to the project. Using eslint recommended config and 3SidedCube prettier config.
+    - [x] Add lint npm script
+- [x] Remove the remaining package.json scripts

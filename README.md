@@ -11,7 +11,7 @@ Execution using Docker requires:
 Dependencies on other Microservices:
 - [GFW Areas](https://github.com/gfw-api/gfw-area)
 - [Geostore](https://github.com/gfw-api/gfw-geostore-api)
-- [GFW Forms](https://github.com/gfw-api/gfw-forms-api)
+- [GFW Forms](https://github.com/wri/fw_forms)
 
 ## Getting started
 
@@ -32,7 +32,7 @@ make up-and-build   # First time building Docker or you've made changes to the D
 make up             # When Docker has already been built and you're starting from where you left off
 ```
 
-The endpoints provided by this microservice should now be available: [localhost:3035](http://localhost:3035)
+The endpoints provided by this microservice should now be available: [localhost:4400](http://localhost:4400)
 
 2 - Run the following command to lint the project:
 

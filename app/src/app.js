@@ -6,7 +6,6 @@ const validate = require("koa-validate");
 const loader = require("loader");
 const convert = require("koa-convert");
 const ErrorSerializer = require("serializers/error.serializer");
-const koaSimpleHealthCheck = require("koa-simple-healthcheck");
 const loggedInUserService = require("./services/LoggedInUserService");
 const koaBody = require("koa-body")({
   multipart: true,
@@ -47,7 +46,6 @@ app.use(async (ctx, next) => {
 });
 
 app.use(koaLogger());
-app.use(koaSimpleHealthCheck());
 
 app.use(async (ctx, next) => {
   await loggedInUserService.setLoggedInUser(ctx, logger);

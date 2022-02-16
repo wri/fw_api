@@ -4,9 +4,7 @@ const { USERS } = require("./utils/test.constants");
 
 const { getTestServer } = require("./utils/test-server");
 const { mockGetUserFromToken } = require("./utils/helpers");
-
-nock.disableNetConnect();
-nock.enableNetConnect(process.env.HOST_IP);
+const config = require("config");
 
 chai.should();
 
@@ -140,7 +138,7 @@ describe("Create area", function () {
       id: "6d6ca469dda60164c31ba5b3181aa254"
     };
 
-    nock(process.env.GEOSTORE_API_URL)
+    nock(config.get("geostoreAPI.url"))
       .post("/geostore", {
         geojson: {
           type: "Polygon",
@@ -193,7 +191,7 @@ describe("Create area", function () {
         }
       });
 
-    nock(process.env.GEOSTORE_API_URL)
+    nock(config.get("geostoreAPI.url"))
       .get("/intersect")
       .query({
         geostore: "6d6ca469dda60164c31ba5b3181aa254",
@@ -206,7 +204,7 @@ describe("Create area", function () {
         }
       });
 
-    nock(process.env.AREAS_API_URL)
+    nock(config.get("areasAPI.url"))
       .post(`/area/fw/${USERS.USER.id}`, body => {
         const expectedBody = {
           name: "TestArea",
@@ -237,7 +235,7 @@ describe("Create area", function () {
         }
       });
 
-    nock(process.env.GEOSTORE_API_URL)
+    nock(config.get("geostoreAPI.url"))
       .get("/geostore/6d6ca469dda60164c31ba5b3181aa254")
       .reply(200, {
         data: {
@@ -247,7 +245,7 @@ describe("Create area", function () {
         }
       });
 
-    nock(process.env.GEOSTORE_API_URL)
+    nock(config.get("geostoreAPI.url"))
       .get("/coverage/intersect")
       .twice()
       .query({

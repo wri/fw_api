@@ -2,12 +2,13 @@ const axios = require("axios");
 const logger = require("logger");
 const loggedInUserService = require("./LoggedInUserService");
 const deserializer = require("serializers/deserializer");
+const config = require("config");
 
 class GeostoreService {
   static async getGeostore(geostoreId) {
     logger.info("Getting geostore with id", geostoreId);
     try {
-      let baseURL = process.env.GEOSTORE_API_URL;
+      let baseURL = config.get("geostoreAPI.url");
       const response = await axios.default({
         baseURL,
         url: `/geostore/${geostoreId}`,
@@ -27,7 +28,7 @@ class GeostoreService {
 
   static async createGeostore(geojson) {
     try {
-      let baseURL = process.env.GEOSTORE_API_URL;
+      let baseURL = config.get("geostoreAPI.url");
       const response = await axios.default({
         baseURL,
         url: `/geostore`,

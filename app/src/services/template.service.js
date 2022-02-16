@@ -2,12 +2,13 @@ const logger = require("logger");
 const deserializer = require("serializers/deserializer");
 const axios = require("axios");
 const loggedInUserService = require("./LoggedInUserService");
+const config = require("config");
 
 class TemplateService {
   static async getTemplate(templateId) {
     logger.info("Getting template with id", templateId);
     try {
-      const baseURL = process.env.FORMS_API_URL;
+      const baseURL = config.get("formsAPI.url");
       const response = await axios.default({
         baseURL,
         url: `/reports/${templateId}`,

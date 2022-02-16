@@ -4,5 +4,17 @@
   },
   "logger": {
     "level": "LOGGER_LEVEL"
+  },
+  "formsAPI": {
+    "url": "FORMS_API_URL"
+  },
+  "areasAPI": {
+    "url": "AREAS_API_URL"
+  },
+  "geostoreAPI": {
+    "url": "GEOSTORE_API_URL"
+  },
+  "controlTower": {
+    "url": "CONTROL_TOWER_URL"
   }
 }

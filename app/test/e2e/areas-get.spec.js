@@ -4,9 +4,7 @@ const { USERS } = require("./utils/test.constants");
 
 const { getTestServer } = require("./utils/test-server");
 const { mockGetUserFromToken } = require("./utils/helpers");
-
-nock.disableNetConnect();
-nock.enableNetConnect(process.env.HOST_IP);
+const config = require("config");
 
 chai.should();
 
@@ -32,7 +30,7 @@ describe("Get areas", function () {
   it("Get all areas while being logged in should...", async function () {
     mockGetUserFromToken(USERS.USER);
 
-    nock(process.env.AREAS_API_URL)
+    nock(config.get("areasAPI.url"))
       .get(`/area/fw`)
       .reply(200, {
         data: [
@@ -94,7 +92,7 @@ describe("Get areas", function () {
       }
     };
 
-    nock(process.env.GEOSTORE_API_URL)
+    nock(config.get("geostoreAPI.url"))
       .get(`/geostore/d653e4fc0ed07a65b9db9b13477566fe`)
       .reply(200, {
         data: {
@@ -108,7 +106,7 @@ describe("Get areas", function () {
       layers: ["umd_as_it_happens"]
     };
 
-    nock(process.env.GEOSTORE_API_URL)
+    nock(config.get("geostoreAPI.url"))
       .get(`/coverage/intersect?geostore=d653e4fc0ed07a65b9db9b13477566fe&slugs=umd_as_it_happens`)
       .reply(200, {
         data: {

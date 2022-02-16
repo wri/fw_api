@@ -14,12 +14,13 @@ services:
       AREAS_API_URL: https://api.resourcewatch.org
       GEOSTORE_API_URL: https://api.resourcewatch.org
       API_VERSION: v1
-    command: develop
     volumes:
       - ./app:/opt/forest-watcher/app
     networks:
       - gfw-fw-network
       - gfw-network
+    command: node node_modules/.bin/grunt --gruntfile app/Gruntfile.js
+
 networks:
   gfw-fw-network:
     name: gfw-fw-network

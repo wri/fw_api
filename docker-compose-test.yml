@@ -15,4 +15,4 @@ services:
       AREAS_API_URL: http://127.0.0.1:9000
       GEOSTORE_API_URL: http://127.0.0.1:9000
       API_VERSION: v1
-    command: test
+    command: node node_modules/.bin/grunt --gruntfile app/Gruntfile.js e2eTest

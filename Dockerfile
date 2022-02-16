@@ -14,6 +14,7 @@ RUN yarn global add grunt-cli bunyan
 RUN mkdir -p /opt/$NAME
 COPY package.json /opt/$NAME/package.json
 COPY yarn.lock /opt/$NAME/yarn.lock
+COPY .eslintrc /opt/$NAME/.eslintrc
 RUN cd /opt/$NAME && yarn
 
 COPY config /opt/$NAME/config

@@ -14,7 +14,7 @@ provider "aws" {
 # Docker image for FW Template app
 module "app_docker_image" {
   source     = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/container_registry?ref=v0.5.1"
-  image_name = lower("${var.project_prefix}-docker-image")
+  image_name = lower("${var.project_prefix}-docker")
   root_dir   = "${path.root}/../"
   tag        = local.container_tag
 }
@@ -97,6 +97,6 @@ data "template_file" "container_definition" {
 # CloudWatch Resources
 #
 resource "aws_cloudwatch_log_group" "default" {
-  name              = "/aws/ecs/${var.project_prefix}-log"
+  name              = "/aws/ecs/${var.project_prefix}-logs"
   retention_in_days = var.log_retention
 }

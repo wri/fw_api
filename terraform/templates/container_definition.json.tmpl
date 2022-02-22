@@ -1,0 +1,67 @@
+[{
+  "name": "${container_name}",
+  "image": "${image}",
+  "networkMode": "awsvpc",
+
+  "environment": [
+    {
+      "name": "PORT",
+      "value": "${port}"
+    },
+    {
+      "name": "NODE_PATH",
+      "value": "${node_path}"
+    },
+    {
+      "name": "NODE_ENV",
+      "value": "${node_env}"
+    },
+    {
+      "name": "LOGGER_LEVEL",
+      "value": "${logger_level}"
+    },
+    {
+      "name": "SUPPRESS_NO_CONFIG_WARNING",
+      "value": "${suppress_no_config_warning}"
+    },
+    {
+      "name": "CONTROL_TOWER_URL",
+      "value": "${control_tower_url}"
+    },
+    {
+      "name": "LOCAL_URL",
+      "value": "${local_url}"
+    },
+    {
+      "name": "FORMS_API_URL",
+      "value": "${forms_api_url}"
+    },
+    {
+      "name": "AREAS_API_URL",
+      "value": "${areas_api_url}"
+    },
+    {
+      "name": "GEOSTORE_API_URL",
+      "value": "${geostore_api_url}"
+    },
+    {
+      "name": "API_VERSION",
+      "value": "${api_version}"
+    }
+  ],
+  "secrets": [],
+  "portMappings": [
+    {
+      "containerPort": ${container_port},
+      "hostPort": ${container_port}
+    }
+  ],
+  "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${aws_region}",
+        "awslogs-stream-prefix": "${container_name}"
+       }
+  }
+}]

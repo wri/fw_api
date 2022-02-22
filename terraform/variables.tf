@@ -17,7 +17,7 @@ variable "container_port" {
   default = 80
   type    = number
 }
-variable "log_level" {
+variable "logger_level" {
   type = string
 }
 variable "log_retention" {
@@ -52,4 +52,31 @@ variable "auto_scaling_min_capacity" {
 
 variable "git_sha" {
   type = string
+}
+variable "node_path" {
+  type    = string
+  default = "app/src"
+}
+variable "node_env" {
+  type    = string
+  default = "dev"
+}
+variable "suppress_no_config_warning" {
+  type    = string
+  default = "true"
+}
+variable "control_tower_url" {
+  type    = string
+  default = "https://api.resourcewatch.org"
+}
+
+variable "areas_api_url" {
+  type    = string
+}
+variable "geostore_api_url" {
+  type    = string
+}
+variable "api_version" {
+  type    = string
+  default = "v1"
 }

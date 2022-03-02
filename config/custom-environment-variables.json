@@ -15,6 +15,6 @@
     "url": "GEOSTORE_API_URL"
   },
   "controlTower": {
-    "url": "CT_URL"
+    "url": "CONTROL_TOWER_URL"
   }
 }

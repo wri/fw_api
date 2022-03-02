@@ -75,16 +75,16 @@ data "template_file" "container_definition" {
     environment    = var.environment
     
     # Environment variables
-    PORT = var.container_port
-    NODE_PATH = var.node_path
-    NODE_ENV = var.node_env
-    LOGGER_LEVEL = var.logger_level
-    SUPPRESS_NO_CONFIG_WARNING = var.suppress_no_config_warning
-    CT_URL = var.control_tower_url
-    LOCAL_URL = "http://127.0.0.1:${var.container_port}"
-    FORMS_API_URL = "http://${data.terraform_remote_state.fw_core.outputs.public_url}/api/v1"
-    AREAS_API_URL = var.areas_api_url
-    GEOSTORE_API_URL = var.geostore_api_url
+    port = var.container_port
+    node_path = var.node_path
+    node_env = var.node_env
+    logger_level = var.logger_level
+    suppress_no_config_warning = var.suppress_no_config_warning
+    control_tower_url = var.control_tower_url
+    local_url = "http://127.0.0.1:${var.container_port}"
+    forms_api_url = "http://${data.terraform_remote_state.fw_core.outputs.public_url}/api/v1"
+    areas_api_url = var.areas_api_url
+    geostore_api_url = var.geostore_api_url
     api_version = var.api_version
     # Secrets
     # none

@@ -1,4 +1,5 @@
 const Koa = require("koa");
+const cors = require("@koa/cors");
 const config = require("config");
 const logger = require("logger");
 const koaLogger = require("koa-logger");
@@ -18,6 +19,7 @@ const app = new Koa();
 validate(app);
 
 app.use(convert(koaBody));
+app.use(cors());
 
 app.use(async (ctx, next) => {
   try {

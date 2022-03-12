@@ -69,12 +69,13 @@ variable "control_tower_url" {
   type    = string
   default = "https://api.resourcewatch.org"
 }
-
 variable "areas_api_url" {
   type    = string
+  default = "https://api.resourcewatch.org"
 }
 variable "geostore_api_url" {
   type    = string
+  default = "https://api.resourcewatch.org"
 }
 variable "api_version" {
   type    = string

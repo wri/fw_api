@@ -81,3 +81,10 @@ variable "api_version" {
   type    = string
   default = "v1"
 }
+variable "healthcheck_path" {
+  type = string
+}
+
+variable "healthcheck_sns_emails" {
+  type = list(string)
+}

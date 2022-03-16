@@ -12,3 +12,5 @@ control_tower_url="https://api.resourcewatch.org"
 areas_api_url="https://api.resourcewatch.org"
 geostore_api_url="https://api.resourcewatch.org"
 api_version="v1"
+healthcheck_path = "/v1/fw_api/healthcheck"
+healthcheck_sns_emails = ["server@3sidedcube.com"]

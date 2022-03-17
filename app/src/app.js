@@ -22,7 +22,7 @@ validate(app);
 /**
  * Sentry
  */
-Sentry.init({ dsn: "https://a5d5514f19004eeebd0e47539547dc8c@o163691.ingest.sentry.io/6261712" });
+Sentry.init({ dsn: "https://2ddcb5b7116844b9a7c79626d121c566@o163691.ingest.sentry.io/6263597" });
 
 app.on("error", (err, ctx) => {
   Sentry.withScope(function (scope) {
@@ -32,7 +32,6 @@ app.on("error", (err, ctx) => {
     Sentry.captureException(err);
   });
 });
-myUndefinedAPIFunction();
 /** */
 
 app.use(convert(koaBody));

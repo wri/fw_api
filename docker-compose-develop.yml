@@ -24,6 +24,15 @@ services:
       - gfw-network
     command: node node_modules/.bin/grunt --gruntfile app/Gruntfile.js
 
+  docs:
+    build: .
+    ports:
+      - "44000:44000"
+    container_name: forest-watcher-docs
+    volumes:
+      - ./docs:/opt/forest-watcher/docs
+    command: yarn run docs -l 44000
+
 networks:
   gfw-fw-network:
     name: gfw-fw-network

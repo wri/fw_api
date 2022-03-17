@@ -1,0 +1,85 @@
+openapi: 3.1.0
+info:
+  title: fw_api
+  version: '1.0'
+servers:
+  - url: 'https://api.resourcewatch.org/v1'
+    description: Production
+  - url: 'https://gfw-staging.globalforestwatch.org/v1'
+    description: Staging
+  - url: 'http://localhost:4400/v1'
+    description: Local
+paths:
+  /forest-watcher/area:
+    parameters: []
+    get:
+      summary: Get All User Areas
+      operationId: get-user-areas
+      description: Retrieve areas for the logged in user
+      responses:
+        '200':
+          description: OK
+        '401':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+      parameters: []
+    post:
+      summary: Create User Area
+      operationId: post-user-area
+      responses:
+        '200':
+          description: OK
+        '401':
+          $ref: '#/components/responses/Error'
+      description: Create a new area for the logged in user
+  /fw_api/healthcheck:
+    get:
+      summary: Healthcheck
+      tags: []
+      responses:
+        '200':
+          $ref: '#/components/responses/Healthcheck'
+      operationId: get-fw_api-healthcheck
+components:
+  schemas: {}
+  securitySchemes:
+    Authorization:
+      type: http
+      scheme: bearer
+  responses:
+    Error:
+      description: Error Response
+      content:
+        application/json:
+          schema:
+            description: ''
+            type: object
+            properties:
+              errors:
+                type: array
+                uniqueItems: true
+                minItems: 1
+                items:
+                  required:
+                    - status
+                    - detail
+                  properties:
+                    status:
+                      type: number
+                    detail:
+                      type: string
+                      minLength: 1
+            required:
+              - errors
+          examples: {}
+    Healthcheck:
+      description: Healthcheck response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              uptime:
+                type: number
+          examples: {}

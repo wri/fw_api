@@ -17,7 +17,6 @@ const koaBody = require("koa-body")({
 const Sentry = require("@sentry/node");
 
 const app = new Koa();
-validate(app);
 
 /**
  * Sentry
@@ -63,6 +62,7 @@ app.use(async (ctx, next) => {
   }
 });
 
+validate(app);
 app.use(koaLogger());
 
 app.use(async (ctx, next) => {

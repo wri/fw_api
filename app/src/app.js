@@ -14,9 +14,26 @@ const koaBody = require("koa-body")({
   formLimit: "50mb",
   textLimit: "50mb"
 });
+const Sentry = require("@sentry/node");
 
 const app = new Koa();
 validate(app);
+
+/**
+ * Sentry
+ */
+Sentry.init({ dsn: "https://a5d5514f19004eeebd0e47539547dc8c@o163691.ingest.sentry.io/6261712" });
+
+app.on("error", (err, ctx) => {
+  Sentry.withScope(function (scope) {
+    scope.addEventProcessor(function (event) {
+      return Sentry.Handlers.parseRequest(event, ctx.request);
+    });
+    Sentry.captureException(err);
+  });
+});
+myUndefinedAPIFunction();
+/** */
 
 app.use(convert(koaBody));
 app.use(cors());

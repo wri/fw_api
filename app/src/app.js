@@ -28,7 +28,7 @@ app.on("error", (err, ctx) => {
     scope.addEventProcessor(function (event) {
       return Sentry.Handlers.parseRequest(event, ctx.request);
     });
-    Sentry.captureException(err);
+    Sentry.captureException(err); // send fatal errors to sentry
   });
 });
 /** */
@@ -49,6 +49,7 @@ app.use(async (ctx, next) => {
     }
     ctx.status = error.status || ctx.status || 500;
     if (ctx.status >= 500) {
+      Sentry.captureException(error); // send error to sentry
       logger.error(error);
     } else {
       logger.info(error);

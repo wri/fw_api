@@ -103,7 +103,6 @@ resource "aws_cloudwatch_log_group" "default" {
 #
 # Route53 Healthcheck
 #
-
 module "route53_healthcheck" {
   source           = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/route53_healthcheck?ref=v0.5.6"
   prefix           = var.project_prefix

@@ -186,5 +186,9 @@ const isAuthenticatedMiddleware = async (ctx, next) => {
 
 router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
 router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
+router.get("/fail", ctx => {
+  ctx.status = 500;
+  throw new Error("Test Fail");
+});
 
 module.exports = router;

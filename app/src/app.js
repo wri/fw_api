@@ -14,9 +14,27 @@ const koaBody = require("koa-body")({
   formLimit: "50mb",
   textLimit: "50mb"
 });
+const Sentry = require("@sentry/node");
 
 const app = new Koa();
-validate(app);
+
+/**
+ * Sentry
+ */
+Sentry.init({
+  dsn: "https://2ddcb5b7116844b9a7c79626d121c566@o163691.ingest.sentry.io/6263597",
+  environment: process.env.NODE_ENV
+});
+
+app.on("error", (err, ctx) => {
+  Sentry.withScope(function (scope) {
+    scope.addEventProcessor(function (event) {
+      return Sentry.Handlers.parseRequest(event, ctx.request);
+    });
+    Sentry.captureException(err); // send fatal errors to sentry
+  });
+});
+/** */
 
 app.use(convert(koaBody));
 app.use(cors());
@@ -34,19 +52,21 @@ app.use(async (ctx, next) => {
     }
     ctx.status = error.status || ctx.status || 500;
     if (ctx.status >= 500) {
+      Sentry.captureException(error); // send error to sentry
       logger.error(error);
     } else {
       logger.info(error);
     }
 
     ctx.body = ErrorSerializer.serializeError(ctx.status, error.message);
-    if (process.env.NODE_ENV === "prod" && ctx.status === 500) {
+    if (process.env.NODE_ENV === "production" && ctx.status === 500) {
       ctx.body = "Unexpected error";
     }
     ctx.response.type = "application/vnd.api+json";
   }
 });
 
+validate(app);
 app.use(koaLogger());
 
 app.use(async (ctx, next) => {

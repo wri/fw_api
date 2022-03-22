@@ -131,4 +131,4 @@ module "error_rate_alarm" {
   alarm_actions = [module.route53_healthcheck.sns_topic_arn]
 
   alarm_threshold = "10" // Percent
-} 
+}

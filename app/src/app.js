@@ -59,7 +59,7 @@ app.use(async (ctx, next) => {
     }
 
     ctx.body = ErrorSerializer.serializeError(ctx.status, error.message);
-    if (process.env.NODE_ENV === "prod" && ctx.status === 500) {
+    if (process.env.NODE_ENV === "production" && ctx.status === 500) {
       ctx.body = "Unexpected error";
     }
     ctx.response.type = "application/vnd.api+json";

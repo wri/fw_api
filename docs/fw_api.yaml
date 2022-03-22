@@ -41,6 +41,7 @@ paths:
         '200':
           $ref: '#/components/responses/Healthcheck'
       operationId: get-fw_api-healthcheck
+      security: []
 components:
   schemas: {}
   securitySchemes:
@@ -83,3 +84,6 @@ components:
               uptime:
                 type: number
           examples: {}
+  examples: {}
+security:
+  - Authorization: []

@@ -103,9 +103,8 @@ resource "aws_cloudwatch_log_group" "default" {
 #
 # Route53 Healthcheck
 #
-
 module "route53_healthcheck" {
-  source           = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/route53_healthcheck?ref=v0.5.6"
+  source           = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/route53_healthcheck?ref=v0.5.7"
   prefix           = var.project_prefix
   healthcheck_fqdn = data.terraform_remote_state.fw_core.outputs.public_url
   healthcheck_path = var.healthcheck_path
@@ -113,4 +112,23 @@ module "route53_healthcheck" {
   depends_on = [
     module.fargate_autoscaling
   ]
+}
+
+#
+# Cloudwatch HTTP Error rate alarm
+#
+
+module "error_rate_alarm" {
+  source = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/http_error_rate_alarm?ref=v0.5.7"
+
+  project_prefix = var.project_prefix
+  httpOkQuery = "[direction=\"-->\", requestType, path, responseCode=200 || responseCode=202 , responseTime, dataSize]"
+  httpOkLogGroup = aws_cloudwatch_log_group.default.name
+  httpErrorsQuery = "[direction=\"-->\", requestType, path, responseCode=4* || responseCode=5* , responseTime, dataSize]"
+  httpErrorsLogGroup = aws_cloudwatch_log_group.default.name
+  metricsNamespace = "HttpErrorRateAlarms"
+
+  alarm_actions = [module.route53_healthcheck.sns_topic_arn]
+
+  alarm_threshold = "10" // Percent
 }

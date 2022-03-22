@@ -21,7 +21,10 @@ const app = new Koa();
 /**
  * Sentry
  */
-Sentry.init({ dsn: "https://2ddcb5b7116844b9a7c79626d121c566@o163691.ingest.sentry.io/6263597" });
+Sentry.init({
+  dsn: "https://2ddcb5b7116844b9a7c79626d121c566@o163691.ingest.sentry.io/6263597",
+  environment: process.env.NODE_ENV
+});
 
 app.on("error", (err, ctx) => {
   Sentry.withScope(function (scope) {

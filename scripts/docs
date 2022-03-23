@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+ENVIROMENT="$1"
+
+cd ./docs || exit
+
+if [ "$ENVIROMENT" = "dev" ] ; then
+  mkdir -p build/docs/dev
+  cp fw_api.yaml build/docs/dev
+else
+  if [ "$ENVIROMENT" = "staging" ] ; then
+    mkdir -p build/docs/staging
+    cp fw_api.yaml build/docs/staging
+  else
+    if [ "$ENVIROMENT" = "production" ] ;  then
+      mkdir -p build/docs/production
+      cp fw_api.yaml build/docs/production
+    fi
+  fi
+fi

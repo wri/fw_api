@@ -5,7 +5,8 @@
   "repository": "https://github.com/resource-watch/forest-watcher",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint app --fix"
+    "lint": "eslint app --fix",
+    "docs": "serve docs"
   },
   "keywords": [
     "forest-watcher",
@@ -45,7 +46,8 @@
     "mocha": "^7.1.1",
     "nock": "^12.0.3",
     "nyc": "^14.1.1",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "serve": "^13.0.2"
   },
   "dependencies": {
     "@koa/cors": "^3.1.0",

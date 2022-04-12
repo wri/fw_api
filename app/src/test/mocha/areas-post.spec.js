@@ -20,7 +20,7 @@ describe("Create area", function () {
   });
 
   it("Create an area without being logged in should return a 401 error", async function () {
-    const response = await requester.post(`/api/v1/forest-watcher/area`);
+    const response = await requester.post(`/v1/forest-watcher/area`);
 
     response.status.should.equal(401);
     response.body.should.have.property("errors").and.be.an("array");
@@ -30,7 +30,7 @@ describe("Create area", function () {
   it("Create an area while being logged without a name value should return an error", async function () {
     mockGetUserFromToken(USERS.USER);
 
-    const response = await requester.post(`/api/v1/forest-watcher/area`).set("Authorization", `Bearer abcd`);
+    const response = await requester.post(`/v1/forest-watcher/area`).set("Authorization", `Bearer abcd`);
 
     response.status.should.equal(400);
     response.body.should.have.property("errors").and.be.an("array");
@@ -43,7 +43,7 @@ describe("Create area", function () {
     mockGetUserFromToken(USERS.USER);
 
     const response = await requester
-      .post(`/api/v1/forest-watcher/area`)
+      .post(`/v1/forest-watcher/area`)
       .field("name", "TestArea")
       .set("Authorization", `Bearer abcd`);
 
@@ -58,7 +58,7 @@ describe("Create area", function () {
     mockGetUserFromToken(USERS.USER);
 
     const response = await requester
-      .post(`/api/v1/forest-watcher/area`)
+      .post(`/v1/forest-watcher/area`)
       .field("name", "TestArea")
       .field("geojson", "potato")
       .set("Authorization", `Bearer abcd`);
@@ -74,7 +74,7 @@ describe("Create area", function () {
     mockGetUserFromToken(USERS.USER);
 
     const response = await requester
-      .post(`/api/v1/forest-watcher/area`)
+      .post(`/v1/forest-watcher/area`)
       .field("name", "TestArea")
       .field("geojson", "{}")
       .set("Authorization", `Bearer abcd`);
@@ -88,7 +88,7 @@ describe("Create area", function () {
     mockGetUserFromToken(USERS.USER);
 
     const response = await requester
-      .post(`/api/v1/forest-watcher/area`)
+      .post(`/v1/forest-watcher/area`)
       .field("name", "TestArea")
       .field("geojson", "{}")
       .set("Authorization", `Bearer abcd`);
@@ -264,7 +264,7 @@ describe("Create area", function () {
     const fileData = Buffer.from("TestFileContent", "utf8");
 
     const response = await requester
-      .post(`/api/v1/forest-watcher/area`)
+      .post(`/v1/forest-watcher/area`)
       .field("name", "TestArea")
       .field("geojson", geojson)
       .attach("image", fileData, filename)

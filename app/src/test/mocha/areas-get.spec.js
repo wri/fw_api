@@ -20,7 +20,7 @@ describe("Get areas", function () {
   });
 
   it("Get all areas without being logged in should return a 401 error", async function () {
-    const response = await requester.get(`/api/v1/forest-watcher/area`);
+    const response = await requester.get(`/v1/forest-watcher/area`);
 
     response.status.should.equal(401);
     response.body.should.have.property("errors").and.be.an("array");
@@ -115,7 +115,7 @@ describe("Get areas", function () {
         }
       });
 
-    const response = await requester.get(`/api/v1/forest-watcher/area`).set("Authorization", `Bearer abcd`);
+    const response = await requester.get(`/v1/forest-watcher/area`).set("Authorization", `Bearer abcd`);
 
     response.status.should.equal(200);
     response.body.should.have.property("data").and.be.an("array").and.length(1);

@@ -25,6 +25,26 @@ services:
       - gfw-network
     command: yarn dev
 
+  test:
+    build: .
+    container_name: forest-watcher-tests
+    environment:
+      PORT: 4400
+      NODE_ENV: test
+      LOGGER_LEVEL: debug
+      SUPPRESS_NO_CONFIG_WARNING: "true"
+      CONTROL_TOWER_URL: http://127.0.0.1:9000
+      LOCAL_URL: http://127.0.0.1:4400
+      FORMS_API_URL: http://127.0.0.1:9000
+      AREAS_API_URL: http://127.0.0.1:9000
+      GEOSTORE_API_URL: http://127.0.0.1:9000
+      API_VERSION: v1
+    volumes:
+      - ./app:/opt/forest-watcher/app
+      - ./nodemon.json:/opt/forest-watcher/nodemon.json
+      - ./jest.config.js:/opt/forest-watcher/jest.config.js
+    command: yarn test
+
   docs:
     build: .
     ports:

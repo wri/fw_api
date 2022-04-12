@@ -68,7 +68,6 @@ when developing, please see above.
 ### Environment variables
 
 - PORT => TCP port in which the service will run
-- NODE_PATH => relative path to the source code. Should be `app/src`
 - API_VERSION => API version identifier that prefixes the URL. Should be `v1`
 
 You can optionally set other variables, see [this file](config/custom-environment-variables.json) for an extended list.

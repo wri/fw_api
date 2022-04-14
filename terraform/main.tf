@@ -76,7 +76,6 @@ data "template_file" "container_definition" {
     
     # Environment variables
     port = var.container_port
-    node_path = var.node_path
     node_env = var.node_env
     logger_level = var.logger_level
     suppress_no_config_warning = var.suppress_no_config_warning

@@ -76,8 +76,8 @@ app.use(async (ctx, next) => {
 
 loader.loadRoutes(app);
 
-const server = app.listen(config.get("service.port"), () => {});
-
-logger.info("Server started in ", config.get("service.port"));
+const server = app.listen(config.get("service.port"), () => {
+  logger.info("Server started in ", config.get("service.port"));
+});
 
 module.exports = server;

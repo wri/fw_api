@@ -8,7 +8,7 @@
   "mongodb": {
     "host": "MONGODB_HOST",
     "port": "MONGODB_PORT",
-    "database": "teams"
+    "database": "api"
   },
   "service": {
     "name": "Forest-watcher",

@@ -10,6 +10,10 @@ services:
       NODE_ENV: dev
       LOGGER_LEVEL: debug
       SUPPRESS_NO_CONFIG_WARNING: "true"
+      MONGODB_HOST: mongo
+      MONGODB_PORT: 27017
+      DB_SECRET: '{ "username": "admin", "password": "password" }'
+      DB_DATABASE: fw_api_db
       CONTROL_TOWER_URL: https://api.resourcewatch.org
       LOCAL_URL: http://127.0.0.1:4400
       FORMS_API_URL: http://fw-forms-develop:4401/api/v1
@@ -39,11 +43,33 @@ services:
       AREAS_API_URL: http://127.0.0.1:9000
       GEOSTORE_API_URL: http://127.0.0.1:9000
       API_VERSION: v1
+      MONGODB_HOST: mongo
+      MONGODB_PORT: 27017
+      DB_SECRET: '{ "username": "admin", "password": "password" }'
+      DB_DATABASE: fw_api_db
     volumes:
       - ./app:/opt/forest-watcher/app
       - ./nodemon.json:/opt/forest-watcher/nodemon.json
       - ./jest.config.js:/opt/forest-watcher/jest.config.js
     command: yarn test
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:3.4
+    container_name: fw-api-mongo-develop
+    ports:
+      - "27025:27017"
+    environment:
+      MONGO_INITDB_DATABASE: fw_api_db
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_ROOT_USERNAME: admin
+    volumes:
+      - ./data/mongo/001_users.js:/docker-entrypoint-initdb.d/001_users.js:ro
+      - fw-api-mongodb-data:/data/db
+    restart: always
+    networks:
+      - gfw-network
 
   docs:
     build: .
@@ -53,6 +79,9 @@ services:
     volumes:
       - ./docs:/opt/forest-watcher/docs
     command: yarn run docs -l 44000
+
+volumes:
+  fw-api-mongodb-data:
 
 networks:
   gfw-fw-network:

@@ -7,6 +7,7 @@ const TemplatesService = require("services/template.service");
 const AreaValidator = require("validators/area.validator");
 const moment = require("moment");
 const config = require("config");
+const { default: mongoose } = require("mongoose");
 
 const ALERTS_SUPPORTED = config.get("alertsSupported");
 
@@ -186,9 +187,10 @@ const isAuthenticatedMiddleware = async (ctx, next) => {
 
 router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
 router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
-router.get("/fail", ctx => {
-  ctx.status = 500;
-  throw new Error("Test Fail");
+router.get("/test", ctx => {
+  ctx.body = {
+    status: mongoose.connection.readyState
+  };
 });
 
 module.exports = router;

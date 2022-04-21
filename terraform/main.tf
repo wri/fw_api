@@ -10,7 +10,6 @@ provider "aws" {
   region = var.region
 }
 
-
 # Docker image for FW Template app
 module "app_docker_image" {
   source     = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/container_registry?ref=v0.5.1"
@@ -61,8 +60,6 @@ module "fargate_autoscaling" {
   ]
 }
 
-
-
 data "template_file" "container_definition" {
   template = file("${path.root}/templates/container_definition.json.tmpl")
   vars = {
@@ -73,6 +70,9 @@ data "template_file" "container_definition" {
     log_group      = aws_cloudwatch_log_group.default.name
     aws_region     = var.region
     environment    = var.environment
+    document_db_endpoint       = data.terraform_remote_state.core.outputs.document_db_endpoint
+    document_db_port           = data.terraform_remote_state.core.outputs.document_db_port
+    db_secret_arn              = data.terraform_remote_state.core.outputs.document_db_secrets_arn
     
     # Environment variables
     port = var.container_port

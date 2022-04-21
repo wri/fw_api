@@ -8,6 +8,7 @@ const loader = require("loader");
 const convert = require("koa-convert");
 const ErrorSerializer = require("serializers/error.serializer");
 const loggedInUserService = require("./services/LoggedInUserService");
+const mongoose = require("mongoose");
 const koaBody = require("koa-body")({
   multipart: true,
   jsonLimit: "50mb",
@@ -35,6 +36,26 @@ app.on("error", (err, ctx) => {
   });
 });
 /** */
+
+let dbSecret = config.get("mongodb.secret");
+if (typeof dbSecret === "string") {
+  dbSecret = JSON.parse(dbSecret);
+}
+
+const mongoURL =
+  "mongodb://" +
+  `${dbSecret.username}:${dbSecret.password}` +
+  `@${config.get("mongodb.host")}:${config.get("mongodb.port")}` +
+  `/${config.get("mongodb.database")}`;
+
+const onDbReady = err => {
+  if (err) {
+    logger.error(err);
+    throw new Error(err);
+  }
+};
+
+mongoose.connect(mongoURL, onDbReady);
 
 app.use(convert(koaBody));
 app.use(cors());

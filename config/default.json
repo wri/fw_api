@@ -5,6 +5,11 @@
     "toFile": false,
     "dirLogFile": null
   },
+  "mongodb": {
+    "host": "MONGODB_HOST",
+    "port": "MONGODB_PORT",
+    "database": "api"
+  },
   "service": {
     "name": "Forest-watcher",
     "port": 4400

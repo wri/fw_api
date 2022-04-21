@@ -54,6 +54,9 @@ services:
     command: yarn test
     depends_on:
       - mongo
+    networks:
+      - gfw-fw-network
+      - gfw-network
 
   mongo:
     image: mongo:3.6

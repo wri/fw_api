@@ -8,7 +8,7 @@ const loader = require("loader");
 const convert = require("koa-convert");
 const ErrorSerializer = require("serializers/error.serializer");
 const loggedInUserService = require("./services/LoggedInUserService");
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 const koaBody = require("koa-body")({
   multipart: true,
   jsonLimit: "50mb",

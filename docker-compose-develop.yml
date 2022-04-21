@@ -56,7 +56,7 @@ services:
       - mongo
 
   mongo:
-    image: mongo:3.4
+    image: mongo:3.6
     container_name: fw-api-mongo-develop
     ports:
       - "27025:27017"

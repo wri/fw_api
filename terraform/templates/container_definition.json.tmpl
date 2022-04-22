@@ -43,9 +43,22 @@
     {
       "name": "API_VERSION",
       "value": "${api_version}"
+    },
+    {
+      "name": "MONGODB_HOST",
+      "value": "${document_db_endpoint}"
+    },
+    {
+      "name": "MONGODB_PORT",
+      "value": "${document_db_port}"
     }
   ],
-  "secrets": [],
+  "secrets": [
+    {
+      "name": "DB_SECRET",
+      "valueFrom": "${db_secret_arn}"
+    }
+  ],
   "portMappings": [
     {
       "containerPort": ${container_port},

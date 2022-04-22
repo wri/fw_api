@@ -16,5 +16,11 @@
   },
   "controlTower": {
     "url": "CONTROL_TOWER_URL"
+  },
+  "mongodb": {
+    "host": "MONGODB_HOST",
+    "port": "MONGODB_PORT",
+    "secret": "DB_SECRET",
+    "database": "DB_DATABASE"
   }
 }

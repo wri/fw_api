@@ -213,9 +213,7 @@ router.delete(
 
 router.get("/test", async ctx => {
   ctx.body = {
-    status: mongoose.connection.readyState,
     relations: await AreaTemplateRelationModel.find(),
-    area2: await AreaTemplateRelationService.getAllTemplatesForArea(2)
   };
 });
 

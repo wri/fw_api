@@ -175,41 +175,6 @@ class ForestWatcherRouter {
     };
   }
 
-  static async updateArea(ctx) {
-    const user = ForestWatcherFunctions.getUser(ctx);
-    const { geojson, name } = ctx.request.body.fields || {};
-    const { image } = ctx.request.body.files;
-    let data = null;
-    if (user && user.id) {
-      try {
-        const { area, geostore, coverage } = await AreasService.createAreaWithGeostore(
-          {
-            name,
-            image
-          },
-          JSON.parse(geojson),
-          user.id
-        );
-        logger.info("Created area", area, geostore, coverage);
-        try {
-          [data] = await ForestWatcherFunctions.buildAreasResponse([area], {
-            geostore,
-            coverage
-          });
-        } catch (e) {
-          logger.error(e);
-          ctx.throw(e.status, "Error while retrieving area's template");
-        }
-      } catch (e) {
-        logger.error(e);
-        ctx.throw(e.status, "Error while creating area");
-      }
-    }
-    ctx.body = {
-      data
-    };
-  }
-
   static async addTemplateRelation(ctx) {
     await AreaTemplateRelationService.create(ctx.params);
     ctx.status = 200;

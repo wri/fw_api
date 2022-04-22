@@ -46,7 +46,8 @@ const mongoURL =
   "mongodb://" +
   `${dbSecret.username}:${dbSecret.password}` +
   `@${config.get("mongodb.host")}:${config.get("mongodb.port")}` +
-  `/${config.get("mongodb.database")}`;
+  `/${config.get("mongodb.database")}` +
+  "?authSource=admin";
 
 const onDbReady = err => {
   if (err) {

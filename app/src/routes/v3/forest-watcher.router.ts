@@ -7,6 +7,10 @@ const TemplatesService = require("services/template.service");
 const AreaValidator = require("validators/area.validator");
 const moment = require("moment");
 const config = require("config");
+const AreaTemplateRelationService = require("services/areaTemplateRelationService").default;
+
+import mongoose from "mongoose";
+import { AreaTemplateRelationModel } from "../../models";
 
 const ALERTS_SUPPORTED = config.get("alertsSupported");
 
@@ -25,13 +29,15 @@ const globalAlerts = [
 ];
 
 class ForestWatcherFunctions {
-  static async buildAreasResponse(areas = [], { geostoreObj, coverageObj } = {}) {
+  static async buildAreasResponse(areas = [], objects: any = {}) {
+    const { geostoreObj, coverageObj } = objects;
     const areasWithGeostore = areas.filter(area => area.attributes.geostore);
     const promises = [
       Promise.all(
-        areasWithGeostore.map(area =>
-          area.attributes.templateId ? TemplatesService.getTemplate(area.attributes.templateId) : null
-        )
+        areasWithGeostore.map(async area => {
+          const templates = await AreaTemplateRelationService.getAllTemplatesForArea(area.id);
+          return templates.map(template => TemplatesService.getTemplate(template));
+        })
       )
     ];
 
@@ -86,7 +92,7 @@ class ForestWatcherFunctions {
   }
 
   static getDatasetsWithActive(datasets = []) {
-    if (!datasets.length > 0 || datasets.find(d => d.active)) return datasets;
+    if (!(datasets.length > 0) || datasets.find(d => d.active)) return datasets;
 
     datasets[0].active = true;
     return datasets;
@@ -168,6 +174,51 @@ class ForestWatcherRouter {
       data
     };
   }
+
+  static async updateArea(ctx) {
+    const user = ForestWatcherFunctions.getUser(ctx);
+    const { geojson, name } = ctx.request.body.fields || {};
+    const { image } = ctx.request.body.files;
+    let data = null;
+    if (user && user.id) {
+      try {
+        const { area, geostore, coverage } = await AreasService.createAreaWithGeostore(
+          {
+            name,
+            image
+          },
+          JSON.parse(geojson),
+          user.id
+        );
+        logger.info("Created area", area, geostore, coverage);
+        try {
+          [data] = await ForestWatcherFunctions.buildAreasResponse([area], {
+            geostore,
+            coverage
+          });
+        } catch (e) {
+          logger.error(e);
+          ctx.throw(e.status, "Error while retrieving area's template");
+        }
+      } catch (e) {
+        logger.error(e);
+        ctx.throw(e.status, "Error while creating area");
+      }
+    }
+    ctx.body = {
+      data
+    };
+  }
+
+  static async addTemplateRelation(ctx) {
+    await AreaTemplateRelationService.create(ctx.params);
+    ctx.status = 200;
+  }
+
+  static async deleteTemplateRelation(ctx) {
+    await AreaTemplateRelationService.delete(ctx.params);
+    ctx.status = 200;
+  }
 }
 
 const isAuthenticatedMiddleware = async (ctx, next) => {
@@ -188,5 +239,19 @@ const isAuthenticatedMiddleware = async (ctx, next) => {
 
 router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
 router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
+router.post("/area/:areaId/template/:templateId", isAuthenticatedMiddleware, ForestWatcherRouter.addTemplateRelation);
+router.delete(
+  "/area/:areaId/template/:templateId",
+  isAuthenticatedMiddleware,
+  ForestWatcherRouter.deleteTemplateRelation
+);
+
+router.get("/test", async ctx => {
+  ctx.body = {
+    status: mongoose.connection.readyState,
+    relations: await AreaTemplateRelationModel.find(),
+    area2: await AreaTemplateRelationService.getAllTemplatesForArea(2)
+  };
+});
 
 module.exports = router;

@@ -4,7 +4,7 @@ db.createUser({
   roles: [
     {
       role: "readWrite",
-      db: "fw_teams_db"
+      db: "fw_api_db"
     }
   ]
 });

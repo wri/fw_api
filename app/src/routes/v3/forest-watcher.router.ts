@@ -213,7 +213,7 @@ router.delete(
 
 router.get("/test", async ctx => {
   ctx.body = {
-    relations: await AreaTemplateRelationModel.find(),
+    relations: await AreaTemplateRelationModel.find()
   };
 });
 

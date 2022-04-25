@@ -32,14 +32,15 @@ class ForestWatcherFunctions {
   static async buildAreasResponse(areas = [], objects: any = {}) {
     const { geostoreObj, coverageObj } = objects;
     const areasWithGeostore = areas.filter(area => area.attributes.geostore);
-    const promises = [
-      Promise.all(
-        areasWithGeostore.map(async area => {
-          const templates = await AreaTemplateRelationService.getAllTemplatesForArea(area.id);
-          return templates.map(async template => await TemplatesService.getTemplate(template));
-        })
-      )
-    ];
+    const templatesData = areasWithGeostore.map(async area => {
+      const templates = await AreaTemplateRelationService.getAllTemplatesForArea(area.id);
+      logger.info("templates found", templates)
+      const templatesToReturn = templates.map(async template => await TemplatesService.getTemplate(template));
+      logger.info("returning templates", templatesToReturn)
+      return templatesToReturn
+    });
+
+    let promises = [];
 
     if (!geostoreObj) {
       promises.push(Promise.all(areasWithGeostore.map(area => GeoStoreService.getGeostore(area.attributes.geostore))));
@@ -59,7 +60,7 @@ class ForestWatcherFunctions {
     }
     try {
       const data = await Promise.all(promises);
-      const [templatesData, geostoreData, coverageData] = data;
+      const [geostoreData, coverageData] = data;
 
       return areasWithGeostore.map((area, index) => {
         const geostore = geostoreObj || geostoreData[index] || {};

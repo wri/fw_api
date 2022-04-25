@@ -36,7 +36,7 @@ class ForestWatcherFunctions {
       Promise.all(
         areasWithGeostore.map(async area => {
           const templates = await AreaTemplateRelationService.getAllTemplatesForArea(area.id);
-          return templates.map(template => TemplatesService.getTemplate(template));
+          return templates.map(async template => await TemplatesService.getTemplate(template));
         })
       )
     ];

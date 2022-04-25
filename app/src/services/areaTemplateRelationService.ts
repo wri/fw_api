@@ -5,12 +5,13 @@ export default class AreaTemplateRelationService {
   static async create(params) {
     const { areaId, templateId } = params;
     const areaTemplateRelation = new AreaTemplateRelationModel({ templateId, areaId });
-    await areaTemplateRelation.save();
+    const savedRelation = await areaTemplateRelation.save();
+    return Promise.resolve(savedRelation);
   }
 
   static async getAllTemplatesForArea(areaId) {
     const relations = await AreaTemplateRelationModel.find({ areaId });
-    return relations.map(relation => relation.templateId);
+    return Promise.resolve(relations.map(relation => relation.templateId));
   }
 
   static async delete(params) {

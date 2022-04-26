@@ -73,6 +73,10 @@ variable "geostore_api_url" {
   type    = string
   default = "https://api.resourcewatch.org/v1"
 }
+variable "forms_api_url" {
+  type    = string
+  default = "https://api.resourcewatch.org/v1"
+}
 variable "api_version" {
   type    = string
   default = "v1"

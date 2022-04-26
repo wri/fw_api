@@ -9,6 +9,7 @@ const loggedInUserService = require("./LoggedInUserService");
 const ALERTS_SUPPORTED = config.get("alertsSupported");
 
 class AreasService {
+
   static async getUserAreas(userId) {
     logger.info("Get user areas", userId);
     try {

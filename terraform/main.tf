@@ -81,7 +81,7 @@ data "template_file" "container_definition" {
     suppress_no_config_warning = var.suppress_no_config_warning
     control_tower_url = var.control_tower_url
     local_url = "http://127.0.0.1:${var.container_port}"
-    forms_api_url = "https://${data.terraform_remote_state.fw_core.outputs.public_url}/v1"
+    forms_api_url = var.forms_api_url #"https://${data.terraform_remote_state.fw_core.outputs.public_url}/v1"
     areas_api_url = var.areas_api_url
     geostore_api_url = var.geostore_api_url
     api_version = var.api_version

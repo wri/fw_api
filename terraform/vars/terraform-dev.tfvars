@@ -10,6 +10,7 @@ suppress_no_config_warning= "true"
 control_tower_url         = "https://staging-api.resourcewatch.org"
 areas_api_url             = "https://gfw-staging.globalforestwatch.org/v1"
 geostore_api_url          = "https://gfw-staging.globalforestwatch.org/v1"
+forms_api_url             = "https://gfw-staging.globalforestwatch.org/v1"
 api_version               = "v1"
 
 healthcheck_path = "/v1/fw_api/healthcheck"

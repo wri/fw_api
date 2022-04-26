@@ -58,7 +58,7 @@ class ForestWatcherFunctions {
     }
     try {
       const data = await Promise.all(promises);
-      const [geostoreData, coverageData] = data;
+      const [templatesData, geostoreData, coverageData] = data;
 
       return areasWithGeostore.map((area, index) => {
         const geostore = geostoreObj || geostoreData[index] || {};

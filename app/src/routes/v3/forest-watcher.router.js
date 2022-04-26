@@ -28,18 +28,17 @@ const globalAlerts = [
 ];
 
 class ForestWatcherFunctions {
-  static async buildAreasResponse(areas = [], objects: any = {}) {
+  static async buildAreasResponse(areas = [], objects = {}) {
     const { geostoreObj, coverageObj } = objects;
     const areasWithGeostore = areas.filter(area => area.attributes.geostore);
-    const templatesData = areasWithGeostore.map(async area => {
-      const templates = await AreaTemplateRelationService.getAllTemplatesForArea(area.id);
-      logger.info("templates found", templates)
-      const templatesToReturn = templates.map(async template => await TemplatesService.getTemplate(template));
-      logger.info("returning templates", templatesToReturn)
-      return templatesToReturn
-    });
-
-    let promises = [];
+    const promises = [
+      Promise.all(
+        areasWithGeostore.map(async area => {
+          const templates = await AreaTemplateRelationService.getAllTemplatesForArea(area.id);
+          return Promise.all(templates.map(async template => TemplatesService.getTemplate(template)));
+        })
+      )
+    ];
 
     if (!geostoreObj) {
       promises.push(Promise.all(areasWithGeostore.map(area => GeoStoreService.getGeostore(area.attributes.geostore))));

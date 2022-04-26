@@ -14,11 +14,11 @@ services:
       MONGODB_PORT: 27017
       DB_SECRET: '{ "username": "admin", "password": "password" }'
       DB_DATABASE: fw_api_db
-      CONTROL_TOWER_URL: https://api.resourcewatch.org
+      CONTROL_TOWER_URL: https://staging-api.resourcewatch.org
       LOCAL_URL: http://127.0.0.1:4400
-      FORMS_API_URL: http://fw-forms-develop:4401/api/v1
-      AREAS_API_URL: https://api.resourcewatch.org
-      GEOSTORE_API_URL: https://api.resourcewatch.org
+      FORMS_API_URL: https://staging-api.resourcewatch.org/v1
+      AREAS_API_URL: https://staging-api.resourcewatch.org/v1
+      GEOSTORE_API_URL: https://staging-api.resourcewatch.org/v1
       API_VERSION: v1
     volumes:
       - ./app:/opt/forest-watcher/app

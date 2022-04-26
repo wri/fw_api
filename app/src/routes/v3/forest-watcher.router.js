@@ -9,7 +9,6 @@ const moment = require("moment");
 const config = require("config");
 const AreaTemplateRelationService = require("services/areaTemplateRelationService").default;
 
-import mongoose from "mongoose";
 import { AreaTemplateRelationModel } from "../../models";
 
 const ALERTS_SUPPORTED = config.get("alertsSupported");
@@ -29,14 +28,14 @@ const globalAlerts = [
 ];
 
 class ForestWatcherFunctions {
-  static async buildAreasResponse(areas = [], objects: any = {}) {
+  static async buildAreasResponse(areas = [], objects = {}) {
     const { geostoreObj, coverageObj } = objects;
     const areasWithGeostore = areas.filter(area => area.attributes.geostore);
     const promises = [
       Promise.all(
         areasWithGeostore.map(async area => {
           const templates = await AreaTemplateRelationService.getAllTemplatesForArea(area.id);
-          return templates.map(async template => await TemplatesService.getTemplate(template));
+          return Promise.all(templates.map(async template => TemplatesService.getTemplate(template)));
         })
       )
     ];

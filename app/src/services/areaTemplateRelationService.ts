@@ -1,4 +1,3 @@
-//import mongoose from "mongoose"
 import { AreaTemplateRelationModel } from "../models";
 
 export default class AreaTemplateRelationService {

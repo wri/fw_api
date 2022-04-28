@@ -2,7 +2,7 @@ const AreaTemplateRelationService = require("./areaTemplateRelationService");
 const { AreaTemplateRelationModel } = require("models");
 const { ObjectId } = require("mongoose").Types;
 const { getTestServer } = require("../test/jest/utils/test-server");
-const { createRelation } = require("../test/jest/utils/helpers");
+const { createAreaTemplateRelation } = require("../test/jest/utils/helpers");
 const { getAllTemplatesForArea } = require("./areaTemplateRelationService");
 
 describe("Create relation using the areas template relation service", function () {
@@ -65,9 +65,9 @@ describe("Get all relations given an area id", function () {
     const areaId1 = new ObjectId(),
       areaId2 = new ObjectId();
 
-    const relationOne = await createRelation(areaId1);
-    const relationTwo = await createRelation(areaId1);
-    await createRelation(areaId2);
+    const relationOne = await createAreaTemplateRelation(areaId1);
+    const relationTwo = await createAreaTemplateRelation(areaId1);
+    await createAreaTemplateRelation(areaId2);
 
     const templates = await getAllTemplatesForArea(areaId1);
 
@@ -96,7 +96,7 @@ describe("Delete a relation given area id and template id", function () {
   it("Deletes a relation", async function () {
     const areaId1 = new ObjectId();
 
-    await createRelation(areaId1);
+    await createAreaTemplateRelation(areaId1);
     const templates = await getAllTemplatesForArea(areaId1);
 
     expect(templates.length).toBe(1);

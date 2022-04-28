@@ -3,7 +3,8 @@ import { AreaTemplateRelationModel } from "../models";
 export default class AreaTemplateRelationService {
   static async create(params) {
     const { areaId, templateId } = params;
-    if(await AreaTemplateRelationModel.findOne({areaId, templateId})) throw new Error("This template is already assigned to this area")
+    if (await AreaTemplateRelationModel.findOne({ areaId, templateId }))
+      throw new Error("This template is already assigned to this area");
     const areaTemplateRelation = new AreaTemplateRelationModel({ templateId, areaId });
     const savedRelation = await areaTemplateRelation.save();
     return Promise.resolve(savedRelation);

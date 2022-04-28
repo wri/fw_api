@@ -22,7 +22,7 @@ class TemplateService {
       return deserializer(template);
     } catch (e) {
       logger.error("Error while fetching template", e);
-      throw e;
+      return null; // log the error but still return
     }
   }
 }

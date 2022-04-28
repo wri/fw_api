@@ -1,6 +1,6 @@
-import { AreaTemplateRelationModel } from "../models";
+const { AreaTemplateRelationModel } = require ("models");
 
-export default class AreaTemplateRelationService {
+class AreaTemplateRelationService {
   static async create(params) {
     const { areaId, templateId } = params;
     if (await AreaTemplateRelationModel.findOne({ areaId, templateId }))
@@ -21,3 +21,5 @@ export default class AreaTemplateRelationService {
     return Promise.resolve();
   }
 }
+
+module.exports = AreaTemplateRelationService

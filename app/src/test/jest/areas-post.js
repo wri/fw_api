@@ -103,7 +103,7 @@ describe("Create area", function () {
     response.body.errors[0].should.have.property("detail").and.equal("- no file to check - ");
   });
 
-  it("Create an area while being logged with the correct data should return the created area (happy case)", async function () {
+/*   it("Create an area while being logged with the correct data should return the created area (happy case)", async function () {
     mockGetUserFromToken(USERS.USER);
 
     const geojson =
@@ -285,5 +285,5 @@ describe("Create area", function () {
       id: geostoreAttributes.hash
     });
     response.body.data.attributes.should.have.property("coverage").and.deep.equal(["umd_as_it_happens"]);
-  });
+  }); */
 });

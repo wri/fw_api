@@ -1,6 +1,6 @@
 const nock = require("nock");
 const config = require("config");
-const { AreaTemplateRelationModel } = require ("models");
+const { AreaTemplateRelationModel } = require("models");
 const { ObjectId } = require("mongoose").Types;
 
 const mockGetUserFromToken = userProfile => {
@@ -9,10 +9,10 @@ const mockGetUserFromToken = userProfile => {
     .reply(200, userProfile);
 };
 
-const createRelation = async (areaId) => {
-  let relation = new AreaTemplateRelationModel({areaId, templateId: new ObjectId()});
+const createRelation = async areaId => {
+  let relation = new AreaTemplateRelationModel({ areaId, templateId: new ObjectId() });
   return await relation.save();
-}
+};
 
 module.exports = {
   mockGetUserFromToken,

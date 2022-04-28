@@ -1,4 +1,4 @@
-const { AreaTemplateRelationModel } = require ("models");
+const { AreaTemplateRelationModel } = require("models");
 
 class AreaTemplateRelationService {
   static async create(params) {
@@ -22,4 +22,4 @@ class AreaTemplateRelationService {
   }
 }
 
-module.exports = AreaTemplateRelationService
+module.exports = AreaTemplateRelationService;

@@ -9,7 +9,7 @@ const moment = require("moment");
 const config = require("config");
 const AreaTemplateRelationService = require("services/areaTemplateRelationService").default;
 
-import { AreaTemplateRelationModel } from "../../models";
+const { AreaTemplateRelationModel } = require("models");
 
 const ALERTS_SUPPORTED = config.get("alertsSupported");
 

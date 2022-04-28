@@ -917,7 +917,7 @@ paths:
         in: path
         required: true
     post:
-      summary: ''
+      summary: v3 Associate area with template
       operationId: post-v3-forest-watcher-area-areaId-template-templateId
       responses:
         '200':

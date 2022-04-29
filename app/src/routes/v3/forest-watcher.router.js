@@ -10,6 +10,7 @@ const config = require("config");
 const AreaTemplateRelationService = require("services/areaTemplateRelationService").default;
 
 const { AreaTemplateRelationModel } = require("models");
+const AreaTeamRelationService = require("../../services/areaTeamRelationService");
 
 const ALERTS_SUPPORTED = config.get("alertsSupported");
 
@@ -47,6 +48,15 @@ class ForestWatcherFunctions {
         })
       )
     ];
+
+    // add list of user's teams associated with area
+    const userTeams = [] // get list of user's teams
+    promises.push(Promise.all(areasWithGeostore.map(area => {
+      // get all teams associated with the area
+      const areaTeams = await AreaTeamRelationService.getAllTeamsForArea(area.id);
+      const filteredTeams = userTeams.filter(userTeam => areaTeams.includes(userTeam.teamId)) // CHECK THIS IS HOW TO GET USER TEAM ID
+      return filteredTeams.map(team => {team.id, team.name}) // CHECK THESE ARE THE CORRECT FIELD NAMES
+    })));
 
     if (!geostoreObj) {
       promises.push(Promise.all(areasWithGeostore.map(area => GeoStoreService.getGeostore(area.attributes.geostore))));
@@ -230,7 +240,7 @@ const isAuthenticatedMiddleware = async (ctx, next) => {
 
 router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
 router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
-router.delete("/area/template", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTemplateRelations);
+router.delete("/area/templates", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTemplateRelations);
 router.post("/area/:areaId/template/:templateId", isAuthenticatedMiddleware, ForestWatcherRouter.addTemplateRelation);
 router.delete(
   "/area/:areaId/template/:templateId",

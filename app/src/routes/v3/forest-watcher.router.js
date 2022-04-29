@@ -191,6 +191,25 @@ class ForestWatcherRouter {
     await AreaTemplateRelationService.delete(ctx.params);
     ctx.status = 200;
   }
+
+  static async deleteAllTemplateRelations(ctx) {
+    if(!ctx.body.areaId && !ctx.body.templateId) {
+      ctx.status = 400;
+      throw new Error("Invalid request")
+    }
+    await AreaTemplateRelationService.deleteAll(ctx.body);
+    ctx.status = 200;
+  }
+
+  static async addTeamRelation(ctx) {
+    await AreaTemplateRelationService.create(ctx.params);
+    ctx.status = 200;
+  }
+
+  static async deleteTeamRelation(ctx) {
+    await AreaTemplateRelationService.delete(ctx.params);
+    ctx.status = 200;
+  }
 }
 
 const isAuthenticatedMiddleware = async (ctx, next) => {
@@ -211,11 +230,18 @@ const isAuthenticatedMiddleware = async (ctx, next) => {
 
 router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
 router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
+router.delete("/area/template", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTemplateRelations);
 router.post("/area/:areaId/template/:templateId", isAuthenticatedMiddleware, ForestWatcherRouter.addTemplateRelation);
 router.delete(
   "/area/:areaId/template/:templateId",
   isAuthenticatedMiddleware,
   ForestWatcherRouter.deleteTemplateRelation
+);
+router.post("/area/:areaId/team/:teamId", isAuthenticatedMiddleware, ForestWatcherRouter.addTeamRelation);
+router.delete(
+  "/area/:areaId/team/:teamId",
+  isAuthenticatedMiddleware,
+  ForestWatcherRouter.deleteTeamRelation
 );
 
 router.get("/test", async ctx => {

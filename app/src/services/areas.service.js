@@ -31,12 +31,12 @@ class AreasService {
   }
 
   static async getArea(areaId) {
-    logger.info("Getting area with id ", areaId)
+    logger.info("Getting area with id ", areaId);
     try {
-      //let baseURL = config.get("areasAPI.url");
+      let baseURL = "https://api.resourcewatch.org/v2";
       const response = await axios.default({
         baseURL,
-        url: `https://api.resourcewatch.org/v2/area/${areaId}`,
+        url: `/area/${areaId}`,
         method: "GET",
         headers: {
           authorization: loggedInUserService.token

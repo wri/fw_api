@@ -150,29 +150,34 @@ class ForestWatcherRouter {
   }
 
   static async getArea(ctx) {
+    let area = await AreasService.getArea(ctx.request.params.areaId);
+    // get teams for area but only teams user is a member of
+    const user = await ForestWatcherFunctions.getUser(ctx);
+    const userTeams = await TeamService.getUserTeams(user.id); // get list of user's teams
+    const areaTeams = await AreaTeamRelationService.getAllTeamsForArea(area.id); // get list of teams associated with area
+    const filteredTeams = userTeams.filter(userTeam => areaTeams.includes(userTeam.id)); // match area teams to user teams
+    console.log("********************", userTeams, areaTeams, filteredTeams);
+    area.teams = filteredTeams.map(team => {
+      console.log("TEAM", team);
+      return { id: team.id, name: team.attributes.name };
+    });
 
-    let area = await AreasService.getArea(ctx.request.params.areaId)
-    // get teams for area
-    // add list of user's teams associated with area
-    const user = await ForestWatcherFunctions.getUser(ctx)
-    const userTeams = await TeamService.getUserTeams(user.id) // get list of user's teams
-    const areaTeams = await AreaTeamRelationService.getAllTeamsForArea(area.id);
-    const filteredTeams = userTeams.filter(userTeam => areaTeams.includes(userTeam.teamId)) // CHECK THIS IS HOW TO GET USER TEAM ID
-    area.teams = filteredTeams.map(team => { team.id, team.attributes.name }) // CHECK THESE ARE THE CORRECT FIELD NAMES
+    console.log(area);
 
     // add templates
     const templates = await AreaTemplateRelationService.getAllTemplatesForArea(ctx.request.params.areaId);
-    area.reportTemplate = Promise.all(templates.map(async template => {
-      try {
-        return TemplatesService.getTemplate(template);
-      } catch (error) {
-        return null;
-      }
-    }));
+    area.reportTemplate = Promise.all(
+      templates.map(async template => {
+        try {
+          return TemplatesService.getTemplate(template);
+        } catch (error) {
+          return null;
+        }
+      })
+    );
 
-    ctx.body = { area }
-    ctx.status = 200
-
+    ctx.body = { area };
+    ctx.status = 200;
   }
 
   static async createArea(ctx) {
@@ -223,7 +228,7 @@ class ForestWatcherRouter {
   static async deleteAllTemplateRelations(ctx) {
     if (!ctx.request.body.areaId && !ctx.request.body.templateId) {
       ctx.status = 400;
-      throw new Error("Invalid request")
+      throw new Error("Invalid request");
     }
     await AreaTemplateRelationService.deleteAll(ctx.request.body);
     ctx.status = 200;
@@ -256,8 +261,8 @@ const isAuthenticatedMiddleware = async (ctx, next) => {
   await next();
 };
 
+router.get("/area/:areaId", isAuthenticatedMiddleware, ForestWatcherRouter.getArea);
 router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
-router.get("/area/:areaId", isAuthenticatedMiddleware, ForestWatcherRouter.getArea)
 router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
 router.delete("/area/templates", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTemplateRelations);
 router.post("/area/:areaId/template/:templateId", isAuthenticatedMiddleware, ForestWatcherRouter.addTemplateRelation);
@@ -267,11 +272,7 @@ router.delete(
   ForestWatcherRouter.deleteTemplateRelation
 );
 router.post("/area/:areaId/team/:teamId", isAuthenticatedMiddleware, ForestWatcherRouter.addTeamRelation);
-router.delete(
-  "/area/:areaId/team/:teamId",
-  isAuthenticatedMiddleware,
-  ForestWatcherRouter.deleteTeamRelation
-);
+router.delete("/area/:areaId/team/:teamId", isAuthenticatedMiddleware, ForestWatcherRouter.deleteTeamRelation);
 
 router.get("/test", async ctx => {
   ctx.body = {

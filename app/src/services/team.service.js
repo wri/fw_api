@@ -17,8 +17,8 @@ class TeamService {
         }
       });
       const teams = response.data;
-      logger.info("Got teams", teams);
-      return teams
+      logger.info("Got users teams", teams);
+      return teams;
     } catch (e) {
       logger.error("Error while fetching teams", e);
       return null; // log the error but still return

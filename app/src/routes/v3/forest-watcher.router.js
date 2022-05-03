@@ -157,11 +157,8 @@ class ForestWatcherRouter {
     const areaTeams = await AreaTeamRelationService.getAllTeamsForArea(area.id); // get list of teams associated with area
     const filteredTeams = userTeams.filter(userTeam => areaTeams.includes(userTeam.id)); // match area teams to user teams
     area.teams = filteredTeams.map(team => {
-      console.log("TEAM", team);
       return { id: team.id, name: team.attributes.name };
     });
-
-    console.log(area);
 
     // add templates
     const templates = await AreaTemplateRelationService.getAllTemplatesForArea(ctx.request.params.areaId);

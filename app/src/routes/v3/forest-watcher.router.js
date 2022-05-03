@@ -147,6 +147,23 @@ class ForestWatcherRouter {
     };
   }
 
+  getUserTeamsAreas(ctx) {
+    const user = ForestWatcherFunctions.getUser(ctx);
+    let data = []
+    if(user && user.id) {
+      try {
+        const userAreas = await AreasService.getUserAreas(user.id);
+        // get a users teams
+        
+      } catch (error) {
+        ctx.throw(error.status, "Error while retrieving areas");
+      }
+    }
+    ctx.body = {
+      data
+    }
+  }
+
   static async createArea(ctx) {
     const user = ForestWatcherFunctions.getUser(ctx);
     const { geojson, name } = ctx.request.body.fields || {};
@@ -211,6 +228,7 @@ const isAuthenticatedMiddleware = async (ctx, next) => {
 
 router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
 router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
+router.get("/area/teams", isAuthenticatedMiddleware, ForestWatcherRouter.getUserTeamsAreas);
 router.post("/area/:areaId/template/:templateId", isAuthenticatedMiddleware, ForestWatcherRouter.addTemplateRelation);
 router.delete(
   "/area/:areaId/template/:templateId",

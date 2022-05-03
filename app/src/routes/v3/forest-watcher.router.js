@@ -160,9 +160,11 @@ class ForestWatcherRouter {
         //get areas for each team
         for await (const team of userTeams) {
           let teamAreas = await AreaTeamRelationService.getAllAreasForTeam(team.id);
+          // get full area for each array member and push to user areas array
           for await (const area of teamAreas) userAreas.push(await AreasService.getArea(area));
         }
 
+        // format areas 
         data = await ForestWatcherFunctions.buildAreasResponse(userAreas);
       } catch (error) {
         ctx.throw(error.status, "Error while retrieving areas");

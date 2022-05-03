@@ -7,7 +7,7 @@ const TemplatesService = require("services/template.service");
 const AreaValidator = require("validators/area.validator");
 const moment = require("moment");
 const config = require("config");
-const AreaTemplateRelationService = require("services/areaTemplateRelationService").default;
+const AreaTemplateRelationService = require("services/areaTemplateRelationService");
 
 const { AreaTemplateRelationModel } = require("models");
 

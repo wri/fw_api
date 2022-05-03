@@ -164,7 +164,7 @@ class ForestWatcherRouter {
           for await (const area of teamAreas) userAreas.push(await AreasService.getArea(area));
         }
 
-        // format areas 
+        // format areas
         data = await ForestWatcherFunctions.buildAreasResponse(userAreas);
       } catch (error) {
         ctx.throw(error.status, "Error while retrieving areas");

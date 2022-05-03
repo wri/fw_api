@@ -4,6 +4,10 @@ const { ObjectId } = require("mongoose").Types;
 const { getTestServer } = require("../test/jest/utils/test-server");
 const { createAreaTemplateRelation } = require("../test/jest/utils/helpers");
 const { getAllTemplatesForArea } = require("./areaTemplateRelationService");
+const { USERS } = require("../test/jest/utils/test.constants");
+const { mockGetUserFromToken } = require("../test/jest/utils/helpers");
+
+const requester = getTestServer();
 
 describe("Create relation using the areas template relation service", function () {
   beforeEach(async function () {
@@ -13,20 +17,20 @@ describe("Create relation using the areas template relation service", function (
       );
     }
 
-    await getTestServer();
-
     await AreaTemplateRelationModel.deleteMany({}).exec();
   });
 
   it("Calling Create should add a relation to the database and return the relation", async function () {
+    mockGetUserFromToken(USERS.USER);
+
     const areaId = new ObjectId();
     const templateId = new ObjectId();
 
-    let relation = await AreaTemplateRelationService.create({ areaId, templateId });
+    await requester
+      .post(`/v3/forest-watcher/area/${areaId}/template/${templateId}`)
+      .set("Authorization", `Bearer abcd`);
     let dbRelation = await AreaTemplateRelationModel.findOne();
 
-    expect(relation).toHaveProperty("areaId", areaId.toString());
-    expect(relation).toHaveProperty("templateId", templateId.toString());
     expect(dbRelation).toHaveProperty("areaId", areaId.toString());
     expect(dbRelation).toHaveProperty("templateId", templateId.toString());
   });

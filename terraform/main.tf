@@ -84,6 +84,7 @@ data "template_file" "container_definition" {
     forms_api_url = var.forms_api_url #"https://${data.terraform_remote_state.fw_core.outputs.public_url}/v1"
     areas_api_url = var.areas_api_url
     geostore_api_url = var.geostore_api_url
+    teams_api_url = var.teams_api_url
     api_version = var.api_version
     # Secrets
     # none

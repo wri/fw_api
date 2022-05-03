@@ -19,6 +19,7 @@ services:
       FORMS_API_URL: https://staging-api.resourcewatch.org/v1
       AREAS_API_URL: https://staging-api.resourcewatch.org/v1
       GEOSTORE_API_URL: https://staging-api.resourcewatch.org/v1
+      TEAMS_API_URL: "https://dev-fw-api.globalforestwatch.org/v3"
       API_VERSION: v1
     volumes:
       - ./app:/opt/forest-watcher/app
@@ -42,6 +43,7 @@ services:
       FORMS_API_URL: http://127.0.0.1:9000
       AREAS_API_URL: http://127.0.0.1:9000
       GEOSTORE_API_URL: http://127.0.0.1:9000
+      TEAMS_API_URL: "https://dev-fw-api.globalforestwatch.org/v3"
       API_VERSION: v1
       MONGODB_HOST: mongo
       MONGODB_PORT: 27017

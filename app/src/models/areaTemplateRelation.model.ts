@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const AreaTemplateRelationSchema = new Schema({
-  areaId: { type: String },
-  templateId: { type: String }
+  areaId: { type: String, required: true },
+  templateId: { type: String, required: true }
 });
 
 AreaTemplateRelationSchema.index({ areaId: 1 });

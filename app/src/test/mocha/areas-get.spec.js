@@ -21,7 +21,7 @@ describe("Get areas", function () {
   });
 
   it("Get all areas without being logged in should return a 401 error", async function () {
-    const response = await requester.get(`/v1/forest-watcher/area`);
+    const response = await requester.get(`/v3/forest-watcher/area`);
 
     response.status.should.equal(401);
     response.body.should.have.property("errors").and.be.an("array");
@@ -116,13 +116,14 @@ describe("Get areas", function () {
         }
       });
 
-    const response = await requester.get(`/v1/forest-watcher/area`).set("Authorization", `Bearer abcd`);
+    const response = await requester.get(`/v3/forest-watcher/area`).set("Authorization", `Bearer abcd`);
 
     response.status.should.equal(200);
     response.body.should.have.property("data").and.be.an("array").and.length(1);
 
     response.body.data[0].should.have.property("type").and.equal("area");
     response.body.data[0].should.have.property("attributes").and.be.an("object");
+    response.body.data[0].should.have.property("teams")
     response.body.data[0].attributes.should.have
       .property("geostore")
       .and.deep.equal({ ...geostoreAttributes, id: geostoreAttributes.hash });

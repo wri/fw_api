@@ -20,6 +20,11 @@ class AreaTemplateRelationService {
     await AreaTemplateRelationModel.findOneAndDelete({ templateId, areaId });
     return Promise.resolve();
   }
+
+  static async deleteAll(filter) {
+    await AreaTemplateRelationModel.deleteMany(filter);
+    return Promise.resolve();
+  }
 }
 
 module.exports = AreaTemplateRelationService;

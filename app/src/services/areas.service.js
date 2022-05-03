@@ -30,6 +30,27 @@ class AreasService {
     }
   }
 
+  static async getArea(areaId) {
+    logger.info("Getting area with id ", areaId);
+    try {
+      let baseURL = "https://api.resourcewatch.org/v2";
+      const response = await axios.default({
+        baseURL,
+        url: `/area/${areaId}`,
+        method: "GET",
+        headers: {
+          authorization: loggedInUserService.token
+        }
+      });
+      const area = response.data;
+      logger.info("Area", area);
+      return area.data;
+    } catch (e) {
+      logger.error("Error while fetching area", e);
+      throw e;
+    }
+  }
+
   static async createAreaWithGeostore({ name, image }, geojson, userId) {
     logger.info("Start area creation with params", { name, userId });
     logger.info("Start area creation with geojson", geojson);

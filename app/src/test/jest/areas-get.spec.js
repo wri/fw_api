@@ -2,10 +2,12 @@
 const chai = require("chai");
 const nock = require("nock");
 const { USERS } = require("./utils/test.constants");
-
+const { ObjectId } = require("mongoose").Types;
 const { getTestServer } = require("./utils/test-server");
 const { mockGetUserFromToken } = require("./utils/helpers");
 const config = require("config");
+const AreaTeamRelationService = require("../../services/areaTeamRelationService");
+const { AreaTeamRelationModel } = require("models");
 
 chai.should();
 
@@ -30,6 +32,23 @@ describe("Get areas", function () {
 
   it("Get all areas while being logged in should...", async function () {
     mockGetUserFromToken(USERS.USER);
+
+    nock(config.get("teamsAPI.url"))
+      .get(`/user`)
+      .reply(200, {
+        data: [
+          {
+            id: 1,
+            name: "team1",
+            role: "manager"
+          },
+          {
+            id: 2,
+            name: "team2",
+            role: "monitor"
+          },
+        ]
+      });
 
     nock(config.get("areasAPI.url"))
       .get(`/area/fw`)
@@ -116,7 +135,7 @@ describe("Get areas", function () {
         }
       });
 
-    const response = await requester.get(`/v1/forest-watcher/area`).set("Authorization", `Bearer abcd`);
+    const response = await requester.get(`/v3/forest-watcher/area`).set("Authorization", `Bearer abcd`);
 
     response.status.should.equal(200);
     response.body.should.have.property("data").and.be.an("array").and.length(1);
@@ -128,4 +147,90 @@ describe("Get areas", function () {
       .and.deep.equal({ ...geostoreAttributes, id: geostoreAttributes.hash });
     response.body.data[0].attributes.should.have.property("coverage").and.deep.equal(coverageAttributes.layers);
   });
+});
+
+describe("Get single area from id", function () {
+
+  beforeAll(async function () {
+    if (process.env.NODE_ENV !== "test") {
+      throw Error(
+        `Running the test suite with NODE_ENV ${process.env.NODE_ENV} may result in permanent data loss. Please use NODE_ENV=test.`
+      );
+    }
+
+    await AreaTeamRelationModel.deleteMany({})
+
+  });
+
+  it("Get all areas without being logged in should return a 401 error", async function () {
+    const response = await requester.get(`/v3/forest-watcher/area/id`);
+
+    response.status.should.equal(401);
+    response.body.should.have.property("errors").and.be.an("array");
+    response.body.errors[0].should.have.property("detail").and.equal("Unauthorized");
+  });
+
+  it("Get area with supplied id should return that area", async function () {
+    mockGetUserFromToken(USERS.USER);
+
+    const team1 = {
+      id: new ObjectId(),
+      attributes:
+      {
+        name: "team1",
+        role: "manager"
+      }
+    }
+
+    const team2 = {
+      id: new ObjectId(),
+      attributes: {
+      name: "team2",
+      role: "monitor"
+      }
+    }
+
+    await AreaTeamRelationService.create({areaId: "d653e4fc0ed07a65b9db9b13477566fe", teamId: team1.id})
+    await AreaTeamRelationService.create({areaId: "d653e4fc0ed07a65b9db9b13477566fe", teamId: new ObjectId()})
+
+    nock(`https://api.resourcewatch.org/v2`)
+      .get("/area/d653e4fc0ed07a65b9db9b13477566fe")
+      .reply(200, {
+        data: {
+          type: "area",
+          id: "d653e4fc0ed07a65b9db9b13477566fe",
+        }
+      });
+
+    nock(config.get("teamsAPI.url"))
+      .get(`/user/1a10d7c6e0a37126611fd7a5`)
+      .reply(200, [
+          {
+            id: team1.id,
+            attributes:
+            {
+              name: "team1",
+              role: "manager"
+            }
+          },
+          {
+            id: team2.id,
+            attributes: {
+            name: "team2",
+            role: "monitor"
+            }
+          },
+        ]
+      );
+
+    const response = await requester.get(`/v3/forest-watcher/area/d653e4fc0ed07a65b9db9b13477566fe`).set("Authorization", `Bearer abcd`);
+
+    expect(response.status).toEqual(200);
+    expect(response.body).toHaveProperty("area")
+    expect(response.body.area).toHaveProperty("teams")
+    expect(response.body.area.teams.length).toBe(1)
+    expect(response.body.area.teams[0].id).toEqual(team1.id.toString())
+
+  })
+
 });

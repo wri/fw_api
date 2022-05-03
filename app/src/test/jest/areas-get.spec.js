@@ -234,3 +234,26 @@ describe("Get single area from id", function () {
   })
 
 });
+
+describe("Get users areas and team areas", function () {
+
+  beforeAll(async function () {
+    if (process.env.NODE_ENV !== "test") {
+      throw Error(
+        `Running the test suite with NODE_ENV ${process.env.NODE_ENV} may result in permanent data loss. Please use NODE_ENV=test.`
+      );
+    }
+
+    await AreaTeamRelationModel.deleteMany({})
+
+  });
+
+  it("Get team areas without being logged in should return a 401 error", async function () {
+    const response = await requester.get(`/v3/forest-watcher/area/teams`);
+
+    response.status.should.equal(401);
+    response.body.should.have.property("errors").and.be.an("array");
+    response.body.errors[0].should.have.property("detail").and.equal("Unauthorized");
+  });
+
+});

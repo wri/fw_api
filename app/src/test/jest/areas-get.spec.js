@@ -31,6 +31,23 @@ describe("Get areas", function () {
   it("Get all areas while being logged in should...", async function () {
     mockGetUserFromToken(USERS.USER);
 
+    nock(config.get("teamsAPI.url"))
+      .get(`/user`)
+      .reply(200, {
+        data: [
+          {
+            id: 1,
+            name: "team1",
+            role: "manager"
+          },
+          {
+            id: 2,
+            name: "team2",
+            role: "monitor"
+          },
+        ]
+      });
+
     nock(config.get("areasAPI.url"))
       .get(`/area/fw`)
       .reply(200, {
@@ -116,7 +133,7 @@ describe("Get areas", function () {
         }
       });
 
-    const response = await requester.get(`/v1/forest-watcher/area`).set("Authorization", `Bearer abcd`);
+    const response = await requester.get(`/v3/forest-watcher/area`).set("Authorization", `Bearer abcd`);
 
     response.status.should.equal(200);
     response.body.should.have.property("data").and.be.an("array").and.length(1);

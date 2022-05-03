@@ -8,6 +8,9 @@
   "formsAPI": {
     "url": "FORMS_API_URL"
   },
+  "teamsAPI": {
+    "url": "TEAMS_API_URL"
+  },
   "areasAPI": {
     "url": "AREAS_API_URL"
   },

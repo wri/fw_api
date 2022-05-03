@@ -26,7 +26,9 @@ describe("Create relation using the areas template relation service", function (
     const areaId = new ObjectId();
     const templateId = new ObjectId();
 
-    await requester.post(`/v3/forest-watcher/area/${areaId}/template/${templateId}`).set("Authorization", `Bearer abcd`);
+    await requester
+      .post(`/v3/forest-watcher/area/${areaId}/template/${templateId}`)
+      .set("Authorization", `Bearer abcd`);
     let dbRelation = await AreaTemplateRelationModel.findOne();
 
     expect(dbRelation).toHaveProperty("areaId", areaId.toString());

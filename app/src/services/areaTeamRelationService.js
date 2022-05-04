@@ -15,9 +15,19 @@ class AreaTeamRelationService {
     return Promise.resolve(relations.map(relation => relation.teamId));
   }
 
+  static async getAllAreasForTeam(teamId) {
+    const relations = await AreaTeamRelationModel.find({ teamId });
+    return Promise.resolve(relations.map(relation => relation.areaId));
+  }
+
   static async delete(params) {
     const { areaId, teamId } = params;
     await AreaTeamRelationModel.findOneAndDelete({ teamId, areaId });
+    return Promise.resolve();
+  }
+
+  static async deleteAll(filter) {
+    await AreaTeamRelationModel.deleteMany(filter);
     return Promise.resolve();
   }
 }

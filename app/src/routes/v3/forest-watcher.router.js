@@ -274,6 +274,12 @@ class ForestWatcherRouter {
     await AreaTemplateRelationService.delete(ctx.request.params);
     ctx.status = 200;
   }
+
+  static async getAreaTeams(ctx) {
+    ctx.body = await AreaTeamRelationService.getAllTeamsForArea(ctx.request.params)
+    ctx.status = 200;
+  }
+
 }
 
 const isAuthenticatedMiddleware = async (ctx, next) => {
@@ -296,6 +302,7 @@ router.get("/area/:areaId", isAuthenticatedMiddleware, ForestWatcherRouter.getAr
 router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
 router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
 router.get("/area/teams", isAuthenticatedMiddleware, ForestWatcherRouter.getUserTeamsAreas);
+router.get("/area/areaTeams/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getAreaTeams);
 router.delete("/area/teams", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTeamRelations);
 router.delete("/area/templates", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTemplateRelations);
 router.post("/area/:areaId/template/:templateId", isAuthenticatedMiddleware, ForestWatcherRouter.addTemplateRelation);

@@ -904,6 +904,871 @@ paths:
           $ref: '#/components/responses/Error'
       operationId: get-v3-forest-watcher-area
       description: Retrieve areas for the logged in user
+  '/v3/forest-watcher/area/areaTeams/{areaId}':
+    get:
+      summary: v3 Get all teams associated with area
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                properties:
+                  type:
+                    type: string
+                    minLength: 1
+                  id:
+                    type: string
+                    minLength: 1
+                  attributes:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        minLength: 1
+                      application:
+                        type: string
+                        minLength: 1
+                      geostore:
+                        type: object
+                        properties:
+                          geojson:
+                            type: object
+                            properties:
+                              crs:
+                                type: object
+                                properties: {}
+                                required: []
+                              type:
+                                type: string
+                                minLength: 1
+                              features:
+                                type: array
+                                uniqueItems: true
+                                minItems: 1
+                                items:
+                                  required:
+                                    - type
+                                  properties:
+                                    geometry:
+                                      type: object
+                                      properties:
+                                        coordinates:
+                                          type: array
+                                          items:
+                                            required: []
+                                            properties:
+                                              '0':
+                                                type: array
+                                                uniqueItems: true
+                                                items:
+                                                  required: []
+                                                  properties:
+                                                    '0':
+                                                      type: array
+                                                      uniqueItems: true
+                                                      items:
+                                                        required: []
+                                                        properties: {}
+                                                    '1':
+                                                      type: array
+                                                      uniqueItems: true
+                                                      items:
+                                                        required: []
+                                                        properties: {}
+                                                    '2':
+                                                      type: array
+                                                      uniqueItems: true
+                                                      items:
+                                                        required: []
+                                                        properties: {}
+                                                    '3':
+                                                      type: array
+                                                      uniqueItems: true
+                                                      items:
+                                                        required: []
+                                                        properties: {}
+                                                    '4':
+                                                      type: array
+                                                      uniqueItems: true
+                                                      items:
+                                                        required: []
+                                                        properties: {}
+                                                    '5':
+                                                      type: array
+                                                      uniqueItems: true
+                                                      items:
+                                                        required: []
+                                                        properties: {}
+                                                    '6':
+                                                      type: array
+                                                      uniqueItems: true
+                                                      items:
+                                                        required: []
+                                                        properties: {}
+                                        type:
+                                          type: string
+                                          minLength: 1
+                                      required:
+                                        - coordinates
+                                        - type
+                                    type:
+                                      type: string
+                                      minLength: 1
+                            required:
+                              - crs
+                              - type
+                              - features
+                          hash:
+                            type: string
+                            minLength: 1
+                          provider:
+                            type: object
+                            properties: {}
+                            required: []
+                          areaHa:
+                            type: number
+                          bbox:
+                            type: array
+                            items:
+                              required: []
+                              properties: {}
+                          lock:
+                            type: boolean
+                          info:
+                            type: object
+                            properties:
+                              use:
+                                type: object
+                                properties: {}
+                                required: []
+                            required:
+                              - use
+                          id:
+                            type: string
+                            minLength: 1
+                        required:
+                          - geojson
+                          - hash
+                          - provider
+                          - areaHa
+                          - bbox
+                          - lock
+                          - info
+                          - id
+                      userId:
+                        type: string
+                        minLength: 1
+                      createdAt:
+                        type: string
+                        minLength: 1
+                      updatedAt:
+                        type: string
+                        minLength: 1
+                      image:
+                        type: string
+                        minLength: 1
+                      env:
+                        type: string
+                        minLength: 1
+                      datasets:
+                        type: array
+                        uniqueItems: true
+                        minItems: 1
+                        items:
+                          required:
+                            - slug
+                            - name
+                            - active
+                            - startDate
+                            - endDate
+                          properties:
+                            slug:
+                              type: string
+                              minLength: 1
+                            name:
+                              type: string
+                              minLength: 1
+                            active:
+                              type: boolean
+                            startDate:
+                              type: string
+                              minLength: 1
+                            endDate:
+                              type: string
+                              minLength: 1
+                      use:
+                        type: object
+                        properties: {}
+                        required: []
+                      iso:
+                        type: object
+                        properties: {}
+                        required: []
+                      templateId:
+                        type: string
+                        minLength: 1
+                      coverage:
+                        type: array
+                        items:
+                          required: []
+                          properties: {}
+                      reportTemplate:
+                        type: array
+                        uniqueItems: true
+                        minItems: 1
+                        items:
+                          required:
+                            - defaultLanguage
+                            - user
+                            - answersCount
+                            - createdAt
+                            - public
+                            - status
+                            - id
+                          properties:
+                            name:
+                              type: object
+                              properties:
+                                en:
+                                  type: string
+                                  minLength: 1
+                                es:
+                                  type: string
+                                  minLength: 1
+                                fr:
+                                  type: string
+                                  minLength: 1
+                                id:
+                                  type: string
+                                  minLength: 1
+                                pt:
+                                  type: string
+                                  minLength: 1
+                              required:
+                                - en
+                                - es
+                                - fr
+                                - id
+                                - pt
+                            languages:
+                              type: array
+                              items:
+                                required: []
+                                properties: {}
+                            defaultLanguage:
+                              type: string
+                              minLength: 1
+                            user:
+                              type: string
+                              minLength: 1
+                            answersCount:
+                              type: number
+                            questions:
+                              type: array
+                              uniqueItems: true
+                              minItems: 1
+                              items:
+                                required:
+                                  - type
+                                  - name
+                                  - Id
+                                  - order
+                                  - required
+                                properties:
+                                  type:
+                                    type: string
+                                    minLength: 1
+                                  name:
+                                    type: string
+                                    minLength: 1
+                                  Id:
+                                    type: string
+                                    minLength: 1
+                                  conditions:
+                                    type: array
+                                    items:
+                                      required: []
+                                      properties: {}
+                                  childQuestions:
+                                    type: array
+                                    items:
+                                      required: []
+                                      properties: {}
+                                  order:
+                                    type: number
+                                  required:
+                                    type: boolean
+                                  values:
+                                    type: object
+                                    properties:
+                                      pt:
+                                        type: array
+                                        uniqueItems: true
+                                        minItems: 1
+                                        items:
+                                          required:
+                                            - value
+                                            - label
+                                          properties:
+                                            value:
+                                              type: number
+                                            label:
+                                              type: string
+                                              minLength: 1
+                                      id:
+                                        type: array
+                                        uniqueItems: true
+                                        minItems: 1
+                                        items:
+                                          required:
+                                            - value
+                                            - label
+                                          properties:
+                                            value:
+                                              type: number
+                                            label:
+                                              type: string
+                                              minLength: 1
+                                      fr:
+                                        type: array
+                                        uniqueItems: true
+                                        minItems: 1
+                                        items:
+                                          required:
+                                            - value
+                                            - label
+                                          properties:
+                                            value:
+                                              type: number
+                                            label:
+                                              type: string
+                                              minLength: 1
+                                      es:
+                                        type: array
+                                        uniqueItems: true
+                                        minItems: 1
+                                        items:
+                                          required:
+                                            - value
+                                            - label
+                                          properties:
+                                            value:
+                                              type: number
+                                            label:
+                                              type: string
+                                              minLength: 1
+                                      en:
+                                        type: array
+                                        uniqueItems: true
+                                        minItems: 1
+                                        items:
+                                          required:
+                                            - value
+                                            - label
+                                          properties:
+                                            value:
+                                              type: number
+                                            label:
+                                              type: string
+                                              minLength: 1
+                                    required:
+                                      - pt
+                                      - id
+                                      - fr
+                                      - es
+                                      - en
+                                  label:
+                                    type: object
+                                    properties:
+                                      pt:
+                                        type: string
+                                        minLength: 1
+                                      fr:
+                                        type: string
+                                        minLength: 1
+                                      id:
+                                        type: string
+                                        minLength: 1
+                                      es:
+                                        type: string
+                                        minLength: 1
+                                      en:
+                                        type: string
+                                        minLength: 1
+                                    required:
+                                      - pt
+                                      - fr
+                                      - id
+                                      - es
+                                      - en
+                            createdAt:
+                              type: string
+                              minLength: 1
+                            public:
+                              type: boolean
+                            status:
+                              type: string
+                              minLength: 1
+                            id:
+                              type: string
+                              minLength: 1
+                    required:
+                      - name
+                      - application
+                      - geostore
+                      - userId
+                      - createdAt
+                      - updatedAt
+                      - image
+                      - env
+                      - datasets
+                      - use
+                      - iso
+                      - templateId
+                      - coverage
+                      - reportTemplate
+                required:
+                  - type
+                  - id
+                  - attributes
+                x-examples:
+                  example-1:
+                    type: area
+                    id: 6266c920046114001b4c6cda
+                    attributes:
+                      name: Home
+                      application: gfw
+                      geostore:
+                        geojson:
+                          crs: {}
+                          type: FeatureCollection
+                          features:
+                            - geometry:
+                                coordinates:
+                                  - - - -3.614294
+                                      - 50.537178
+                                    - - -3.613926
+                                      - 50.537315
+                                    - - -3.613272
+                                      - 50.537355
+                                    - - -3.612811
+                                      - 50.537372
+                                    - - -3.612732
+                                      - 50.537212
+                                    - - -3.614187
+                                      - 50.537099
+                                    - - -3.614294
+                                      - 50.537178
+                                type: Polygon
+                              type: Feature
+                        hash: 8cd1a5ea42f1bf1b69cb61a39e41f24e
+                        provider: {}
+                        areaHa: 0.20428315615859005
+                        bbox:
+                          - -3.614294
+                          - 50.537099
+                          - -3.612732
+                          - 50.537372
+                        lock: false
+                        info:
+                          use: {}
+                        id: 8cd1a5ea42f1bf1b69cb61a39e41f24e
+                      userId: 6266c6f798340a001ad51caa
+                      createdAt: '2022-04-25T16:15:28.606Z'
+                      updatedAt: '2022-04-27T09:44:15.522Z'
+                      image: 'https://s3.amazonaws.com/forest-watcher-files/areas-staging/b2b649c2-5cf5-4680-b20c-a206e924ce3f.png'
+                      env: production
+                      datasets:
+                        - slug: viirs
+                          name: VIIRS
+                          active: true
+                          startDate: '1'
+                          endDate: '8'
+                      use: {}
+                      iso: {}
+                      templateId: 6269106ed884b464700b0b00
+                      coverage: []
+                      reportTemplate:
+                        - name:
+                            en: Forest Watcher Questionnaire
+                            es: Cuestionario de Forest Watcher
+                            fr: Questionnaire de Forest Watcher
+                            id: Forest Watcher Laporan
+                            pt: Relatório do Forest Watcher
+                          languages:
+                            - en
+                            - es
+                            - fr
+                            - id
+                            - pt
+                          defaultLanguage: en
+                          user: 57ac9f9e29309063404573a2
+                          answersCount: 0
+                          questions:
+                            - type: blob
+                              name: question-1
+                              Id: 59b6a26b138f260012e9fdf5
+                              conditions: []
+                              childQuestions: []
+                              order: 0
+                              required: false
+                              label:
+                                pt: Foto
+                                id: Gambar
+                                fr: Photo
+                                es: Foto
+                                en: Photo
+                            - type: radio
+                              name: question-2
+                              Id: 59b6a26b138f260012e9fdf4
+                              conditions: []
+                              childQuestions: []
+                              order: 1
+                              required: true
+                              values:
+                                pt:
+                                  - value: 0
+                                    label: Sim
+                                  - value: 1
+                                    label: Não
+                                  - value: 2
+                                    label: Incerto
+                                id:
+                                  - value: 0
+                                    label: Ya
+                                  - value: 1
+                                    label: Tidak
+                                  - value: 2
+                                    label: Tidak yakin
+                                fr:
+                                  - value: 0
+                                    label: Oui
+                                  - value: 1
+                                    label: Non
+                                  - value: 2
+                                    label: Je ne suis pas sûr
+                                es:
+                                  - value: 0
+                                    label: Sí
+                                  - value: 1
+                                    label: 'No'
+                                  - value: 2
+                                    label: No estoy seguro
+                                en:
+                                  - value: 0
+                                    label: 'Yes'
+                                  - value: 1
+                                    label: 'No'
+                                  - value: 2
+                                    label: Unsure
+                              label:
+                                pt: Você vê desflorestamento ou degradação?
+                                fr: Voyez-vous une déforestation ou dégradation ?
+                                id: Apakah anda melihat adanya deforestasi atau degradasi?
+                                es: ¿Usted ve deforestación o degradación?
+                                en: Do you see deforestation or degradation?
+                            - type: radio
+                              name: question-3
+                              Id: 59b6a26b138f260012e9fdf2
+                              conditions:
+                                - name: question-2
+                                  value: 0
+                                  Id: 59b6a26b138f260012e9fdf3
+                              childQuestions: []
+                              order: 2
+                              required: false
+                              values:
+                                pt:
+                                  - value: 0
+                                    label: 'Sim - queimada recente, nenhum broto'
+                                  - value: 1
+                                    label: Não - fazenda estabilizada ou floresta brotando
+                                id:
+                                  - value: 0
+                                    label: 'Ya - baru terbakar, tidak tumbuh kembali'
+                                  - value: 1
+                                    label: Tidak - kebun sudah muncul atau hutan kembali merintis
+                                fr:
+                                  - value: 0
+                                    label: 'Oui - incendie récent, pas de repousse'
+                                  - value: 1
+                                    label: Non - ferme installée ou repousse de la forêt
+                                es:
+                                  - value: 0
+                                    label: Sí - Se aprecian zonas quemadas recientes y falta de crecimiento de la vegetación
+                                  - value: 1
+                                    label: No - Es una granja establecida o un bosque cultivado
+                                en:
+                                  - value: 0
+                                    label: 'Yes - burning fresh, no regrowth'
+                                  - value: 1
+                                    label: No - farm established or forest regrowth
+                              label:
+                                pt: O desflorestamento/degradação é recente?
+                                fr: La déforestation/dégradation est-elle récente ?
+                                id: Apakah deforestasi terjadi baru-baru ini?
+                                es: ¿La deforestación es nueva?
+                                en: Is the deforestation/degradation recent?
+                            - type: select
+                              name: question-4
+                              Id: 59b6a26b138f260012e9fdef
+                              conditions:
+                                - name: question-2
+                                  value: 0
+                                  Id: 59b6a26b138f260012e9fdf1
+                              childQuestions:
+                                - type: text
+                                  name: question-4-more-info
+                                  conditionalValue: 9
+                                  Id: 59b6a26b138f260012e9fdf0
+                                  order: 0
+                                  required: false
+                                  label:
+                                    en: Please describe.
+                              order: 3
+                              required: false
+                              values:
+                                pt:
+                                  - value: 0
+                                    label: Corte seletivo
+                                  - value: 1
+                                    label: Corte total
+                                  - value: 2
+                                    label: Produção de carvão
+                                  - value: 3
+                                    label: Queimadas
+                                  - value: 4
+                                    label: Limpeza de terreno
+                                  - value: 5
+                                    label: Estradas
+                                  - value: 6
+                                    label: Barragem
+                                  - value: 7
+                                    label: Mineiração
+                                  - value: 8
+                                    label: Extração de gás/petróleo
+                                  - value: 9
+                                    label: Outro (por favor descreva abaixo)
+                                id:
+                                  - value: 0
+                                    label: Tebang pilih
+                                  - value: 1
+                                    label: Tebang habis
+                                  - value: 2
+                                    label: Produksi batu bara
+                                  - value: 3
+                                    label: Pembakaran
+                                  - value: 4
+                                    label: Pembukaan hutan untuk pertanian
+                                  - value: 5
+                                    label: Jalan
+                                  - value: 6
+                                    label: Bendungan
+                                  - value: 7
+                                    label: Tambang
+                                  - value: 8
+                                    label: Eksplorasi migas
+                                  - value: 9
+                                    label: Lainnya (jelaskan)
+                                fr:
+                                  - value: 0
+                                    label: Coupe sélective
+                                  - value: 1
+                                    label: Coupe complète
+                                  - value: 2
+                                    label: Production de charbon
+                                  - value: 3
+                                    label: Incendies
+                                  - value: 4
+                                    label: Coupe à visée agricole
+                                  - value: 5
+                                    label: Route
+                                  - value: 6
+                                    label: Barrage
+                                  - value: 7
+                                    label: Extraction minière
+                                  - value: 8
+                                    label: Extraction de pétrole/gaz
+                                  - value: 9
+                                    label: Autre (veuillez décrire ci-dessous)
+                                es:
+                                  - value: 0
+                                    label: Deforestación selectiva
+                                  - value: 1
+                                    label: Deforestación completa
+                                  - value: 2
+                                    label: Producción de carbón
+                                  - value: 3
+                                    label: Quemado
+                                  - value: 4
+                                    label: Deforestación agrícola
+                                  - value: 5
+                                    label: Carretera
+                                  - value: 6
+                                    label: Presa
+                                  - value: 7
+                                    label: Minas
+                                  - value: 8
+                                    label: Extracción de gas/petróleo
+                                  - value: 9
+                                    label: Otro (por favor describa)
+                                en:
+                                  - value: 0
+                                    label: Selective cutting
+                                  - value: 1
+                                    label: Clear cutting
+                                  - value: 2
+                                    label: Charcoal production
+                                  - value: 3
+                                    label: Burning/fires
+                                  - value: 4
+                                    label: Agricultural clearing
+                                  - value: 5
+                                    label: Road
+                                  - value: 6
+                                    label: Dam
+                                  - value: 7
+                                    label: Mining
+                                  - value: 8
+                                    label: Oil/gas extraction
+                                  - value: 9
+                                    label: Other (please describe below)
+                              label:
+                                pt: Descreva o motorista
+                                fr: Décrivez le moteur
+                                id: Jelaskan deforestasi
+                                es: Describa el motivo
+                                en: Describe the driver
+                            - type: radio
+                              name: question-5
+                              Id: 59b6a26b138f260012e9fded
+                              conditions: []
+                              childQuestions:
+                                - type: text
+                                  name: question-5-more-info
+                                  conditionalValue: 0
+                                  Id: 59b6a26b138f260012e9fdee
+                                  order: 0
+                                  required: false
+                                  label:
+                                    en: Why?
+                              order: 4
+                              required: true
+                              values:
+                                pt:
+                                  - value: 0
+                                    label: Sim
+                                  - value: 1
+                                    label: Não
+                                id:
+                                  - value: 0
+                                    label: Ya
+                                  - value: 1
+                                    label: Tidak
+                                fr:
+                                  - value: 0
+                                    label: Oui
+                                  - value: 1
+                                    label: Non
+                                es:
+                                  - value: 0
+                                    label: Sí
+                                  - value: 1
+                                    label: 'No'
+                                en:
+                                  - value: 0
+                                    label: 'Yes'
+                                  - value: 1
+                                    label: 'No'
+                              label:
+                                pt: Você acha que mais ações deveriam ser tomadas nesta área?
+                                fr: Pensez-vous que des actions doivent être entreprises dans cette zone ?
+                                id: Apakah perlu tindak lanjut di area deforestasi ini?
+                                es: ¿Considera necesaria alguna otra medida en este área?
+                                en: Do you think further action should be taken in this area?
+                            - type: text
+                              name: question-6
+                              Id: 59b6a26b138f260012e9fdec
+                              conditions: []
+                              childQuestions: []
+                              order: 5
+                              required: false
+                              label:
+                                pt: Alguma outra nota?
+                                fr: Souhaitez-vous ajouter des notes ?
+                                id: Catatan / informasi tambahan
+                                es: Añada otra información / notas
+                                en: Any other notes?
+                          createdAt: '2017-09-11T14:49:15.236Z'
+                          public: true
+                          status: published
+                          id: 59b6a26b138f260012e9fdeb
+              examples:
+                example-1:
+                  value:
+                    type: string
+                    id: string
+                    attributes:
+                      name: string
+                      application: string
+                      geostore:
+                        geojson:
+                          crs: {}
+                          type: string
+                          features:
+                            - {}
+                        hash: string
+                        provider: {}
+                        areaHa: 0
+                        bbox:
+                          - {}
+                        lock: true
+                        info:
+                          use: {}
+                        id: string
+                      userId: string
+                      createdAt: string
+                      updatedAt: string
+                      image: string
+                      env: string
+                      datasets:
+                        - cache: true
+                          active: true
+                          _id: string
+                          slug: string
+                          name: string
+                          startDate: string
+                          endDate: string
+                      use: {}
+                      iso: {}
+                      coverage:
+                        - {}
+                      reportTemplates:
+                        - {}
+        '401':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+        '':
+          description: Array of team ids
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+      operationId: get-v3-forest-watcher-area
+      description: Retrieve areas for the logged in user
+    parameters:
+      - schema:
+          type: string
+        name: areaId
+        in: path
+        required: true
   '/v3/forest-watcher/area/{areaId}/template/{templateId}':
     parameters:
       - schema:

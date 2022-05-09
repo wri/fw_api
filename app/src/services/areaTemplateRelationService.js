@@ -17,8 +17,8 @@ class AreaTemplateRelationService {
 
   static async delete(params) {
     const { areaId, templateId } = params;
-    await AreaTemplateRelationModel.findOneAndDelete({ templateId, areaId });
-    return Promise.resolve();
+    const relation = await AreaTemplateRelationModel.findOneAndDelete({ templateId, areaId });
+    return Promise.resolve(relation);
   }
 
   static async deleteAll(filter) {

@@ -239,49 +239,49 @@ class ForestWatcherRouter {
 
   static async addTemplateRelation(ctx) {
     let area = await AreasService.getArea(ctx.request.params.areaId);
-    let template = await TeamService.getTeam(ctx.request.params.templateId)
-    if(!area.id) ctx.throw(404,"That area doesn't exist")
-    if(!template.id) ctx.throw(404,"That template doesn't exist")
+    let template = await TeamService.getTeam(ctx.request.params.templateId);
+    if (!area.id) ctx.throw(404, "That area doesn't exist");
+    if (!template.id) ctx.throw(404, "That template doesn't exist");
     await AreaTemplateRelationService.create(ctx.request.params);
     ctx.status = 200;
   }
 
   static async deleteTemplateRelation(ctx) {
     let response = await AreaTemplateRelationService.delete(ctx.request.params);
-    if(!response._id) return ctx.throw(404, "This template is not linked to this area")
+    if (!response._id) return ctx.throw(404, "This template is not linked to this area");
     ctx.status = 200;
   }
 
   static async deleteAllTemplateRelations(ctx) {
-    if (!ctx.request.body.areaId && !ctx.request.body.templateId) ctx.throw(400,"Invalid Request");
+    if (!ctx.request.body.areaId && !ctx.request.body.templateId) ctx.throw(400, "Invalid Request");
     await AreaTemplateRelationService.deleteAll(ctx.request.body);
     ctx.status = 200;
   }
 
   static async deleteAllTeamRelations(ctx) {
-    if (!ctx.request.body.areaId && !ctx.request.body.teamId) ctx.throw(400,"Invalid Request");
+    if (!ctx.request.body.areaId && !ctx.request.body.teamId) ctx.throw(400, "Invalid Request");
     await AreaTemplateRelationService.deleteAll(ctx.request.body);
     ctx.status = 200;
   }
 
   static async addTeamRelation(ctx) {
     let area = await AreasService.getArea(ctx.request.params.areaId);
-    let team = await TeamService.getTeam(ctx.request.params.teamId)
-    if(!area.id) ctx.throw(404,"That area doesn't exist")
-    if(!team.id) ctx.throw(404,"That team doesn't exist")
+    let team = await TeamService.getTeam(ctx.request.params.teamId);
+    if (!area.id) ctx.throw(404, "That area doesn't exist");
+    if (!team.id) ctx.throw(404, "That team doesn't exist");
     await AreaTemplateRelationService.create(ctx.request.params);
     ctx.status = 200;
   }
 
   static async deleteTeamRelation(ctx) {
     let response = await AreaTemplateRelationService.delete(ctx.request.params);
-    if(!response._id) return ctx.throw(404, "This team is not linked to this area")
+    if (!response._id) return ctx.throw(404, "This team is not linked to this area");
     ctx.status = 200;
   }
 
   static async getAreaTeams(ctx) {
     let area = await AreasService.getArea(ctx.request.params);
-    if(!area.id) ctx.throw(404,"Area doesn't exist")
+    if (!area.id) ctx.throw(404, "Area doesn't exist");
     ctx.body = await AreaTeamRelationService.getAllTeamsForArea(ctx.request.params.id);
     ctx.status = 200;
   }

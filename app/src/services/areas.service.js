@@ -1,5 +1,6 @@
 const axios = require("axios");
 const logger = require("logger");
+const FormData = require("form-data");
 const { createReadStream } = require("fs");
 const CoverageService = require("services/coverage.service");
 const GeoStoreService = require("services/geostore.service");
@@ -33,6 +34,7 @@ class AreasService {
   static async createAreaWithGeostore({ name, image }, geojson, userId) {
     logger.info("Start area creation with params", { name, userId });
     logger.info("Start area creation with geojson", geojson);
+    logger.info("Start area creation with image", image);
     let geostore;
     let coverage;
     let area;
@@ -56,18 +58,21 @@ class AreasService {
     try {
       logger.info("Creating area with geostore and coverage ready");
       let baseURL = config.get("areasAPI.url");
+
+      const form = new FormData();
+      form.append("name", name);
+      form.append("geostore", geostore.id);
+      form.append("image", createReadStream(image.path));
+
       const response = await axios.default({
         baseURL,
         url: `/area/fw/${userId}`,
         method: "POST",
         headers: {
+          ...form.getHeaders(),
           authorization: loggedInUserService.token
         },
-        data: {
-          name,
-          geostore: geostore.id,
-          image: createReadStream(image.path)
-        }
+        data: form
       });
       area = response.data;
       logger.info("Area created", area);

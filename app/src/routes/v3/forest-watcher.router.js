@@ -238,13 +238,17 @@ class ForestWatcherRouter {
   }
 
   static async addTemplateRelation(ctx) {
+    let area = await AreasService.getArea(ctx.request.params.areaId);
+    let template = await TeamService.getTeam(ctx.request.params.templateId)
+    if(!area.id) ctx.throw(404,"That area doesn't exist")
+    if(!template.id) ctx.throw(404,"That template doesn't exist")
     await AreaTemplateRelationService.create(ctx.request.params);
     ctx.status = 200;
   }
 
   static async deleteTemplateRelation(ctx) {
     let response = await AreaTemplateRelationService.delete(ctx.request.params);
-    if(!response._id) return ctx.throw(404, "This team is not linked to this area")
+    if(!response._id) return ctx.throw(404, "This template is not linked to this area")
     ctx.status = 200;
   }
 

@@ -20,6 +20,9 @@
   "controlTower": {
     "url": "CONTROL_TOWER_URL"
   },
+  "rwAreasAPI": {
+    "url": "RW_AREAS_API_URL"
+  },
   "mongodb": {
     "host": "MONGODB_HOST",
     "port": "MONGODB_PORT",

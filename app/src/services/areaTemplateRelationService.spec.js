@@ -28,7 +28,7 @@ describe("Create relation using the areas template relation service", function (
     const areaId = new ObjectId();
     const templateId = new ObjectId();
 
-    nock(`https://api.resourcewatch.org/v2`).get(`/area/${areaId}`).reply(200, {
+    nock(config.get("rwAreasAPI.url")).get(`/area/${areaId}`).reply(200, {
       type: "area",
       id: areaId
     });

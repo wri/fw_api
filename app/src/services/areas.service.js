@@ -34,7 +34,7 @@ class AreasService {
   static async getArea(areaId) {
     logger.info("Getting area with id ", areaId);
     try {
-      let baseURL = "https://api.resourcewatch.org/v2";
+      let baseURL = config.get("rwAreasAPI.url");
       const response = await axios.default({
         baseURL,
         url: `/area/${areaId}`,
@@ -55,7 +55,7 @@ class AreasService {
   static async delete(areaId) {
     logger.info("Deleting area with id ", areaId);
     try {
-      let baseURL = "https://api.resourcewatch.org/v2";
+      let baseURL = config.get("rwAreasAPI.url");
       const response = await axios.default({
         baseURL,
         url: `/area/${areaId}`,

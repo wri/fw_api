@@ -12,6 +12,7 @@ areas_api_url             = "https://staging-api.resourcewatch.org/v1"
 geostore_api_url          = "https://staging-api.resourcewatch.org/v1"
 forms_api_url             = "https://staging-api.resourcewatch.org/v1"
 teams_api_url             = "https://dev-fw-api.globalforestwatch.org/v3"
+rw_areas_api_url          = "https://api.resourcewatch.org/v2"
 api_version               = "v1"
 
 healthcheck_path = "/v1/fw_api/healthcheck"

@@ -251,7 +251,6 @@ class ForestWatcherRouter {
       const userTeams = await TeamService.getUserTeams(user.id);
       // create array user is manager of
       const managerTeams = [];
-
       userTeams.forEach(userTeam => {
         if (userTeam.attributes.userRole === "manager" || userTeam.attributes.userRole === "administrator")
           managerTeams.push(userTeam.id.toString());

@@ -176,7 +176,7 @@ class ForestWatcherRouter {
     ctx.status = 200;
   }
   static async getArea(ctx) {
-    let area = await AreasService.getArea(ctx.request.params.areaId);
+    let area = await AreasService.getArea(ctx.request.params.id);
     // get teams for area but only teams user is a member of
     const user = await ForestWatcherFunctions.getUser(ctx);
     const userTeams = await TeamService.getUserTeams(user.id); // get list of user's teams
@@ -187,7 +187,7 @@ class ForestWatcherRouter {
     });
 
     // add templates
-    const templates = await AreaTemplateRelationService.getAllTemplatesForArea(ctx.request.params.areaId);
+    const templates = await AreaTemplateRelationService.getAllTemplatesForArea(ctx.request.params.id);
     area.reportTemplate = Promise.all(
       templates.map(async template => {
         try {
@@ -247,8 +247,6 @@ class ForestWatcherRouter {
     const userTeams = await TeamService.getUserTeams(user.id);
     // create array user is manager of
     const managerTeams = [];
-
-    console.log(areaTeams, userTeams);
 
     userTeams.forEach(userTeam => {
       if (userTeam.attributes.userRole === "manager" || userTeam.attributes.userRole === "administrator")
@@ -337,7 +335,7 @@ const isAuthenticatedMiddleware = async (ctx, next) => {
   await next();
 };
 
-router.get("/area/:areaId", isAuthenticatedMiddleware, ForestWatcherRouter.getArea);
+router.get("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getArea);
 router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
 router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
 router.delete("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.deleteArea);

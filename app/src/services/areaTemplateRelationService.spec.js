@@ -28,14 +28,10 @@ describe("Create relation using the areas template relation service", function (
     const areaId = new ObjectId();
     const templateId = new ObjectId();
 
-    nock(`https://api.resourcewatch.org/v2`)
-      .get(`/area/${areaId}`)
-      .reply(200, {
-        data: {
-          type: "area",
-          id: areaId
-        }
-      });
+    nock(`https://api.resourcewatch.org/v2`).get(`/area/${areaId}`).reply(200, {
+      type: "area",
+      id: areaId
+    });
 
     nock(config.get("formsAPI.url"))
       .get(`/reports/${templateId}`)

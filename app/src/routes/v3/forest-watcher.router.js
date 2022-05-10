@@ -248,25 +248,25 @@ class ForestWatcherRouter {
     // create array user is manager of
     const managerTeams = [];
 
-    console.log(areaTeams, userTeams)
+    console.log(areaTeams, userTeams);
 
     userTeams.forEach(userTeam => {
       if (userTeam.attributes.userRole === "manager" || userTeam.attributes.userRole === "administrator")
-      managerTeams.push(userTeam.id.toString());
+        managerTeams.push(userTeam.id.toString());
     });
     // create an array of teams in which the team is associated with the area AND the user is a manager of
     const managerArray = areaTeams.filter(areaTeamId => managerTeams.includes(areaTeamId.toString()));
 
     if (!(managerArray.length > 0)) ctx.throw(401, "You are not authorised to delete this record");
 
-    await AreasService.delete(ctx.request.params.id); 
+    await AreasService.delete(ctx.request.params.id);
     // *************************************************
     // NO WAY TO CHECK WHETHER THIS IS SUCCESSFUL OR NOT
     // *************************************************
 
     // delete all template and team relations relating to that area
-    await AreaTeamRelationService.deleteAll({areaId: ctx.request.params.id})
-    await AreaTemplateRelationService.deleteAll({areaId: ctx.request.params.id})
+    await AreaTeamRelationService.deleteAll({ areaId: ctx.request.params.id });
+    await AreaTemplateRelationService.deleteAll({ areaId: ctx.request.params.id });
 
     ctx.status = 204;
   }
@@ -340,7 +340,7 @@ const isAuthenticatedMiddleware = async (ctx, next) => {
 router.get("/area/:areaId", isAuthenticatedMiddleware, ForestWatcherRouter.getArea);
 router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
 router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
-router.delete("/area/:id",isAuthenticatedMiddleware, ForestWatcherRouter.deleteArea);
+router.delete("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.deleteArea);
 router.get("/area/teams", isAuthenticatedMiddleware, ForestWatcherRouter.getUserTeamsAreas);
 router.get("/area/areaTeams/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getAreaTeams);
 router.delete("/area/teams", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTeamRelations);

@@ -37,7 +37,7 @@ describe("Delete an area", function () {
 
     const areaId = new ObjectId();
     const otherAreaId = new ObjectId();
-    const userId = USERS.USER.id
+    const userId = USERS.USER.id;
 
     await createAreaTemplateRelation(areaId);
     await createAreaTemplateRelation(otherAreaId);
@@ -50,13 +50,11 @@ describe("Delete an area", function () {
     expect(areaTeamRelations.length).toBe(1);
     expect(areaTemplateRelations.length).toBe(1);
 
-    nock(`https://api.resourcewatch.org/v2`)
-      .get(`/area/${areaId}`)
-      .reply(200, {
-          type: "area",
-          id: areaId,
-          attributes: { userId }
-      });
+    nock(`https://api.resourcewatch.org/v2`).get(`/area/${areaId}`).reply(200, {
+      type: "area",
+      id: areaId,
+      attributes: { userId }
+    });
 
     nock("https://api.resourcewatch.org/v2")
       .delete(`/area/${areaId}`)
@@ -109,15 +107,11 @@ describe("Delete an area", function () {
     expect(areaTeamRelations.length).toBe(1);
     expect(areaTemplateRelations.length).toBe(1);
 
-    nock(`https://api.resourcewatch.org/v2`)
-      .get(`/area/${areaId}`)
-      .reply(200, {
-
-          type: "area",
-          id: areaId,
-          attributes: { userId }
-        
-      });
+    nock(`https://api.resourcewatch.org/v2`).get(`/area/${areaId}`).reply(200, {
+      type: "area",
+      id: areaId,
+      attributes: { userId }
+    });
 
     nock("https://api.resourcewatch.org/v2")
       .delete(`/area/${areaId}`)
@@ -170,15 +164,11 @@ describe("Delete an area", function () {
     expect(areaTeamRelations.length).toBe(1);
     expect(areaTemplateRelations.length).toBe(1);
 
-    nock(`https://api.resourcewatch.org/v2`)
-      .get(`/area/${areaId}`)
-      .reply(200, {
-
-          type: "area",
-          id: areaId,
-          attributes: { userId }
-        
-      });
+    nock(`https://api.resourcewatch.org/v2`).get(`/area/${areaId}`).reply(200, {
+      type: "area",
+      id: areaId,
+      attributes: { userId }
+    });
 
     nock("https://api.resourcewatch.org/v2")
       .delete(`/area/${areaId}`)
@@ -236,15 +226,11 @@ describe("Delete an area", function () {
     expect(areaTeamRelations.length).toBe(1);
     expect(areaTemplateRelations.length).toBe(1);
 
-    nock(`https://api.resourcewatch.org/v2`)
-      .get(`/area/${areaId}`)
-      .reply(200, {
-
-          type: "area",
-          id: areaId,
-          attributes: { userId }
-        
-      });
+    nock(`https://api.resourcewatch.org/v2`).get(`/area/${areaId}`).reply(200, {
+      type: "area",
+      id: areaId,
+      attributes: { userId }
+    });
 
     nock("https://api.resourcewatch.org/v2")
       .delete(`/area/${areaId}`)

@@ -242,10 +242,7 @@ class ForestWatcherRouter {
     // get user
     const user = ForestWatcherFunctions.getUser(ctx);
     // get area
-    const area = await AreasService.getArea(ctx.request.params.id)
-
-    //console.log(user, area)
-
+    const area = await AreasService.getArea(ctx.request.params.id);
     // a user can delete their own area - if it's not their area, check they're a manager
     if (area.attributes.userId.toString() !== user.id.toString()) {
       // get associated teams of area

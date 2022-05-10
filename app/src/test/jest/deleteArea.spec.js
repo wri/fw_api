@@ -32,11 +32,12 @@ describe("Delete an area", function () {
     expect(response.body.errors[0]).toHaveProperty("detail", "Unauthorized");
   });
 
-  it("Delete area is successful if user is manager of team associated with area", async function () {
+  it("Delete area is successful if user created area", async function () {
     mockGetUserFromToken(USERS.USER);
 
     const areaId = new ObjectId();
     const otherAreaId = new ObjectId();
+    const userId = USERS.USER.id
 
     await createAreaTemplateRelation(areaId);
     await createAreaTemplateRelation(otherAreaId);
@@ -48,6 +49,75 @@ describe("Delete an area", function () {
 
     expect(areaTeamRelations.length).toBe(1);
     expect(areaTemplateRelations.length).toBe(1);
+
+    nock(`https://api.resourcewatch.org/v2`)
+      .get(`/area/${areaId}`)
+      .reply(200, {
+          type: "area",
+          id: areaId,
+          attributes: { userId }
+      });
+
+    nock("https://api.resourcewatch.org/v2")
+      .delete(`/area/${areaId}`)
+      .reply(200, { data: { id: areaId } });
+
+    nock(config.get("teamsAPI.url"))
+      .get(`/teams/user/${USERS.USER.id}`)
+      .reply(200, [
+        {
+          id: teamRelation.teamId,
+          attributes: {
+            userRole: "monitor"
+          }
+        }
+      ]);
+
+    const response = await requester
+      .delete(`/v3/forest-watcher/area/${areaId}`)
+      .set("Authorization", `Bearer abcd`)
+      .send();
+
+    expect(response.status).toBe(204);
+
+    let teamRelations = await AreaTeamRelationModel.find({});
+    let templateRelations = await AreaTemplateRelationModel.find({});
+    let emptyTeamRelations = await AreaTeamRelationModel.find({ areaId });
+    let emptyTemplateRelations = await AreaTemplateRelationModel.find({ areaId });
+
+    expect(teamRelations.length).toBe(1);
+    expect(templateRelations.length).toBe(1);
+    expect(emptyTeamRelations.length).toBe(0);
+    expect(emptyTemplateRelations.length).toBe(0);
+  });
+
+  it("Delete area is successful if user is manager of team associated with area", async function () {
+    mockGetUserFromToken(USERS.USER);
+
+    const areaId = new ObjectId();
+    const otherAreaId = new ObjectId();
+    const userId = new ObjectId();
+
+    await createAreaTemplateRelation(areaId);
+    await createAreaTemplateRelation(otherAreaId);
+    let teamRelation = await createAreaTeamRelation(areaId);
+    await createAreaTeamRelation(otherAreaId);
+
+    let areaTeamRelations = await AreaTeamRelationModel.find({ areaId });
+    let areaTemplateRelations = await AreaTemplateRelationModel.find({ areaId });
+
+    expect(areaTeamRelations.length).toBe(1);
+    expect(areaTemplateRelations.length).toBe(1);
+
+    nock(`https://api.resourcewatch.org/v2`)
+      .get(`/area/${areaId}`)
+      .reply(200, {
+
+          type: "area",
+          id: areaId,
+          attributes: { userId }
+        
+      });
 
     nock("https://api.resourcewatch.org/v2")
       .delete(`/area/${areaId}`)
@@ -87,6 +157,7 @@ describe("Delete an area", function () {
 
     const areaId = new ObjectId();
     const otherAreaId = new ObjectId();
+    const userId = new ObjectId();
 
     await createAreaTemplateRelation(areaId);
     await createAreaTemplateRelation(otherAreaId);
@@ -98,6 +169,16 @@ describe("Delete an area", function () {
 
     expect(areaTeamRelations.length).toBe(1);
     expect(areaTemplateRelations.length).toBe(1);
+
+    nock(`https://api.resourcewatch.org/v2`)
+      .get(`/area/${areaId}`)
+      .reply(200, {
+
+          type: "area",
+          id: areaId,
+          attributes: { userId }
+        
+      });
 
     nock("https://api.resourcewatch.org/v2")
       .delete(`/area/${areaId}`)
@@ -142,6 +223,7 @@ describe("Delete an area", function () {
     const areaId = new ObjectId();
     const otherAreaId = new ObjectId();
     const teamId1 = new ObjectId();
+    const userId = new ObjectId();
 
     await createAreaTemplateRelation(areaId);
     await createAreaTemplateRelation(otherAreaId);
@@ -153,6 +235,16 @@ describe("Delete an area", function () {
 
     expect(areaTeamRelations.length).toBe(1);
     expect(areaTemplateRelations.length).toBe(1);
+
+    nock(`https://api.resourcewatch.org/v2`)
+      .get(`/area/${areaId}`)
+      .reply(200, {
+
+          type: "area",
+          id: areaId,
+          attributes: { userId }
+        
+      });
 
     nock("https://api.resourcewatch.org/v2")
       .delete(`/area/${areaId}`)
@@ -194,5 +286,6 @@ describe("Delete an area", function () {
   afterEach(async function () {
     await AreaTemplateRelationModel.deleteMany({}).exec();
     await AreaTeamRelationModel.deleteMany({}).exec();
+    nock.cleanAll();
   });
 });

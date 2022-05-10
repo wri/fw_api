@@ -238,25 +238,32 @@ class ForestWatcherRouter {
   }
 
   static async deleteArea(ctx) {
-    // check permissions. Only managers can delete the area.
+    // check permissions. Only the user who created the area or managers can delete the area.
     // get user
     const user = ForestWatcherFunctions.getUser(ctx);
-    // get associated teams of area
-    const areaTeams = await AreaTeamRelationService.getAllTeamsForArea(ctx.request.params.id);
-    // get teams the user is part of
-    const userTeams = await TeamService.getUserTeams(user.id);
-    // create array user is manager of
-    const managerTeams = [];
+    // get area
+    const area = await AreasService.getArea(ctx.request.params.id)
 
-    userTeams.forEach(userTeam => {
-      if (userTeam.attributes.userRole === "manager" || userTeam.attributes.userRole === "administrator")
-        managerTeams.push(userTeam.id.toString());
-    });
-    // create an array of teams in which the team is associated with the area AND the user is a manager of
-    const managerArray = areaTeams.filter(areaTeamId => managerTeams.includes(areaTeamId.toString()));
+    //console.log(user, area)
 
-    if (!(managerArray.length > 0)) ctx.throw(401, "You are not authorised to delete this record");
+    // a user can delete their own area - if it's not their area, check they're a manager
+    if (area.attributes.userId.toString() !== user.id.toString()) {
+      // get associated teams of area
+      const areaTeams = await AreaTeamRelationService.getAllTeamsForArea(ctx.request.params.id);
+      // get teams the user is part of
+      const userTeams = await TeamService.getUserTeams(user.id);
+      // create array user is manager of
+      const managerTeams = [];
 
+      userTeams.forEach(userTeam => {
+        if (userTeam.attributes.userRole === "manager" || userTeam.attributes.userRole === "administrator")
+          managerTeams.push(userTeam.id.toString());
+      });
+      // create an array of teams in which the team is associated with the area AND the user is a manager of
+      const managerArray = areaTeams.filter(areaTeamId => managerTeams.includes(areaTeamId.toString()));
+
+      if (!(managerArray.length > 0)) ctx.throw(401, "You are not authorised to delete this record");
+    }
     await AreasService.delete(ctx.request.params.id);
     // *************************************************
     // NO WAY TO CHECK WHETHER THIS IS SUCCESSFUL OR NOT

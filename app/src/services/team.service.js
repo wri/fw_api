@@ -10,7 +10,7 @@ class TeamService {
       const baseURL = config.get("teamsAPI.url");
       const response = await axios.default({
         baseURL,
-        url: `/user/${userId}`,
+        url: `/teams/user/${userId}`,
         method: "GET",
         headers: {
           authorization: loggedInUserService.token

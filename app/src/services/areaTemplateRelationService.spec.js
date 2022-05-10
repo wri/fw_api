@@ -6,6 +6,8 @@ const { createAreaTemplateRelation } = require("../test/jest/utils/helpers");
 const { getAllTemplatesForArea } = require("./areaTemplateRelationService");
 const { USERS } = require("../test/jest/utils/test.constants");
 const { mockGetUserFromToken } = require("../test/jest/utils/helpers");
+const nock = require("nock");
+const config = require("config")
 
 const requester = getTestServer();
 
@@ -26,7 +28,29 @@ describe("Create relation using the areas template relation service", function (
     const areaId = new ObjectId();
     const templateId = new ObjectId();
 
-    await requester
+    nock(`https://api.resourcewatch.org/v2`)
+      .get(`/area/${areaId}`)
+      .reply(200, {
+        data: {
+          type: "area",
+          id: areaId,
+        }
+      });
+
+    nock(config.get("formsAPI.url"))
+      .get(`/reports/${templateId}`)
+      .reply(200, {
+          data: {
+            type: "reports",
+            id: templateId,
+            attributes: {
+              something: null
+            },
+          }
+        }
+      );
+
+    const response = await requester
       .post(`/v3/forest-watcher/area/${areaId}/template/${templateId}`)
       .set("Authorization", `Bearer abcd`);
     let dbRelation = await AreaTemplateRelationModel.findOne();
@@ -49,7 +73,7 @@ describe("Create relation using the areas template relation service", function (
 
   afterEach(async function () {
     await AreaTemplateRelationModel.deleteMany({}).exec();
-  });
+  }); 
 });
 
 describe("Get all relations given an area id", function () {

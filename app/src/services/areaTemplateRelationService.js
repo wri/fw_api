@@ -3,10 +3,13 @@ const { AreaTemplateRelationModel } = require("models");
 class AreaTemplateRelationService {
   static async create(params) {
     const { areaId, templateId } = params;
+    console.log(areaId, templateId)
     if (await AreaTemplateRelationModel.findOne({ areaId, templateId }))
       throw new Error("This template is already assigned to this area");
     const areaTemplateRelation = new AreaTemplateRelationModel({ templateId, areaId });
+    console.log("something", areaTemplateRelation)
     const savedRelation = await areaTemplateRelation.save();
+    console.log("relation", savedRelation)
     return Promise.resolve(savedRelation);
   }
 

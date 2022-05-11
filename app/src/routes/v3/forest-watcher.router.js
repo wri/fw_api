@@ -176,7 +176,7 @@ class ForestWatcherRouter {
     ctx.status = 200;
   }
   static async getArea(ctx) {
-    let area = await AreasService.getArea(ctx.request.params.areaId);
+    let area = await AreasService.getArea(ctx.request.params.id);
     // get teams for area but only teams user is a member of
     const user = await ForestWatcherFunctions.getUser(ctx);
     const userTeams = await TeamService.getUserTeams(user.id); // get list of user's teams
@@ -187,7 +187,7 @@ class ForestWatcherRouter {
     });
 
     // add templates
-    const templates = await AreaTemplateRelationService.getAllTemplatesForArea(ctx.request.params.areaId);
+    const templates = await AreaTemplateRelationService.getAllTemplatesForArea(ctx.request.params.id);
     area.reportTemplate = Promise.all(
       templates.map(async template => {
         try {
@@ -237,9 +237,44 @@ class ForestWatcherRouter {
     };
   }
 
+  static async deleteArea(ctx) {
+    // check permissions. Only the user who created the area or managers can delete the area.
+    // get user
+    const user = ForestWatcherFunctions.getUser(ctx);
+    // get area
+    const area = await AreasService.getArea(ctx.request.params.id);
+    // a user can delete their own area - if it's not their area, check they're a manager
+    if (area.attributes.userId.toString() !== user.id.toString()) {
+      // get associated teams of area
+      const areaTeams = await AreaTeamRelationService.getAllTeamsForArea(ctx.request.params.id);
+      // get teams the user is part of
+      const userTeams = await TeamService.getUserTeams(user.id);
+      // create array user is manager of
+      const managerTeams = [];
+      userTeams.forEach(userTeam => {
+        if (userTeam.attributes.userRole === "manager" || userTeam.attributes.userRole === "administrator")
+          managerTeams.push(userTeam.id.toString());
+      });
+      // create an array of teams in which the team is associated with the area AND the user is a manager of
+      const managerArray = areaTeams.filter(areaTeamId => managerTeams.includes(areaTeamId.toString()));
+
+      if (!(managerArray.length > 0)) ctx.throw(401, "You are not authorised to delete this record");
+    }
+    await AreasService.delete(ctx.request.params.id);
+    // *************************************************
+    // NO WAY TO CHECK WHETHER THIS IS SUCCESSFUL OR NOT
+    // *************************************************
+
+    // delete all template and team relations relating to that area
+    await AreaTeamRelationService.deleteAll({ areaId: ctx.request.params.id });
+    await AreaTemplateRelationService.deleteAll({ areaId: ctx.request.params.id });
+
+    ctx.status = 204;
+  }
+
   static async addTemplateRelation(ctx) {
     let area = await AreasService.getArea(ctx.request.params.areaId);
-    let template = await TeamService.getTeam(ctx.request.params.templateId);
+    let template = await TemplatesService.getTemplate(ctx.request.params.templateId);
     if (!area.id) ctx.throw(404, "That area doesn't exist");
     if (!template.id) ctx.throw(404, "That template doesn't exist");
     await AreaTemplateRelationService.create(ctx.request.params);
@@ -303,9 +338,10 @@ const isAuthenticatedMiddleware = async (ctx, next) => {
   await next();
 };
 
-router.get("/area/:areaId", isAuthenticatedMiddleware, ForestWatcherRouter.getArea);
+router.get("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getArea);
 router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
 router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
+router.delete("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.deleteArea);
 router.get("/area/teams", isAuthenticatedMiddleware, ForestWatcherRouter.getUserTeamsAreas);
 router.get("/area/areaTeams/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getAreaTeams);
 router.delete("/area/teams", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTeamRelations);

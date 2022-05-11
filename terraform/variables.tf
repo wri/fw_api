@@ -69,6 +69,10 @@ variable "areas_api_url" {
   type    = string
   default = "https://api.resourcewatch.org/v1"
 }
+variable "rw_areas_api_url" {
+  type    = string
+  default = "https://api.resourcewatch.org/v2"
+}
 variable "geostore_api_url" {
   type    = string
   default = "https://api.resourcewatch.org/v1"

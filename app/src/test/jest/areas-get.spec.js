@@ -173,6 +173,8 @@ describe("Get single area from id", function () {
   it("Get area with supplied id should return that area", async function () {
     mockGetUserFromToken(USERS.USER);
 
+    const areaId = new ObjectId()
+
     const team1 = {
       id: new ObjectId(),
       attributes:
@@ -190,20 +192,20 @@ describe("Get single area from id", function () {
       }
     }
 
-    await AreaTeamRelationService.create({areaId: "d653e4fc0ed07a65b9db9b13477566fe", teamId: team1.id})
-    await AreaTeamRelationService.create({areaId: "d653e4fc0ed07a65b9db9b13477566fe", teamId: new ObjectId()})
+    await AreaTeamRelationService.create({areaId: areaId, teamId: team1.id})
+    await AreaTeamRelationService.create({areaId: areaId, teamId: new ObjectId()})
 
-    nock(`https://api.resourcewatch.org/v2`)
-      .get("/area/d653e4fc0ed07a65b9db9b13477566fe")
+    nock(config.get("rwAreasAPI.url"))
+      .get(`/area/${areaId}`)
       .reply(200, {
-        data: {
+
           type: "area",
-          id: "d653e4fc0ed07a65b9db9b13477566fe",
-        }
+          id: areaId,
+        
       });
 
     nock(config.get("teamsAPI.url"))
-      .get(`/user/1a10d7c6e0a37126611fd7a5`)
+      .get(`/teams/user/1a10d7c6e0a37126611fd7a5`)
       .reply(200, [
           {
             id: team1.id,
@@ -223,7 +225,7 @@ describe("Get single area from id", function () {
         ]
       );
 
-    const response = await requester.get(`/v3/forest-watcher/area/d653e4fc0ed07a65b9db9b13477566fe`).set("Authorization", `Bearer abcd`);
+    const response = await requester.get(`/v3/forest-watcher/area/${areaId}`).set("Authorization", `Bearer abcd`);
 
     expect(response.status).toEqual(200);
     expect(response.body).toHaveProperty("area")

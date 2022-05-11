@@ -86,6 +86,7 @@ data "template_file" "container_definition" {
     geostore_api_url = var.geostore_api_url
     teams_api_url = var.teams_api_url
     api_version = var.api_version
+    rw_areas_api_url = var.rw_areas_api_url
     # Secrets
     # none
   }

@@ -195,7 +195,7 @@ describe("Get single area from id", function () {
     await AreaTeamRelationService.create({areaId: areaId, teamId: team1.id})
     await AreaTeamRelationService.create({areaId: areaId, teamId: new ObjectId()})
 
-    nock(`https://api.resourcewatch.org/v2`)
+    nock(config.get("rwAreasAPI.url"))
       .get(`/area/${areaId}`)
       .reply(200, {
 

@@ -14,7 +14,7 @@ paths:
     parameters: []
     get:
       summary: Get All User Areas
-      operationId: get-user-areas
+      operationId: get-all-user-areas
       description: Retrieve areas for the logged in user
       responses:
         '200':
@@ -50,7 +50,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Healthcheck'
-      operationId: get-fw_api-healthcheck
+      operationId: get-v3-fw_api-healthcheck
       security: []
     parameters: []
   /v3/forest-watcher/area:
@@ -902,7 +902,7 @@ paths:
           $ref: '#/components/responses/Error'
         '404':
           $ref: '#/components/responses/Error'
-      operationId: get-v3-forest-watcher-area
+      operationId: get-v3-forest-watcher-areas
       description: Retrieve areas for the logged in user
   '/v3/forest-watcher/area/{areaId}':
     get:
@@ -2627,7 +2627,7 @@ paths:
                 type: array
                 items:
                   type: string
-      operationId: get-v3-forest-watcher-area
+      operationId: get-v3-forest-watcher-areas-by-logged-user
       description: Retrieve areas for the logged in user
     parameters:
       - schema:

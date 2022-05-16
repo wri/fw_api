@@ -14,8 +14,8 @@ services:
       CONTROL_TOWER_URL: https://api.resourcewatch.org
       LOCAL_URL: http://127.0.0.1:4400
       FORMS_API_URL: http://fw-forms-develop:4401/api/v1
-      AREAS_API_URL: https://api.resourcewatch.org
-      GEOSTORE_API_URL: https://api.resourcewatch.org
+      AREAS_API_URL: https://staging-api.resourcewatch.org
+      GEOSTORE_API_URL: https://staging-api.resourcewatch.org
       API_VERSION: v1
     volumes:
       - ./app:/opt/forest-watcher/app

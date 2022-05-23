@@ -41,8 +41,8 @@ describe("Delete an area", function () {
 
     await createAreaTemplateRelation(areaId);
     await createAreaTemplateRelation(otherAreaId);
-    let teamRelation = await createAreaTeamRelation(areaId);
-    await createAreaTeamRelation(otherAreaId);
+    let teamRelation = await createAreaTeamRelation(areaId, new ObjectId());
+    await createAreaTeamRelation(otherAreaId, new ObjectId());
 
     let areaTeamRelations = await AreaTeamRelationModel.find({ areaId });
     let areaTemplateRelations = await AreaTemplateRelationModel.find({ areaId });
@@ -98,8 +98,8 @@ describe("Delete an area", function () {
 
     await createAreaTemplateRelation(areaId);
     await createAreaTemplateRelation(otherAreaId);
-    let teamRelation = await createAreaTeamRelation(areaId);
-    await createAreaTeamRelation(otherAreaId);
+    let teamRelation = await createAreaTeamRelation(areaId, new ObjectId());
+    await createAreaTeamRelation(otherAreaId, new ObjectId());
 
     let areaTeamRelations = await AreaTeamRelationModel.find({ areaId });
     let areaTemplateRelations = await AreaTemplateRelationModel.find({ areaId });
@@ -155,8 +155,8 @@ describe("Delete an area", function () {
 
     await createAreaTemplateRelation(areaId);
     await createAreaTemplateRelation(otherAreaId);
-    let teamRelation = await createAreaTeamRelation(areaId);
-    await createAreaTeamRelation(otherAreaId);
+    let teamRelation = await createAreaTeamRelation(areaId, new ObjectId());
+    await createAreaTeamRelation(otherAreaId, new ObjectId());
 
     let areaTeamRelations = await AreaTeamRelationModel.find({ areaId });
     let areaTemplateRelations = await AreaTemplateRelationModel.find({ areaId });
@@ -217,8 +217,8 @@ describe("Delete an area", function () {
 
     await createAreaTemplateRelation(areaId);
     await createAreaTemplateRelation(otherAreaId);
-    await createAreaTeamRelation(areaId);
-    await createAreaTeamRelation(otherAreaId);
+    await createAreaTeamRelation(areaId, new ObjectId());
+    await createAreaTeamRelation(otherAreaId, new ObjectId());
 
     let areaTeamRelations = await AreaTeamRelationModel.find({ areaId });
     let areaTemplateRelations = await AreaTemplateRelationModel.find({ areaId });

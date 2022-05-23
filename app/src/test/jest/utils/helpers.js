@@ -14,8 +14,8 @@ const createAreaTemplateRelation = async areaId => {
   return await relation.save();
 };
 
-const createAreaTeamRelation = async areaId => {
-  let relation = new AreaTeamRelationModel({ areaId, teamId: new ObjectId() });
+const createAreaTeamRelation = async (areaId, teamId) => {
+  let relation = new AreaTeamRelationModel({ areaId, teamId });
   return await relation.save();
 };
 

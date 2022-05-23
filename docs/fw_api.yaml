@@ -1785,18 +1785,17 @@ paths:
               schema:
                 description: ''
                 type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      required: []
-                      properties: {}
-                required:
-                  - data
                 x-examples:
                   example-1:
                     data:
                       - something
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+                required:
+                  - data
               examples:
                 example-1: {}
         '401':

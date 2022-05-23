@@ -85,6 +85,24 @@ describe("Get all areas for a given team", function () {
                 }
             );
 
+        nock(config.get("rwAreasAPI.url"))
+            .persist()
+            .get(`/area/${areaId1}`)
+            .reply(200,
+                {
+                    id: areaId1,
+                }
+            );
+
+            nock(config.get("rwAreasAPI.url"))
+            .persist()
+            .get(`/area/${areaId2}`)
+            .reply(200,
+                {
+                    id: areaId2,
+                }
+            );
+
         const response = await requester
             .get(`/v3/forest-watcher/area/teamAreas/${teamId}`)
             .set("Authorization", `Bearer abcd`)
@@ -97,8 +115,8 @@ describe("Get all areas for a given team", function () {
         const area1 = response.body.data[0];
         const area2 = response.body.data[1];
 
-        expect(area1).toEqual(areaId1.toString());
-        expect(area2).toEqual(areaId2.toString());
+        expect(area1.id).toEqual(areaId1.toString());
+        expect(area2.id).toEqual(areaId2.toString());
 
     });
 

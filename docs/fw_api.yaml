@@ -1779,25 +1779,7 @@ paths:
       tags: []
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                description: ''
-                type: object
-                x-examples:
-                  example-1:
-                    data:
-                      - something
-                properties:
-                  data:
-                    type: array
-                    items:
-                      type: string
-                required:
-                  - data
-              examples:
-                example-1: {}
+          $ref: '#/components/responses/Basic-area'
         '401':
           $ref: '#/components/responses/Error'
         '404':
@@ -2721,7 +2703,138 @@ paths:
           description: Not Found
       description: Remove a template from an area
 components:
-  schemas: {}
+  schemas:
+    Area:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          name: tests
+          application: gfw
+          geostore: 507d44b65582536fe66f3b07ebf61048
+          userId: 62334dae880445001a46c494
+          createdAt: '2022-03-17T17:31:51.336Z'
+          updatedAt: '2022-03-21T12:44:48.675Z'
+          image: 'https://s3.amazonaws.com/forest-watcher-files/areas-staging/61327887-317a-4ce7-b17e-7eed159d507a.png'
+          datasets:
+            - cache: true
+              active: false
+              _id: 6238734056b0c7001bf9523b
+              slug: umd_as_it_happens
+              name: GLAD
+              startDate: '6'
+              endDate: '20220321'
+            - cache: true
+              active: true
+              _id: 6238734056b0c7001bf9523c
+              slug: viirs
+              name: VIIRS
+              startDate: '1'
+              endDate: '8'
+          use: {}
+          env: production
+          iso: {}
+          admin: {}
+          tags: []
+          status: pending
+          public: false
+          fireAlerts: false
+          deforestationAlerts: false
+          webhookUrl: ''
+          monthlySummary: false
+          subscriptionId: ''
+          email: ''
+          language: en
+          confirmed: false
+      properties:
+        name:
+          type: string
+          minLength: 1
+        application:
+          type: string
+          minLength: 1
+        geostore:
+          type: string
+          minLength: 1
+        userId:
+          type: string
+          minLength: 1
+        createdAt:
+          type: string
+          minLength: 1
+          readOnly: true
+        updatedAt:
+          type: string
+          minLength: 1
+          readOnly: true
+        image:
+          type: string
+          minLength: 1
+        datasets:
+          type: array
+          uniqueItems: true
+          minItems: 1
+          items:
+            type: object
+        use:
+          type: object
+        env:
+          type: string
+          minLength: 1
+        iso:
+          type: object
+        admin:
+          type: object
+        tags:
+          type: array
+          items:
+            type: object
+        status:
+          type: string
+          minLength: 1
+        public:
+          type: boolean
+        fireAlerts:
+          type: boolean
+        deforestationAlerts:
+          type: boolean
+        webhookUrl:
+          type: string
+        monthlySummary:
+          type: boolean
+        subscriptionId:
+          type: string
+        email:
+          type: string
+        language:
+          type: string
+          minLength: 1
+        confirmed:
+          type: boolean
+      required:
+        - name
+        - application
+        - geostore
+        - userId
+        - createdAt
+        - updatedAt
+        - image
+        - datasets
+        - use
+        - env
+        - iso
+        - admin
+        - tags
+        - status
+        - public
+        - fireAlerts
+        - deforestationAlerts
+        - webhookUrl
+        - monthlySummary
+        - subscriptionId
+        - email
+        - language
+        - confirmed
   securitySchemes:
     Authorization:
       type: http
@@ -2762,6 +2875,36 @@ components:
               uptime:
                 type: number
           examples: {}
+    Basic-area:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                attributes:
+                  $ref: '#/components/schemas/Area'
+        application/xml:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    type:
+                      type: string
+                    attributes:
+                      $ref: '#/components/schemas/Area'
   examples: {}
 security:
   - Authorization: []

@@ -325,7 +325,7 @@ class ForestWatcherRouter {
     let team = await TeamService.getTeam(ctx.request.params.id);
     if (!team.id) ctx.throw(404, "Team doesn't exist");
     const data = await AreaTeamRelationService.getAllAreasForTeam(ctx.request.params.id);
-    ctx.body = { data }
+    ctx.body = { data };
     ctx.status = 200;
   }
 }

@@ -1756,7 +1756,7 @@ paths:
           $ref: '#/components/responses/Error'
         '404':
           $ref: '#/components/responses/Error'
-      operationId: get-v3-forest-watcher-area
+      operationId: get-v3-forest-watcher-area-areaid
       description: 'Retrieve an area for the logged in user. Area object contains geostore, associated report templates and associated teams.'
     parameters:
       - schema:
@@ -2636,7 +2636,7 @@ paths:
                   value:
                     data:
                       - string
-      operationId: get-v3-forest-watcher-area
+      operationId: get-v3-forest-watcher-area-teamAreas
       description: Return an array of area Ids that are associated with the supplied team id
     parameters:
       - schema:
@@ -3501,7 +3501,7 @@ paths:
                 type: array
                 items:
                   type: string
-      operationId: get-v3-forest-watcher-area
+      operationId: get-v3-forest-watcher-area-areaTeams
       description: Retrieve areas for the logged in user
     parameters:
       - schema:

@@ -14,7 +14,7 @@ paths:
     parameters: []
     get:
       summary: Get All User Areas
-      operationId: get-all-user-areas
+      operationId: get-user-areas
       description: Retrieve areas for the logged in user
       responses:
         '200':
@@ -50,7 +50,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Healthcheck'
-      operationId: get-v3-fw_api-healthcheck
+      operationId: get-fw_api-healthcheck
       security: []
     parameters: []
   /v3/forest-watcher/area:
@@ -902,7 +902,7 @@ paths:
           $ref: '#/components/responses/Error'
         '404':
           $ref: '#/components/responses/Error'
-      operationId: get-v3-forest-watcher-areas
+      operationId: get-v3-forest-watcher-area
       description: Retrieve areas for the logged in user
   '/v3/forest-watcher/area/{areaId}':
     get:
@@ -1749,12 +1749,15 @@ paths:
                         - {}
                       reportTemplates:
                         - {}
+                      teams:
+                        - id: ObjectID
+                          name: string
         '401':
           $ref: '#/components/responses/Error'
         '404':
           $ref: '#/components/responses/Error'
       operationId: get-v3-forest-watcher-area
-      description: Retrieve an area for the logged in user
+      description: 'Retrieve an area for the logged in user. Area object contains geostore, associated report templates and associated teams.'
     parameters:
       - schema:
           type: string
@@ -2627,7 +2630,7 @@ paths:
                 type: array
                 items:
                   type: string
-      operationId: get-v3-forest-watcher-areas-by-logged-user
+      operationId: get-v3-forest-watcher-area
       description: Retrieve areas for the logged in user
     parameters:
       - schema:

@@ -2692,7 +2692,7 @@ paths:
           $ref: '#/components/responses/Error'
       description: Link a template to an area
     delete:
-      summary: ''
+      summary: Remove area-template association
       operationId: delete-v3-forest-watcher-area-areaId-template-templateId
       responses:
         '200':
@@ -2702,6 +2702,40 @@ paths:
         '404':
           description: Not Found
       description: Remove a template from an area
+  '/v3/forest-watcher/area/{areaId}/team/{teamId}':
+    parameters:
+      - schema:
+          type: string
+        name: areaId
+        in: path
+        required: true
+      - schema:
+          type: string
+        name: teamId
+        in: path
+        required: true
+    post:
+      summary: v3 Associate area with team
+      operationId: post-v3-forest-watcher-area-areaId-team-teamId
+      responses:
+        '200':
+          description: OK
+        '401':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+      description: Link a team to an area
+    delete:
+      summary: Remove area-team association
+      operationId: delete-v3-forest-watcher-area-areaId-team-teamId
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+      description: Remove a team from an area
 components:
   schemas:
     Area:

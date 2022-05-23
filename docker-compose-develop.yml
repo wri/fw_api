@@ -55,7 +55,7 @@ services:
       - ./app:/opt/forest-watcher/app
       - ./nodemon.json:/opt/forest-watcher/nodemon.json
       - ./jest.config.js:/opt/forest-watcher/jest.config.js
-    command: yarn test:jest --runInBand
+    command: yarn test:jest app/src/routes/v3/forest-watcher.spec.js --runInBand
     depends_on:
       - mongo
     networks:

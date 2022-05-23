@@ -320,6 +320,14 @@ class ForestWatcherRouter {
     ctx.body = await AreaTeamRelationService.getAllTeamsForArea(ctx.request.params.id);
     ctx.status = 200;
   }
+
+  static async getTeamAreas(ctx) {
+    let team = await TeamService.getTeam(ctx.request.params.id);
+    if (!team.id) ctx.throw(404, "Team doesn't exist");
+    const data = await AreaTeamRelationService.getAllAreasForTeam(ctx.request.params.id);
+    ctx.body = { data }
+    ctx.status = 200;
+  }
 }
 
 const isAuthenticatedMiddleware = async (ctx, next) => {
@@ -354,6 +362,7 @@ router.delete(
 );
 router.post("/area/:areaId/team/:teamId", isAuthenticatedMiddleware, ForestWatcherRouter.addTeamRelation);
 router.delete("/area/:areaId/team/:teamId", isAuthenticatedMiddleware, ForestWatcherRouter.deleteTeamRelation);
+router.get("/area/teamAreas/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getTeamAreas);
 
 router.get("/test", async ctx => {
   ctx.body = {

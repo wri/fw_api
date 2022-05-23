@@ -65,9 +65,9 @@ describe("Get all relations given an area id", function () {
     const areaId1 = new ObjectId(),
       areaId2 = new ObjectId();
 
-    const relationOne = await createAreaTeamRelation(areaId1);
-    const relationTwo = await createAreaTeamRelation(areaId1);
-    await createAreaTeamRelation(areaId2);
+    const relationOne = await createAreaTeamRelation(areaId1, new ObjectId());
+    const relationTwo = await createAreaTeamRelation(areaId1, new ObjectId());
+    await createAreaTeamRelation(areaId2, new ObjectId());
 
     const teams = await getAllTeamsForArea(areaId1);
 
@@ -96,7 +96,7 @@ describe("Delete a relation given area id and team id", function () {
   it("Deletes a relation", async function () {
     const areaId1 = new ObjectId();
 
-    await createAreaTeamRelation(areaId1);
+    await createAreaTeamRelation(areaId1, new ObjectId());
     const teams = await getAllTeamsForArea(areaId1);
 
     expect(teams.length).toBe(1);

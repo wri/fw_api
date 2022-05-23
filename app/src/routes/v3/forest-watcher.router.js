@@ -295,7 +295,7 @@ class ForestWatcherRouter {
 
   static async deleteAllTeamRelations(ctx) {
     if (!ctx.request.body.areaId && !ctx.request.body.teamId) ctx.throw(400, "Invalid Request");
-    await AreaTemplateRelationService.deleteAll(ctx.request.body);
+    await AreaTeamRelationService.deleteAll(ctx.request.body);
     ctx.status = 200;
   }
 
@@ -304,12 +304,12 @@ class ForestWatcherRouter {
     let team = await TeamService.getTeam(ctx.request.params.teamId);
     if (!area.id) ctx.throw(404, "That area doesn't exist");
     if (!team.id) ctx.throw(404, "That team doesn't exist");
-    await AreaTemplateRelationService.create(ctx.request.params);
+    await AreaTeamRelationService.create(ctx.request.params);
     ctx.status = 200;
   }
 
   static async deleteTeamRelation(ctx) {
-    let response = await AreaTemplateRelationService.delete(ctx.request.params);
+    let response = await AreaTeamRelationService.delete(ctx.request.params);
     if (!response._id) return ctx.throw(404, "This team is not linked to this area");
     ctx.status = 200;
   }

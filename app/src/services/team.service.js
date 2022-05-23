@@ -16,7 +16,7 @@ class TeamService {
           authorization: loggedInUserService.token
         }
       });
-      const teams = response.data;
+      const teams = response.data.data;
       logger.info("Got users teams", teams);
       return teams;
     } catch (e) {
@@ -37,7 +37,7 @@ class TeamService {
           authorization: loggedInUserService.token
         }
       });
-      const team = response.data;
+      const team = response.data.data;
       logger.info("Got team", team);
       return team;
     } catch (e) {

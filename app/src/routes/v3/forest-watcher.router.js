@@ -302,7 +302,6 @@ class ForestWatcherRouter {
   static async addTeamRelation(ctx) {
     let area = await AreasService.getArea(ctx.request.params.areaId);
     let team = await TeamService.getTeam(ctx.request.params.teamId);
-    console.log("*************",area, team)
     if (!area.id) ctx.throw(404, "That area doesn't exist");
     if (!team.id) ctx.throw(404, "That team doesn't exist");
     await AreaTemplateRelationService.create(ctx.request.params);

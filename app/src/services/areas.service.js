@@ -43,7 +43,7 @@ class AreasService {
           authorization: loggedInUserService.token
         }
       });
-      const area = response.data;
+      const area = response.data.data;
       logger.info("Area", area);
       return area;
     } catch (e) {

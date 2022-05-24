@@ -13,7 +13,7 @@ chai.should();
 
 const requester = getTestServer();
 
-/* describe("Get areas", function () {
+describe("Get areas", function () {
   beforeAll(async function () {
     if (process.env.NODE_ENV !== "test") {
       throw Error(
@@ -147,7 +147,7 @@ const requester = getTestServer();
       .and.deep.equal({ ...geostoreAttributes, id: geostoreAttributes.hash });
     response.body.data[0].attributes.should.have.property("coverage").and.deep.equal(coverageAttributes.layers);
   });
-}); */
+});
 
 describe("Get users areas and team areas", function () {
 
@@ -162,7 +162,7 @@ describe("Get users areas and team areas", function () {
 
   });
 
-/*   it("Get team areas without being logged in should return a 401 error", async function () {
+  it("Get team areas without being logged in should return a 401 error", async function () {
     const response = await requester.get(`/v3/forest-watcher/area/teams`);
 
     expect(response.status).toBe(401);
@@ -170,7 +170,7 @@ describe("Get users areas and team areas", function () {
     expect(response.body.errors.length).toBe(1);
     expect(response.body.errors[0]).toHaveProperty("status", 401);
     expect(response.body.errors[0]).toHaveProperty("detail", "Unauthorized");
-  }); */
+  });
 
   it("Get team areas while logged in should return user areas and areas associated with their teams", async function () {
     mockGetUserFromToken(USERS.USER);

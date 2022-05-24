@@ -351,23 +351,38 @@ const isAuthenticatedMiddleware = async (ctx, next) => {
   await next();
 };
 
+// individual areas
 router.get("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getArea);
-router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
 router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
 router.delete("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.deleteArea);
+
+// multiple areas
+router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
 router.get("/area/teams", isAuthenticatedMiddleware, ForestWatcherRouter.getUserTeamsAreas);
+
+// teams associated with an area
 router.get("/area/areaTeams/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getAreaTeams);
+
+// areas associated with a team
+router.get("/area/teamAreas/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getTeamAreas);
+
+// area team relations
+router.post("/area/:areaId/team/:teamId", isAuthenticatedMiddleware, ForestWatcherRouter.addTeamRelation);
+router.delete("/area/:areaId/team/:teamId", isAuthenticatedMiddleware, ForestWatcherRouter.deleteTeamRelation);
 router.delete("/area/teams", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTeamRelations);
-router.delete("/area/templates", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTemplateRelations);
+
+// area template relations
 router.post("/area/:areaId/template/:templateId", isAuthenticatedMiddleware, ForestWatcherRouter.addTemplateRelation);
 router.delete(
   "/area/:areaId/template/:templateId",
   isAuthenticatedMiddleware,
   ForestWatcherRouter.deleteTemplateRelation
 );
-router.post("/area/:areaId/team/:teamId", isAuthenticatedMiddleware, ForestWatcherRouter.addTeamRelation);
-router.delete("/area/:areaId/team/:teamId", isAuthenticatedMiddleware, ForestWatcherRouter.deleteTeamRelation);
-router.get("/area/teamAreas/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getTeamAreas);
+router.delete("/area/templates", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTemplateRelations);
+
+
+
+
 
 router.get("/test", async ctx => {
   ctx.body = {

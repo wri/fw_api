@@ -1,9 +1,9 @@
 /* eslint-disable */
 const nock = require("nock");
 const chai = require("chai");
-const { mockGetUserFromToken, createAreaTeamRelation } = require("../../test/jest/utils/helpers");
-const { USERS } = require("../../test/jest/utils/test.constants");
-const { getTestServer } = require("../../test/jest/utils/test-server");
+const { mockGetUserFromToken, createAreaTeamRelation } = require("./utils/helpers");
+const { USERS } = require("./utils/test.constants");
+const { getTestServer } = require("./utils/test-server");
 const { ObjectId } = require("mongoose").Types;
 const config = require("config");
 const { AreaTeamRelationModel } = require("models");
@@ -43,7 +43,10 @@ describe("Get all areas for a given team", function () {
             .persist()
             .get(`/teams/${teamId}`)
             .reply(200,
-                {}
+                {data: {
+
+                }
+            }
             );
 
         const response = await requester
@@ -74,7 +77,7 @@ describe("Get all areas for a given team", function () {
         nock(config.get("teamsAPI.url"))
             .persist()
             .get(`/teams/${teamId}`)
-            .reply(200,
+            .reply(200, {data: 
                 {
                     id: teamId,
                     attributes: {
@@ -83,24 +86,27 @@ describe("Get all areas for a given team", function () {
                         role: "manager"
                     }
                 }
+            }
             );
 
         nock(config.get("rwAreasAPI.url"))
             .persist()
             .get(`/area/${areaId1}`)
             .reply(200,
-                {
+                {data: {
                     id: areaId1,
                 }
+            }
             );
 
             nock(config.get("rwAreasAPI.url"))
             .persist()
             .get(`/area/${areaId2}`)
             .reply(200,
-                {
+                {data:  {
                     id: areaId2,
                 }
+            }
             );
 
         const response = await requester

@@ -43,9 +43,9 @@ class AreasService {
           authorization: loggedInUserService.token
         }
       });
-      const area = response.data.data;
+      const area = response.data;
       logger.info("Area", area);
-      return area;
+      return area && area.data;
     } catch (e) {
       logger.error("Error while fetching area", e);
       throw e;

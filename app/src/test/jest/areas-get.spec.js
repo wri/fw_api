@@ -149,94 +149,6 @@ describe("Get areas", function () {
   });
 });
 
-describe("Get single area from id", function () {
-
-  beforeAll(async function () {
-    if (process.env.NODE_ENV !== "test") {
-      throw Error(
-        `Running the test suite with NODE_ENV ${process.env.NODE_ENV} may result in permanent data loss. Please use NODE_ENV=test.`
-      );
-    }
-
-    await AreaTeamRelationModel.deleteMany({})
-
-  });
-
-  it("Get all areas without being logged in should return a 401 error", async function () {
-    const response = await requester.get(`/v3/forest-watcher/area/id`);
-
-    response.status.should.equal(401);
-    response.body.should.have.property("errors").and.be.an("array");
-    response.body.errors[0].should.have.property("detail").and.equal("Unauthorized");
-  });
-
-  it("Get area with supplied id should return that area", async function () {
-    mockGetUserFromToken(USERS.USER);
-
-    const areaId = new ObjectId()
-
-    const team1 = {
-      id: new ObjectId(),
-      attributes:
-      {
-        name: "team1",
-        role: "manager"
-      }
-    }
-
-    const team2 = {
-      id: new ObjectId(),
-      attributes: {
-      name: "team2",
-      role: "monitor"
-      }
-    }
-
-    await AreaTeamRelationService.create({areaId: areaId, teamId: team1.id})
-    await AreaTeamRelationService.create({areaId: areaId, teamId: new ObjectId()})
-
-    nock(config.get("rwAreasAPI.url"))
-      .get(`/area/${areaId}`)
-      .reply(200, {
-
-          type: "area",
-          id: areaId,
-        
-      });
-
-    nock(config.get("teamsAPI.url"))
-      .get(`/teams/user/1a10d7c6e0a37126611fd7a5`)
-      .reply(200, [
-          {
-            id: team1.id,
-            attributes:
-            {
-              name: "team1",
-              role: "manager"
-            }
-          },
-          {
-            id: team2.id,
-            attributes: {
-            name: "team2",
-            role: "monitor"
-            }
-          },
-        ]
-      );
-
-    const response = await requester.get(`/v3/forest-watcher/area/${areaId}`).set("Authorization", `Bearer abcd`);
-
-    expect(response.status).toEqual(200);
-    expect(response.body).toHaveProperty("area")
-    expect(response.body.area).toHaveProperty("teams")
-    expect(response.body.area.teams.length).toBe(1)
-    expect(response.body.area.teams[0].id).toEqual(team1.id.toString())
-
-  })
-
-});
-
 describe("Get users areas and team areas", function () {
 
   beforeAll(async function () {
@@ -253,9 +165,134 @@ describe("Get users areas and team areas", function () {
   it("Get team areas without being logged in should return a 401 error", async function () {
     const response = await requester.get(`/v3/forest-watcher/area/teams`);
 
-    response.status.should.equal(401);
-    response.body.should.have.property("errors").and.be.an("array");
-    response.body.errors[0].should.have.property("detail").and.equal("Unauthorized");
+    expect(response.status).toBe(401);
+    expect(response.body).toHaveProperty("errors");
+    expect(response.body.errors.length).toBe(1);
+    expect(response.body.errors[0]).toHaveProperty("status", 401);
+    expect(response.body.errors[0]).toHaveProperty("detail", "Unauthorized");
+  });
+
+  it("Get team areas while logged in should return user areas and areas associated with their teams", async function () {
+    mockGetUserFromToken(USERS.USER);
+
+    const geostoreAttributes = {
+      geojson: {
+        features: [
+          {
+            type: "Feature",
+            geometry: {
+              type: "MultiPolygon",
+              coordinates: []
+            }
+          }
+        ],
+        crs: {},
+        type: "FeatureCollection"
+      },
+      hash: "713899292fc118a915741728ef84a2a7",
+      provider: {},
+      areaHa: 9202327.64353375,
+      bbox: [-31.2681922912597, 30.0301990509033, -6.18914222717285, 42.1543159484863],
+      lock: false,
+      info: {
+        use: {},
+        name: "Portugal",
+        iso: "PRT"
+      }
+    };
+
+    nock(config.get("geostoreAPI.url"))
+      .persist()
+      .get(`/geostore/d653e4fc0ed07a65b9db9b13477566fe`)
+      .reply(200, {
+        data: {
+          type: "geoStore",
+          id: "713899292fc118a915741728ef84a2a7",
+          attributes: geostoreAttributes
+        }
+      });
+
+    const coverageAttributes = {
+      layers: ["umd_as_it_happens"]
+    };
+
+    nock(config.get("geostoreAPI.url"))
+    .persist()
+      .get(`/coverage/intersect?geostore=d653e4fc0ed07a65b9db9b13477566fe&slugs=umd_as_it_happens`)
+      .reply(200, {
+        data: {
+          type: "coverages",
+          attributes: coverageAttributes
+        }
+      });
+
+    // create some areas
+    const area1 = {
+      type: "area",
+      id: new ObjectId(),
+      attributes: {
+        userId: USERS.USER.id,
+        geostore: "d653e4fc0ed07a65b9db9b13477566fe"
+      }
+    }
+    const area2 = {
+      type: "area",
+      id: new ObjectId(),
+      attributes: {
+        userId: new ObjectId(),
+        geostore: "d653e4fc0ed07a65b9db9b13477566fe"
+      }
+    }
+
+    // create a team
+    const team1 = {
+      type: "team",
+      id: new ObjectId()
+    }
+
+    // create some team areas
+    await AreaTeamRelationService.create({areaId: area2.id, teamId: team1.id})
+
+    nock(config.get("areasAPI.url"))
+    .persist()
+      .get(`/area/fw`)
+      .reply(200, {
+        data: [area1]
+      });
+
+      nock(config.get("teamsAPI.url"))
+      .persist()
+      .get(`/teams/user/${USERS.USER.id}`)
+      .reply(200, {
+        data: [team1]
+      });
+
+      nock(config.get("rwAreasAPI.url"))
+      .persist()
+        .get(`/area/${area2.id}`)
+        .reply(200, {
+          data: area2
+        });
+
+    const response = await requester.get(`/v3/forest-watcher/area/teams`).set("Authorization", `Bearer abcd`);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("data");
+    expect(response.body.data).toHaveLength(2);
+    expect(response.body.data[0]).toHaveProperty("type", "area");
+    expect(response.body.data[0]).toHaveProperty("attributes");
+    expect(response.body.data[0].attributes).toBeInstanceOf(Object);
+    expect(response.body.data[0].attributes).toHaveProperty("geostore");
+    expect(response.body.data[0].attributes.geostore).toEqual({ ...geostoreAttributes, id: geostoreAttributes.hash });
+    expect(response.body.data[0].attributes).toHaveProperty("coverage");
+    expect(response.body.data[0].attributes.coverage).toEqual(coverageAttributes.layers)
+
+  });
+
+  afterEach(async function () {
+    await AreaTeamRelationModel.deleteMany({}).exec();
+    nock.cleanAll();
   });
 
 });
+

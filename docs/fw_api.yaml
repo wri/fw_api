@@ -35,6 +35,8 @@ paths:
         '401':
           $ref: '#/components/responses/Error'
       description: Create a new area for the logged in user
+      tags:
+        - v1
   /v1/fw_api/healthcheck:
     get:
       summary: Healthcheck
@@ -917,6 +919,8 @@ paths:
         description: |-
           {
           }
+      tags:
+        - v3
   /v3/forest-watcher/area/teams:
     get:
       summary: v3 All user areas and their teams areas
@@ -2629,6 +2633,8 @@ paths:
         '401':
           description: You are not authorised to delete this record
       description: 'Delete an area which the logged in user has either created, or is associated with a team they are manager of'
+      tags:
+        - v3
   '/v3/forest-watcher/area/teamAreas/{teamId}':
     get:
       summary: v3 Get all areas associated with a team
@@ -3562,6 +3568,8 @@ paths:
         '404':
           description: Not Found
       description: Remove a template from an area
+      tags:
+        - v3
   '/v3/forest-watcher/area/{areaId}/team/{teamId}':
     parameters:
       - schema:
@@ -3598,6 +3606,8 @@ paths:
         '404':
           description: Not Found
       description: Remove a team from an area
+      tags:
+        - v3
 components:
   schemas:
     Area:

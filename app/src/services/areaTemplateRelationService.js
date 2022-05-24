@@ -5,7 +5,7 @@ class AreaTemplateRelationService {
     const { areaId, templateId } = params;
     if (await AreaTemplateRelationModel.findOne({ areaId, templateId }))
       throw new Error("This template is already assigned to this area");
-    const areaTemplateRelation = new AreaTemplateRelationModel({ templateId, areaId });
+    const areaTemplateRelation = new AreaTemplateRelationModel({ areaId, templateId });
     const savedRelation = await areaTemplateRelation.save();
     return Promise.resolve(savedRelation);
   }

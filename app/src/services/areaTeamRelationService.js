@@ -5,7 +5,7 @@ class AreaTeamRelationService {
     const { areaId, teamId } = params;
     if (await AreaTeamRelationModel.findOne({ areaId, teamId }))
       throw new Error("This team is already assigned to this area");
-    const areaTeamRelation = new AreaTeamRelationModel({ teamId, areaId });
+    const areaTeamRelation = new AreaTeamRelationModel({ areaId, teamId });
     const savedRelation = await areaTeamRelation.save();
     return Promise.resolve(savedRelation);
   }

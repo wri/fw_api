@@ -50,11 +50,15 @@ describe("Delete an area", function () {
     expect(areaTeamRelations.length).toBe(1);
     expect(areaTemplateRelations.length).toBe(1);
 
-    nock(config.get("rwAreasAPI.url")).get(`/area/${areaId}`).reply(200, {
-      type: "area",
-      id: areaId,
-      attributes: { userId }
-    });
+    nock(config.get("rwAreasAPI.url"))
+      .get(`/area/${areaId}`)
+      .reply(200, {
+        data: {
+          type: "area",
+          id: areaId,
+          attributes: { userId }
+        }
+      });
 
     nock(config.get("rwAreasAPI.url"))
       .delete(`/area/${areaId}`)
@@ -62,14 +66,16 @@ describe("Delete an area", function () {
 
     nock(config.get("teamsAPI.url"))
       .get(`/teams/user/${USERS.USER.id}`)
-      .reply(200, [
-        {
-          id: teamRelation.teamId,
-          attributes: {
-            userRole: "monitor"
+      .reply(200, {
+        data: [
+          {
+            id: teamRelation.teamId,
+            attributes: {
+              userRole: "monitor"
+            }
           }
-        }
-      ]);
+        ]
+      });
 
     const response = await requester
       .delete(`/v3/forest-watcher/area/${areaId}`)
@@ -89,101 +95,21 @@ describe("Delete an area", function () {
     expect(emptyTemplateRelations.length).toBe(0);
   });
 
-  it("Delete area is successful if user is manager of team associated with area", async function () {
+  it("Delete area is unsuccessful if user didn't create area", async function () {
     mockGetUserFromToken(USERS.USER);
 
     const areaId = new ObjectId();
-    const otherAreaId = new ObjectId();
     const userId = new ObjectId();
 
-    await createAreaTemplateRelation(areaId);
-    await createAreaTemplateRelation(otherAreaId);
-    let teamRelation = await createAreaTeamRelation(areaId, new ObjectId());
-    await createAreaTeamRelation(otherAreaId, new ObjectId());
-
-    let areaTeamRelations = await AreaTeamRelationModel.find({ areaId });
-    let areaTemplateRelations = await AreaTemplateRelationModel.find({ areaId });
-
-    expect(areaTeamRelations.length).toBe(1);
-    expect(areaTemplateRelations.length).toBe(1);
-
-    nock(config.get("rwAreasAPI.url")).get(`/area/${areaId}`).reply(200, {
-      type: "area",
-      id: areaId,
-      attributes: { userId }
-    });
-
     nock(config.get("rwAreasAPI.url"))
-      .delete(`/area/${areaId}`)
-      .reply(200, { data: { id: areaId } });
-
-    nock(config.get("teamsAPI.url"))
-      .get(`/teams/user/${USERS.USER.id}`)
-      .reply(200, [
-        {
-          id: teamRelation.teamId,
-          attributes: {
-            userRole: "manager"
-          }
+      .get(`/area/${areaId}`)
+      .reply(200, {
+        data: {
+          type: "area",
+          id: areaId,
+          attributes: { userId }
         }
-      ]);
-
-    const response = await requester
-      .delete(`/v3/forest-watcher/area/${areaId}`)
-      .set("Authorization", `Bearer abcd`)
-      .send();
-
-    expect(response.status).toBe(204);
-
-    let teamRelations = await AreaTeamRelationModel.find({});
-    let templateRelations = await AreaTemplateRelationModel.find({});
-    let emptyTeamRelations = await AreaTeamRelationModel.find({ areaId });
-    let emptyTemplateRelations = await AreaTemplateRelationModel.find({ areaId });
-
-    expect(teamRelations.length).toBe(1);
-    expect(templateRelations.length).toBe(1);
-    expect(emptyTeamRelations.length).toBe(0);
-    expect(emptyTemplateRelations.length).toBe(0);
-  });
-
-  it("Delete area is unsuccessful if user is monitor of team associated with area", async function () {
-    mockGetUserFromToken(USERS.USER);
-
-    const areaId = new ObjectId();
-    const otherAreaId = new ObjectId();
-    const userId = new ObjectId();
-
-    await createAreaTemplateRelation(areaId);
-    await createAreaTemplateRelation(otherAreaId);
-    let teamRelation = await createAreaTeamRelation(areaId, new ObjectId());
-    await createAreaTeamRelation(otherAreaId, new ObjectId());
-
-    let areaTeamRelations = await AreaTeamRelationModel.find({ areaId });
-    let areaTemplateRelations = await AreaTemplateRelationModel.find({ areaId });
-
-    expect(areaTeamRelations.length).toBe(1);
-    expect(areaTemplateRelations.length).toBe(1);
-
-    nock(config.get("rwAreasAPI.url")).get(`/area/${areaId}`).reply(200, {
-      type: "area",
-      id: areaId,
-      attributes: { userId }
-    });
-
-    nock(config.get("rwAreasAPI.url"))
-      .delete(`/area/${areaId}`)
-      .reply(200, { data: { id: areaId } });
-
-    nock(config.get("teamsAPI.url"))
-      .get(`/teams/user/${USERS.USER.id}`)
-      .reply(200, [
-        {
-          id: teamRelation.teamId,
-          attributes: {
-            userRole: "monitor"
-          }
-        }
-      ]);
+      });
 
     const response = await requester
       .delete(`/v3/forest-watcher/area/${areaId}`)
@@ -195,78 +121,6 @@ describe("Delete an area", function () {
     expect(response.body.errors.length).toBe(1);
     expect(response.body.errors[0]).toHaveProperty("status", 401);
     expect(response.body.errors[0]).toHaveProperty("detail", "You are not authorised to delete this record");
-
-    let teamRelations = await AreaTeamRelationModel.find({});
-    let templateRelations = await AreaTemplateRelationModel.find({});
-    let emptyTeamRelations = await AreaTeamRelationModel.find({ areaId });
-    let emptyTemplateRelations = await AreaTemplateRelationModel.find({ areaId });
-
-    expect(teamRelations.length).toBe(2);
-    expect(templateRelations.length).toBe(2);
-    expect(emptyTeamRelations.length).toBe(1);
-    expect(emptyTemplateRelations.length).toBe(1);
-  });
-
-  it("Delete area is unsuccessful if user is ONLY manager of team NOT associated with area", async function () {
-    mockGetUserFromToken(USERS.USER);
-
-    const areaId = new ObjectId();
-    const otherAreaId = new ObjectId();
-    const teamId1 = new ObjectId();
-    const userId = new ObjectId();
-
-    await createAreaTemplateRelation(areaId);
-    await createAreaTemplateRelation(otherAreaId);
-    await createAreaTeamRelation(areaId, new ObjectId());
-    await createAreaTeamRelation(otherAreaId, new ObjectId());
-
-    let areaTeamRelations = await AreaTeamRelationModel.find({ areaId });
-    let areaTemplateRelations = await AreaTemplateRelationModel.find({ areaId });
-
-    expect(areaTeamRelations.length).toBe(1);
-    expect(areaTemplateRelations.length).toBe(1);
-
-    nock(config.get("rwAreasAPI.url")).get(`/area/${areaId}`).reply(200, {
-      type: "area",
-      id: areaId,
-      attributes: { userId }
-    });
-
-    nock(config.get("rwAreasAPI.url"))
-      .delete(`/area/${areaId}`)
-      .reply(200, { data: { id: areaId } });
-
-    nock(config.get("teamsAPI.url"))
-      .get(`/teams/user/${USERS.USER.id}`)
-      .reply(200, [
-        {
-          id: teamId1,
-          attributes: {
-            userRole: "manager"
-          }
-        }
-      ]);
-
-    const response = await requester
-      .delete(`/v3/forest-watcher/area/${areaId}`)
-      .set("Authorization", `Bearer abcd`)
-      .send();
-
-    expect(response.status).toBe(401);
-    expect(response.body).toHaveProperty("errors");
-    expect(response.body.errors.length).toBe(1);
-    expect(response.body.errors[0]).toHaveProperty("status", 401);
-    expect(response.body.errors[0]).toHaveProperty("detail", "You are not authorised to delete this record");
-
-    let teamRelations = await AreaTeamRelationModel.find({});
-    let templateRelations = await AreaTemplateRelationModel.find({});
-    let emptyTeamRelations = await AreaTeamRelationModel.find({ areaId });
-    let emptyTemplateRelations = await AreaTemplateRelationModel.find({ areaId });
-
-    expect(teamRelations.length).toBe(2);
-    expect(templateRelations.length).toBe(2);
-    expect(emptyTeamRelations.length).toBe(1);
-    expect(emptyTemplateRelations.length).toBe(1);
   });
 
   afterEach(async function () {

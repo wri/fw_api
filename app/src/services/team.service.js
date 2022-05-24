@@ -16,9 +16,9 @@ class TeamService {
           authorization: loggedInUserService.token
         }
       });
-      const teams = response.data.data;
+      const teams = response.data;
       logger.info("Got users teams", teams);
-      return teams;
+      return teams && teams.data;
     } catch (e) {
       logger.error("Error while fetching teams", e);
       return null; // log the error but still return
@@ -37,9 +37,9 @@ class TeamService {
           authorization: loggedInUserService.token
         }
       });
-      const team = response.data.data;
+      const team = response.data;
       logger.info("Got team", team);
-      return team;
+      return team && team.data;
     } catch (e) {
       logger.error("Error while fetching team", e);
       return null; // log the error but still return

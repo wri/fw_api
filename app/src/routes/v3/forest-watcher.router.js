@@ -337,11 +337,6 @@ const isAuthenticatedMiddleware = async (ctx, next) => {
 router.get("/area/teams", isAuthenticatedMiddleware, ForestWatcherRouter.getUserTeamsAreas);
 router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
 
-// individual areas
-router.get("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getArea);
-router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
-router.delete("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.deleteArea);
-
 // teams associated with an area
 router.get("/area/areaTeams/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getAreaTeams);
 
@@ -361,6 +356,12 @@ router.delete(
   ForestWatcherRouter.deleteTemplateRelation
 );
 router.delete("/area/templates", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTemplateRelations);
+
+// individual areas
+router.get("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getArea);
+router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
+router.delete("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.deleteArea);
+
 
 router.get("/test", async ctx => {
   ctx.body = {

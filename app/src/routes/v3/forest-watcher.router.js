@@ -362,7 +362,6 @@ router.get("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getArea);
 router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
 router.delete("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.deleteArea);
 
-
 router.get("/test", async ctx => {
   ctx.body = {
     relations: await AreaTemplateRelationModel.find()

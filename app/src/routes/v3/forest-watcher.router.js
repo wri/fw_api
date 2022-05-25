@@ -166,7 +166,7 @@ class ForestWatcherRouter {
         // format areas
         data = await ForestWatcherFunctions.buildAreasResponse(userAreas);
       } catch (error) {
-        ctx.throw(error.status, "Error while retrieving areas");
+        ctx.throw(error.status, "Error while retrieving areas", error);
       }
     }
     ctx.body = {

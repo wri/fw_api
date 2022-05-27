@@ -157,6 +157,7 @@ class ForestWatcherRouter {
         const userAreas = await AreasService.getUserAreas(user.id);
         // get a users teams
         const userTeams = await TeamService.getUserTeams(user.id); // get list of user's teams
+
         //get areas for each team
         for await (const team of userTeams) {
           let teamAreas = await AreaTeamRelationService.getAllAreasForTeam(team.id);
@@ -166,7 +167,7 @@ class ForestWatcherRouter {
         // format areas
         data = await ForestWatcherFunctions.buildAreasResponse(userAreas);
       } catch (error) {
-        ctx.throw(error.status, "Error while retrieving areas", error);
+        ctx.throw(error.status, "Error while retrieving areas");
       }
     }
     ctx.body = {

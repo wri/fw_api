@@ -13,7 +13,8 @@ const koaBody = require("koa-body")({
   multipart: true,
   jsonLimit: "50mb",
   formLimit: "50mb",
-  textLimit: "50mb"
+  textLimit: "50mb",
+  fileLimit: "50mb"
 });
 const Sentry = require("@sentry/node");
 

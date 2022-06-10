@@ -200,8 +200,8 @@ class ForestWatcherRouter {
 
   static async createArea(ctx) {
     const user = ForestWatcherFunctions.getUser(ctx);
-    const { geojson, name } = ctx.request.body.fields || {};
-    const { image } = ctx.request.body.files;
+    const { geojson, name } = ctx.request.body || {};
+    const { image } = ctx.request.files;
     let data = null;
     if (user && user.id) {
       try {

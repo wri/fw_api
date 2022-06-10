@@ -3,10 +3,11 @@ const AreaNotValid = require("errors/areaNotValid.error");
 
 class AreaValidator {
   static async validateCreation(ctx, next) {
+    console.log("**********",ctx.request.file)
     logger.info("Validating area creation");
     ctx.checkBody("name").notEmpty();
     ctx.checkBody("geojson").notEmpty().isJSON();
-    ctx.checkFile("image").notEmpty();
+    //ctx.checkFile("image").notEmpty();
     if (ctx.errors) {
       logger.info("Error validating dataset creation");
 

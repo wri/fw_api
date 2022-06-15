@@ -67,7 +67,9 @@ class ForestWatcherFunctions {
       );
     }
     try {
+      console.log("*********** resolving promises", promises)
       const data = await Promise.all(promises);
+      console.log(data)
       const [templatesData, geostoreData, coverageData] = data;
 
       return areasWithGeostore.map((area, index) => {
@@ -202,6 +204,7 @@ class ForestWatcherRouter {
     const user = ForestWatcherFunctions.getUser(ctx);
     const { geojson, name } = ctx.request.body || {};
     const { image } = ctx.request.files;
+    console.log(image)
     let data = null;
     if (user && user.id) {
       try {
@@ -306,8 +309,10 @@ class ForestWatcherRouter {
   }
 
   static async getTeamAreas(ctx) {
+    console.log("**********",ctx.request.params)
     let team = await TeamService.getTeam(ctx.request.params.id);
-    if (!team.id) ctx.throw(404, "Team doesn't exist");
+    console.log("**********",team)
+    if (!team) ctx.throw(404, "Team doesn't exist");
     const ids = await AreaTeamRelationService.getAllAreasForTeam(ctx.request.params.id);
     let data = [];
     for await (const id of ids) {

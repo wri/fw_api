@@ -134,8 +134,9 @@ class ForestWatcherRouter {
 
   static async createArea(ctx) {
     const user = ForestWatcherRouter.getUser(ctx);
-    const { geojson, name } = ctx.request.body.fields || {};
-    const { image } = ctx.request.body.files;
+    const { geojson, name } = ctx.request.body || {};
+    const { image } = ctx.request.files;
+    console.log(image)
     let data = null;
     if (user && user.id) {
       try {
@@ -159,7 +160,7 @@ class ForestWatcherRouter {
         }
       } catch (e) {
         logger.error(e);
-        ctx.throw(e.status, "Error while creating area");
+        ctx.throw(e, "Error while creating area");
       }
     }
     ctx.body = {

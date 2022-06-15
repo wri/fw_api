@@ -6,6 +6,7 @@ const CoverageService = require("services/coverage.service");
 const GeoStoreService = require("services/geostore.service");
 const config = require("config");
 const loggedInUserService = require("./LoggedInUserService");
+const fs = require('fs')
 
 const ALERTS_SUPPORTED = config.get("alertsSupported");
 
@@ -104,7 +105,9 @@ class AreasService {
       const form = new FormData();
       form.append("name", name);
       form.append("geostore", geostore.id);
-      form.append("image", createReadStream(image.path));
+      form.append("image", fs.createReadStream(image.path));
+
+console.log("****************", name, geostore.id, userId)
 
       const response = await axios.default({
         baseURL,
@@ -117,6 +120,7 @@ class AreasService {
         data: form
       });
       area = response.data;
+      console.log(response.data)
       logger.info("Area created", area);
       return { geostore, area: area.data, coverage };
     } catch (e) {

@@ -136,7 +136,10 @@ class ForestWatcherRouter {
     const user = ForestWatcherRouter.getUser(ctx);
     const { geojson, name } = ctx.request.body || {};
     const { image } = ctx.request.files;
+<<<<<<< HEAD
     console.log(image)
+=======
+>>>>>>> dev
     let data = null;
     if (user && user.id) {
       try {

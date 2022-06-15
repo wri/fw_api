@@ -157,6 +157,7 @@ class ForestWatcherRouter {
         const userAreas = await AreasService.getUserAreas(user.id);
         // get a users teams
         const userTeams = await TeamService.getUserTeams(user.id); // get list of user's teams
+
         //get areas for each team
         for await (const team of userTeams) {
           let teamAreas = await AreaTeamRelationService.getAllAreasForTeam(team.id);
@@ -166,7 +167,7 @@ class ForestWatcherRouter {
         // format areas
         data = await ForestWatcherFunctions.buildAreasResponse(userAreas);
       } catch (error) {
-        ctx.throw(error.status, "Error while retrieving areas", error);
+        ctx.throw(error.status, "Error while retrieving areas");
       }
     }
     ctx.body = {
@@ -199,8 +200,8 @@ class ForestWatcherRouter {
 
   static async createArea(ctx) {
     const user = ForestWatcherFunctions.getUser(ctx);
-    const { geojson, name } = ctx.request.body.fields || {};
-    const { image } = ctx.request.body.files;
+    const { geojson, name } = ctx.request.body || {};
+    const { image } = ctx.request.files;
     let data = null;
     if (user && user.id) {
       try {
@@ -358,7 +359,6 @@ router.delete("/area/templates", isAuthenticatedMiddleware, ForestWatcherRouter.
 router.get("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getArea);
 router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
 router.delete("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.deleteArea);
-
 
 router.get("/test", async ctx => {
   ctx.body = {

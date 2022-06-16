@@ -124,7 +124,7 @@ module "route53_healthcheck" {
 module "microservice_token_secret" {
   source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.5.1"
   project       = var.project_prefix
-  name          = "fs-service-token"
+  name          = "fw-service-token"
 }
 
 #

@@ -99,4 +99,5 @@ variable "healthcheck_sns_emails" {
 
 variable "microservice_token_secret_string" {
   type    = string
+  default = ""
 }

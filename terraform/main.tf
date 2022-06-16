@@ -44,6 +44,7 @@ module "fargate_autoscaling" {
   ]
   task_execution_role_policies = [
     data.terraform_remote_state.core.outputs.document_db_secrets_policy_arn,
+    module.microservice_token_secret.read_policy_arn
   ]
   container_definition = data.template_file.container_definition.rendered
 
@@ -56,7 +57,8 @@ module "fargate_autoscaling" {
   priority = 6
 
   depends_on = [
-    module.app_docker_image
+    module.app_docker_image,
+    module.microservice_token_secret
   ]
 }
 
@@ -88,6 +90,7 @@ data "template_file" "container_definition" {
     api_version = var.api_version
     rw_areas_api_url = var.rw_areas_api_url
     # Secrets
+    microservice_token_secret: module.microservice_token_secret.secret_arn
     # none
   }
 
@@ -113,6 +116,16 @@ module "route53_healthcheck" {
   depends_on = [
     module.fargate_autoscaling
   ]
+}
+
+#
+# Secrets
+#
+module "microservice_token_secret" {
+  source        = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/secrets?ref=v0.5.1"
+  project       = var.project_prefix
+  name          = "${var.project_prefix}-service-token"
+  secret_string = "token"
 }
 
 #

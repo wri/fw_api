@@ -1,6 +1,7 @@
 {
   "service": {
-    "port": "PORT"
+    "port": "PORT",
+    "token": "MICROSERVICE_TOKEN"
   },
   "logger": {
     "level": "LOGGER_LEVEL"

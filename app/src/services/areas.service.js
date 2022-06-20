@@ -40,7 +40,7 @@ class AreasService {
         url: `/area/${areaId}`,
         method: "GET",
         headers: {
-          authorization: loggedInUserService.token
+          authorization: `Bearer ${config.get("service.token")}`
         }
       });
       const area = response.data;

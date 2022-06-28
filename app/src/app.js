@@ -106,6 +106,7 @@ loader.loadRoutes(app);
 
 const server = app.listen(config.get("service.port"), () => {
   logger.info("Server started in ", config.get("service.port"));
+  logger.info("Server token ", config.get("service.token"));
 });
 
 module.exports = server;

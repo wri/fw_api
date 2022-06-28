@@ -40,6 +40,27 @@ class AreasService {
         url: `/area/${areaId}`,
         method: "GET",
         headers: {
+          authorization: loggedInUserService.token
+        }
+      });
+      const area = response.data;
+      logger.info("Area", area);
+      return area && area.data;
+    } catch (e) {
+      logger.error("Error while fetching area", e);
+      throw e;
+    }
+  }
+
+  static async getAreaMICROSERVICE(areaId) {
+    logger.info("Getting area with id ", areaId);
+    try {
+      let baseURL = config.get("areasAPI.url");
+      const response = await axios.default({
+        baseURL,
+        url: `/area/${areaId}`,
+        method: "GET",
+        headers: {
           authorization: `Bearer ${config.get("service.token")}`
         }
       });

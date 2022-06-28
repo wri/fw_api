@@ -61,7 +61,7 @@ paths:
     parameters: []
   /v3/forest-watcher/area:
     get:
-      summary: v3 All user areas
+      summary: Get All User Areas
       tags:
         - v3
       responses:
@@ -901,7 +901,7 @@ paths:
       operationId: get-v3-forest-watcher-area
       description: Retrieve areas for the logged in user
     post:
-      summary: Create area
+      summary: Create an Area
       operationId: post-v3-forest-watcher-area
       responses:
         '200':
@@ -921,7 +921,7 @@ paths:
         - v3
   /v3/forest-watcher/area/teams:
     get:
-      summary: v3 All user areas and their teams areas
+      summary: Get All User Areas and All Their Teams Areas
       tags:
         - v3
       responses:
@@ -1763,7 +1763,7 @@ paths:
     parameters: []
   '/v3/forest-watcher/area/{areaId}':
     get:
-      summary: v3 Single area by id
+      summary: Get Single Area By Id
       tags:
         - v3
       responses:
@@ -2623,7 +2623,7 @@ paths:
         in: path
         required: true
     delete:
-      summary: Delete an area
+      summary: Delete an area by id
       operationId: delete-v3-forest-watcher-area-areaId
       responses:
         '204':
@@ -2634,7 +2634,7 @@ paths:
       tags:
         - v3
     patch:
-      summary: ''
+      summary: Update an area by id
       operationId: patch-v3-forest-watcher-area-areaId
       responses:
         '200':
@@ -2646,9 +2646,11 @@ paths:
             schema:
               type: object
         description: 'Form data can include an image file, a name field and/or a geojson field'
+      tags:
+        - v3
   '/v3/forest-watcher/area/teamAreas/{teamId}':
     get:
-      summary: v3 Get all areas associated with a team
+      summary: Get All Team Areas By Team Id
       tags:
         - v3
       responses:
@@ -2679,7 +2681,7 @@ paths:
         required: true
   '/v3/forest-watcher/area/areaTeams/{areaId}':
     get:
-      summary: v3 Get all teams associated with area
+      summary: Get All Teams Associated With An Area Id
       tags:
         - v3
       responses:
@@ -3556,7 +3558,7 @@ paths:
         in: path
         required: true
     post:
-      summary: v3 Associate area with template
+      summary: Associate Area with Template
       operationId: post-v3-forest-watcher-area-areaId-template-templateId
       responses:
         '200':
@@ -3594,7 +3596,7 @@ paths:
         in: path
         required: true
     post:
-      summary: v3 Associate area with team
+      summary: Associate area with team
       operationId: post-v3-forest-watcher-area-areaId-team-teamId
       responses:
         '200':

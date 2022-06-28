@@ -33,22 +33,19 @@ class ForestWatcherFunctions {
   static async buildAreasResponse(areas = [], objects = {}) {
     const { geostoreObj, coverageObj } = objects;
     const areasWithGeostore = areas.filter(area => area.attributes.geostore);
-    const promises = [
-      Promise.all(
-        areasWithGeostore.map(async area => {
-          const templates = await AreaTemplateRelationService.getAllTemplatesForArea(area.id);
-          return Promise.all(
-            templates.map(async template => {
-              try {
-                return TemplatesService.getTemplate(template);
-              } catch (error) {
-                return null;
-              }
-            })
-          );
-        })
-      )
-    ];
+    const promises = [];
+    const templatesData = areasWithGeostore.map(async area => {
+      const templates = await AreaTemplateRelationService.getAllTemplatesForArea(area.id);
+      if (templates.length > 0)
+        return templates.map(async template => {
+          try {
+            return await TemplatesService.getTemplate(template);
+          } catch (error) {
+            return null;
+          }
+        });
+      else return [];
+    });
 
     if (!geostoreObj) {
       promises.push(Promise.all(areasWithGeostore.map(area => GeoStoreService.getGeostore(area.attributes.geostore))));
@@ -68,7 +65,7 @@ class ForestWatcherFunctions {
     }
     try {
       const data = await Promise.all(promises);
-      const [templatesData, geostoreData, coverageData] = data;
+      const [geostoreData, coverageData] = data;
 
       return areasWithGeostore.map((area, index) => {
         const geostore = geostoreObj || geostoreData[index] || {};
@@ -233,6 +230,46 @@ class ForestWatcherRouter {
     };
   }
 
+  static async updateArea(ctx) {
+    const user = ForestWatcherFunctions.getUser(ctx);
+    // get the area
+    let existingArea = await AreasService.getArea(ctx.request.params.id);
+    if (!existingArea) ctx.throw(404, "Area not found");
+
+    const geojson = ctx.request.body.geojson;
+    const name = ctx.request.body.name;
+    const image = ctx.request.files.image;
+    let data = null;
+    if (user && user.id) {
+      try {
+        const { area, geostore, coverage } = await AreasService.updateAreaWithGeostore(
+          {
+            name,
+            image
+          },
+          geojson ? JSON.parse(geojson) : null,
+          existingArea
+        );
+        logger.info("Updated area", area, geostore, coverage);
+        try {
+          [data] = await ForestWatcherFunctions.buildAreasResponse([area], {
+            geostore,
+            coverage
+          });
+        } catch (e) {
+          logger.error(e);
+          ctx.throw(e.status, "Error while retrieving area's template");
+        }
+      } catch (e) {
+        logger.error(e);
+        ctx.throw(e.status, "Error while updating area");
+      }
+    }
+    ctx.body = {
+      data
+    };
+  }
+
   static async deleteArea(ctx) {
     // check permissions. Only the user who created the area can delete the area.
     // get user
@@ -358,6 +395,7 @@ router.delete("/area/templates", isAuthenticatedMiddleware, ForestWatcherRouter.
 // individual areas
 router.get("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getArea);
 router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
+router.patch("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.updateArea);
 router.delete("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.deleteArea);
 
 router.get("/test", async ctx => {

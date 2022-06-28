@@ -159,7 +159,7 @@ class ForestWatcherRouter {
         }
       } catch (e) {
         logger.error(e);
-        ctx.throw(e.status, "Error while creating area");
+        ctx.throw(e, "Error while creating area");
       }
     }
     ctx.body = {

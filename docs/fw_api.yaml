@@ -913,12 +913,10 @@ paths:
       description: Create a new area
       requestBody:
         content:
-          application/json:
+          multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Area'
-        description: |-
-          {
-          }
+              type: object
+        description: 'Form data should be in form of: an image file and a body containing name and geojson'
       tags:
         - v3
   /v3/forest-watcher/area/teams:
@@ -2635,6 +2633,19 @@ paths:
       description: 'Delete an area which the logged in user has either created, or is associated with a team they are manager of'
       tags:
         - v3
+    patch:
+      summary: ''
+      operationId: patch-v3-forest-watcher-area-areaId
+      responses:
+        '200':
+          description: OK
+      description: Update an area
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+        description: 'Form data can include an image file, a name field and/or a geojson field'
   '/v3/forest-watcher/area/teamAreas/{teamId}':
     get:
       summary: v3 Get all areas associated with a team

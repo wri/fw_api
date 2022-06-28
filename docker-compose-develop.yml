@@ -16,7 +16,7 @@ services:
       DB_DATABASE: fw_api_db
       CONTROL_TOWER_URL: https://staging-api.resourcewatch.org
       LOCAL_URL: http://127.0.0.1:4400
-      FORMS_API_URL: https://staging-api.resourcewatch.org/v1
+      FORMS_API_URL: https://dev-fw-api.globalforestwatch.org/v3
       AREAS_API_URL: https://staging-api.resourcewatch.org/v1
       RW_AREAS_API_URL: https://staging-api.resourcewatch.org/v2
       GEOSTORE_API_URL: https://staging-api.resourcewatch.org/v1
@@ -55,7 +55,7 @@ services:
       - ./app:/opt/forest-watcher/app
       - ./nodemon.json:/opt/forest-watcher/nodemon.json
       - ./jest.config.js:/opt/forest-watcher/jest.config.js
-    command: yarn test:jest app/src/test/jest/areas-get.spec.js --runInBand
+    command: yarn test:jest app/src/test/jest/teamAreas.spec.js --runInBand
     depends_on:
       - mongo
     networks:

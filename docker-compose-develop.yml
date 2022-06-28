@@ -22,6 +22,7 @@ services:
       GEOSTORE_API_URL: https://staging-api.resourcewatch.org/v1
       TEAMS_API_URL: "https://dev-fw-api.globalforestwatch.org/v3"
       API_VERSION: v1
+      MICROSERVICE_TOKEN: ${microservice_token}
     volumes:
       - ./app:/opt/forest-watcher/app
       - ./config:/opt/fw-service-template/config

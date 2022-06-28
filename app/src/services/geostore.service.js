@@ -28,7 +28,6 @@ class GeostoreService {
 
   static async createGeostore(geojson) {
     try {
-      console.log("***************", geojson);
       let baseURL = config.get("geostoreAPI.url");
       const response = await axios.default({
         baseURL,

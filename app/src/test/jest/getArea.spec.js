@@ -116,6 +116,8 @@ describe("Get one area", function () {
 
         const response = await requester.get(`/v3/forest-watcher/area/${areaId}`).set("Authorization", `Bearer abcd`);
 
+        
+
         expect(response.status).toEqual(200);
         expect(response.body).toHaveProperty("data")
         expect(response.body.data).toHaveProperty("teams")

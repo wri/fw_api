@@ -25,7 +25,7 @@ describe("Get all areas for a given team", function () {
         await AreaTeamRelationModel.deleteMany({}).exec();
     });
 
-    it('Get areas as an anonymous user should return an "Not logged" error with matching 401 HTTP code', async function () {
+     it('Get areas as an anonymous user should return an "Not logged" error with matching 401 HTTP code', async function () {
         const response = await requester.get(`/v3/forest-watcher/area/teamAreas/1`).send();
 
         response.status.should.equal(401);
@@ -57,7 +57,7 @@ describe("Get all areas for a given team", function () {
         response.body.errors[0].should.have.property("status").and.equal(404);
         response.body.errors[0].should.have.property("detail").and.equal("Team doesn't exist");
     });
-
+ 
     it("Get team areas should be successful and return an array of ids", async function () {
         mockGetUserFromToken(USERS.USER);
 
@@ -119,8 +119,8 @@ describe("Get all areas for a given team", function () {
         const area1 = response.body.data[0];
         const area2 = response.body.data[1];
 
-        expect(area1.id).toEqual(areaId1.toString());
-        expect(area2.id).toEqual(areaId2.toString());
+        expect(area1).toEqual(areaId1.toString());
+        expect(area2).toEqual(areaId2.toString());
 
     });
 

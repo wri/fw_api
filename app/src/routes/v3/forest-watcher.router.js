@@ -34,18 +34,16 @@ class ForestWatcherFunctions {
     const { geostoreObj, coverageObj } = objects;
     const areasWithGeostore = areas.filter(area => area.attributes.geostore);
     const promises = [];
-    const templatesData = areasWithGeostore.map(async area => {
-      const templates = await AreaTemplateRelationService.getAllTemplatesForArea(area.id);
-      if (templates.length > 0)
-        return templates.map(async template => {
-          try {
-            return await TemplatesService.getTemplate(template);
-          } catch (error) {
-            return null;
-          }
-        });
-      else return [];
-    });
+
+    let templatesData = [];
+    for await (const area of areasWithGeostore) {
+      const templateIds = await AreaTemplateRelationService.getAllTemplatesForArea(area.id);
+      let templates = [];
+      for await (const id of templateIds) {
+        templates.push(await TemplatesService.getTemplate(id));
+      }
+      templatesData.push(templates);
+    }
 
     if (!geostoreObj) {
       promises.push(Promise.all(areasWithGeostore.map(area => GeoStoreService.getGeostore(area.attributes.geostore))));
@@ -138,7 +136,7 @@ class ForestWatcherRouter {
           ctx.throw(e.status, "Error while retrieving area's geostore, template, and coverage");
         }
       } catch (e) {
-        ctx.throw(e.status, "Error while retrieving area");
+        ctx.throw(e.status, "Error while retrieving areas");
       }
     }
     ctx.body = {

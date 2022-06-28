@@ -1,11 +1,11 @@
-const AreaTemplateRelationService = require("./areaTemplateRelationService");
+const AreaTemplateRelationService = require("../../services/areaTemplateRelationService");
 const { AreaTemplateRelationModel } = require("models");
 const { ObjectId } = require("mongoose").Types;
-const { getTestServer } = require("../test/jest/utils/test-server");
-const { createAreaTemplateRelation } = require("../test/jest/utils/helpers");
-const { getAllTemplatesForArea } = require("./areaTemplateRelationService");
-const { USERS } = require("../test/jest/utils/test.constants");
-const { mockGetUserFromToken } = require("../test/jest/utils/helpers");
+const { getTestServer } = require("./utils/test-server");
+const { createAreaTemplateRelation } = require("./utils/helpers");
+const { getAllTemplatesForArea } = require("../../services/areaTemplateRelationService");
+const { USERS } = require("./utils/test.constants");
+const { mockGetUserFromToken } = require("./utils/helpers");
 const nock = require("nock");
 const config = require("config");
 

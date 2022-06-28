@@ -45,13 +45,14 @@ services:
       FORMS_API_URL: http://127.0.0.1:9000
       AREAS_API_URL: http://127.0.0.1:9000
       GEOSTORE_API_URL: http://127.0.0.1:9000
-      TEAMS_API_URL: "https://dev-fw-api.globalforestwatch.org/v3"
-      RW_AREAS_API_URL: https://staging-api.resourcewatch.org/v2
+      TEAMS_API_URL: http://127.0.0.1:9000
+      RW_AREAS_API_URL: http://127.0.0.1:9000
       API_VERSION: v1
       MONGODB_HOST: mongo
       MONGODB_PORT: 27017
       DB_SECRET: '{ "username": "admin", "password": "password" }'
       DB_DATABASE: fw_api_db
+      MICROSERVICE_TOKEN: ${microservice_token}
     volumes:
       - ./app:/opt/forest-watcher/app
       - ./nodemon.json:/opt/forest-watcher/nodemon.json

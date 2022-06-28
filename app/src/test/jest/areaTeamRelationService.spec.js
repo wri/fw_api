@@ -1,9 +1,9 @@
-const AreaTeamRelationService = require("./areaTeamRelationService");
+const AreaTeamRelationService = require("../../services/areaTeamRelationService");
 const { AreaTeamRelationModel } = require("models");
 const { ObjectId } = require("mongoose").Types;
-const { getTestServer } = require("../test/jest/utils/test-server");
-const { createAreaTeamRelation } = require("../test/jest/utils/helpers");
-const { getAllTeamsForArea } = require("./areaTeamRelationService");
+const { getTestServer } = require("./utils/test-server");
+const { createAreaTeamRelation } = require("./utils/helpers");
+const { getAllTeamsForArea } = require("../../services/areaTeamRelationService");
 
 describe("Create relation using the areas team relation service", function () {
   beforeEach(async function () {

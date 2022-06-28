@@ -1,12 +1,11 @@
 const axios = require("axios");
 const logger = require("logger");
 const FormData = require("form-data");
-const { createReadStream } = require("fs");
 const CoverageService = require("services/coverage.service");
 const GeoStoreService = require("services/geostore.service");
 const config = require("config");
 const loggedInUserService = require("./LoggedInUserService");
-const fs = require('fs')
+const fs = require("fs");
 
 const ALERTS_SUPPORTED = config.get("alertsSupported");
 
@@ -107,8 +106,6 @@ class AreasService {
       form.append("geostore", geostore.id);
       form.append("image", fs.createReadStream(image.path));
 
-console.log("****************", name, geostore.id, userId)
-
       const response = await axios.default({
         baseURL,
         url: `/area/fw/${userId}`,
@@ -120,11 +117,66 @@ console.log("****************", name, geostore.id, userId)
         data: form
       });
       area = response.data;
-      console.log(response.data)
       logger.info("Area created", area);
       return { geostore, area: area.data, coverage };
     } catch (e) {
       logger.error("Error while creating area with geostore", e);
+      throw e;
+    }
+  }
+
+  static async updateAreaWithGeostore({ name, image }, geojson, existingArea) {
+    if (name) logger.info("Start area update with params", { name, userId: existingArea.attributes.userId });
+    if (geojson) logger.info("Start area update with geojson", geojson);
+    if (image) logger.info("Start area update with image", image);
+
+    let geostore;
+    let coverage;
+
+    if (geojson) {
+      try {
+        const geostoreResponse = await GeoStoreService.createGeostore(geojson);
+        geostore = geostoreResponse.id;
+      } catch (e) {
+        logger.error("Error while creating geostore", e);
+        throw e;
+      }
+    } else geostore = existingArea.attributes.geostore;
+
+    try {
+      const params = {
+        geostoreId: geostore,
+        slugs: ALERTS_SUPPORTED
+      };
+      coverage = await CoverageService.getCoverage(params);
+    } catch (e) {
+      logger.error("Error while getting area coverage", e);
+      throw e;
+    }
+    try {
+      logger.info("Updating area with geostore and coverage ready");
+      let baseURL = config.get("rwAreasAPI.url");
+
+      const form = new FormData();
+      if (name) form.append("name", name);
+      form.append("geostore", geostore);
+      if (image) form.append("image", fs.createReadStream(image.path));
+
+      const response = await axios.default({
+        baseURL,
+        url: `/area/${existingArea.id}`,
+        method: "PATCH",
+        headers: {
+          ...form.getHeaders(),
+          authorization: loggedInUserService.token
+        },
+        data: form
+      });
+      const updatedArea = response.data;
+      logger.info("Area updated", updatedArea);
+      return { geostore, area: updatedArea.data, coverage };
+    } catch (e) {
+      logger.error("Error while updating area with geostore", e);
       throw e;
     }
   }

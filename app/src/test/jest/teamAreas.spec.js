@@ -43,9 +43,7 @@ describe("Get all areas for a given team", function () {
             .persist()
             .get(`/teams/${teamId}`)
             .reply(200,
-                {data: {
-
-                }
+                {data: null
             }
             );
 

@@ -13,7 +13,7 @@ class AreasService {
   static async getUserAreas(userId) {
     logger.info("Get user areas", userId);
     try {
-      let baseURL = config.get("rwAreasAPI.url");
+      let baseURL = config.get("areasAPI.url");
       const response = await axios.default({
         baseURL,
         url: `/area/fw`,
@@ -34,7 +34,7 @@ class AreasService {
   static async getArea(areaId) {
     logger.info("Getting area with id ", areaId);
     try {
-      let baseURL = config.get("areasAPI.url");
+      let baseURL = config.get("rwAreasAPI.url");
       const response = await axios.default({
         baseURL,
         url: `/area/${areaId}`,

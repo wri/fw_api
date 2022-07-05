@@ -39,7 +39,6 @@ class ForestWatcherFunctions {
     for await (const area of areasWithGeostore) {
       const templateIds = await AreaTemplateRelationService.getAllTemplatesForArea(area.id);
       let templates = [];
-      console.log("***********", templateIds);
       for await (const id of templateIds) {
         templates.push(await TemplatesService.getTemplate(id));
       }
@@ -169,7 +168,7 @@ class ForestWatcherRouter {
         // format areas
         data = await ForestWatcherFunctions.buildAreasResponse(userAreas);
       } catch (error) {
-        ctx.throw(error.status, "Error while retrieving areas", error);
+        ctx.throw(error.status, "Error while retrieving areas");
       }
     }
     ctx.body = {

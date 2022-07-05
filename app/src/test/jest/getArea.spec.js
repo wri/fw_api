@@ -73,7 +73,7 @@ describe("Get one area", function () {
         nock(config.get("teamsAPI.url"))
             .get(`/teams/user/1a10d7c6e0a37126611fd7a5`)
             .reply(200, {
-                data: [ team1, team2 ]
+                data: [team1, team2]
             }
             );
 
@@ -100,13 +100,13 @@ describe("Get one area", function () {
                 data: template1
             }
             );
-            nock(config.get("formsAPI.url"))
+        nock(config.get("formsAPI.url"))
             .get(`/reports/${template2.id}`)
             .reply(200, {
                 data: template2
             }
             );
-            nock(config.get("formsAPI.url"))
+        nock(config.get("formsAPI.url"))
             .get(`/reports/${template3.id}`)
             .reply(200, {
                 data: template3
@@ -116,7 +116,7 @@ describe("Get one area", function () {
 
         const response = await requester.get(`/v3/forest-watcher/area/${areaId}`).set("Authorization", `Bearer abcd`);
 
-        
+
 
         expect(response.status).toEqual(200);
         expect(response.body).toHaveProperty("data")

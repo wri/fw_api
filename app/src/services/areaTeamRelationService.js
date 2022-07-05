@@ -1,4 +1,5 @@
 const { AreaTeamRelationModel } = require("models");
+const logger = require("logger");
 
 class AreaTeamRelationService {
   static async create(params) {
@@ -11,12 +12,16 @@ class AreaTeamRelationService {
   }
 
   static async getAllTeamsForArea(areaId) {
+    logger.info("Get area team ids for area id", areaId);
     const relations = await AreaTeamRelationModel.find({ areaId });
+    logger.info("Got area team ids for area id", areaId, relations);
     return Promise.resolve(relations.map(relation => relation.teamId));
   }
 
   static async getAllAreasForTeam(teamId) {
+    logger.info("Get team area ids for team id", teamId);
     const relations = await AreaTeamRelationModel.find({ teamId });
+    logger.info("Got team area ids for team id", teamId, relations);
     return Promise.resolve(relations.map(relation => relation.areaId));
   }
 

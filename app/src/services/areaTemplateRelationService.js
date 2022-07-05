@@ -1,4 +1,5 @@
 const { AreaTemplateRelationModel } = require("models");
+const logger = require("logger");
 
 class AreaTemplateRelationService {
   static async create(params) {
@@ -11,7 +12,9 @@ class AreaTemplateRelationService {
   }
 
   static async getAllTemplatesForArea(areaId) {
+    logger.info("Get area template ids for area id", areaId);
     const relations = await AreaTemplateRelationModel.find({ areaId });
+    logger.info("Got area template ids for area id", areaId, relations);
     return Promise.resolve(relations.map(relation => relation.templateId));
   }
 

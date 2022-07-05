@@ -39,6 +39,7 @@ class ForestWatcherFunctions {
     for await (const area of areasWithGeostore) {
       const templateIds = await AreaTemplateRelationService.getAllTemplatesForArea(area.id);
       let templates = [];
+      console.log("***********", templateIds);
       for await (const id of templateIds) {
         templates.push(await TemplatesService.getTemplate(id));
       }
@@ -147,22 +148,32 @@ class ForestWatcherRouter {
   static async getUserTeamsAreas(ctx) {
     const user = ForestWatcherFunctions.getUser(ctx);
     let data = [];
+    let areaHash = {};
     if (user && user.id) {
       try {
         const userAreas = await AreasService.getUserAreas(user.id);
+        userAreas.forEach(area => (areaHash[area.id] = 1));
         // get a users teams
         const userTeams = await TeamService.getUserTeams(user.id); // get list of user's teams
-
+        userAreas.forEach(area => (area.attributes.team = null));
         //get areas for each team
         for await (const team of userTeams) {
           let teamAreas = await AreaTeamRelationService.getAllAreasForTeam(team.id);
           // get full area for each array member and push to user areas array
-          for await (const area of teamAreas) userAreas.push(await AreasService.getAreaMICROSERVICE(area));
+          for await (const teamAreaId of teamAreas) {
+            if (areaHash[teamAreaId] !== 1) {
+              let area = await AreasService.getAreaMICROSERVICE(teamAreaId);
+              area.attributes.team = team.id;
+              userAreas.push(area);
+              areaHash[teamAreaId] = 1;
+            }
+          }
         }
+
         // format areas
         data = await ForestWatcherFunctions.buildAreasResponse(userAreas);
       } catch (error) {
-        ctx.throw(error.status, "Error while retrieving areas");
+        ctx.throw(error.status, "Error while retrieving areas", error);
       }
     }
     ctx.body = {

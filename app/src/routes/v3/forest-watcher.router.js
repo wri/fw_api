@@ -148,11 +148,10 @@ class ForestWatcherRouter {
   static async getUserTeamsAreas(ctx) {
     const user = ForestWatcherFunctions.getUser(ctx);
     let data = [];
-    let areaHash = {};
+
     if (user && user.id) {
       try {
         const userAreas = await AreasService.getUserAreas(user.id);
-        userAreas.forEach(area => (areaHash[area.id] = 1));
         // get a users teams
         const userTeams = await TeamService.getUserTeams(user.id); // get list of user's teams
         userAreas.forEach(area => (area.attributes.team = null));
@@ -161,12 +160,9 @@ class ForestWatcherRouter {
           let teamAreas = await AreaTeamRelationService.getAllAreasForTeam(team.id);
           // get full area for each array member and push to user areas array
           for await (const teamAreaId of teamAreas) {
-            if (areaHash[teamAreaId] !== 1) {
-              let area = await AreasService.getAreaMICROSERVICE(teamAreaId);
-              area.attributes.team = team.id;
-              userAreas.push(area);
-              areaHash[teamAreaId] = 1;
-            }
+            let area = await AreasService.getAreaMICROSERVICE(teamAreaId);
+            area.attributes.team = team.id;
+            userAreas.push(area);
           }
         }
 

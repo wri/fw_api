@@ -3750,7 +3750,7 @@ components:
           minLength: 1
         confirmed:
           type: boolean
-        team:
+        teamId:
           type: string
       required:
         - name

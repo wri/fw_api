@@ -916,6 +916,18 @@ paths:
           multipart/form-data:
             schema:
               type: object
+              properties:
+                name:
+                  type: string
+                geojson:
+                  type: object
+                image:
+                  type: string
+                  format: binary
+              required:
+                - name
+                - geojson
+                - image
         description: 'Form data should be in form of: an image file and a body containing name and geojson'
       tags:
         - v3
@@ -2645,6 +2657,14 @@ paths:
           multipart/form-data:
             schema:
               type: object
+              properties:
+                name:
+                  type: string
+                geojson:
+                  type: object
+                image:
+                  type: string
+                  format: binary
         description: 'Form data can include an image file, a name field and/or a geojson field'
       tags:
         - v3
@@ -3730,30 +3750,14 @@ components:
           minLength: 1
         confirmed:
           type: boolean
+        team:
+          type: string
       required:
         - name
         - application
         - geostore
         - userId
-        - createdAt
-        - updatedAt
         - image
-        - datasets
-        - use
-        - env
-        - iso
-        - admin
-        - tags
-        - status
-        - public
-        - fireAlerts
-        - deforestationAlerts
-        - webhookUrl
-        - monthlySummary
-        - subscriptionId
-        - email
-        - language
-        - confirmed
   securitySchemes:
     Authorization:
       type: http

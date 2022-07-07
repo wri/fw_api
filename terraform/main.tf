@@ -43,7 +43,8 @@ module "fargate_autoscaling" {
     data.terraform_remote_state.fw_core.outputs.data_bucket_write_policy_arn
   ]
   task_execution_role_policies = [
-    data.terraform_remote_state.core.outputs.document_db_secrets_policy_arn
+    data.terraform_remote_state.core.outputs.document_db_secrets_policy_arn,
+    data.terraform_remote_state.fw_core.outputs.microservice_token_secret_policy_arn
   ]
   container_definition = data.template_file.container_definition.rendered
 
@@ -88,6 +89,7 @@ data "template_file" "container_definition" {
     api_version = var.api_version
     rw_areas_api_url = var.rw_areas_api_url
     # Secrets
+    microservice_token_secret: data.terraform_remote_state.fw_core.outputs.microservice_token_secret_arn
     # none
   }
 

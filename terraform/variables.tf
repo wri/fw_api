@@ -96,7 +96,3 @@ variable "healthcheck_path" {
 variable "healthcheck_sns_emails" {
   type = list(string)
 }
-
-variable "microservice_token_secret_string" {
-  type    = string
-}

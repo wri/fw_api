@@ -143,7 +143,6 @@ class ForestWatcherRouter {
     ctx.body = {
       data
     };
-    
   }
 
   static async getUserTeamsAreas(ctx) {

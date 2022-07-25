@@ -229,6 +229,7 @@ class ForestWatcherRouter {
         ctx.throw(e.status, "Error while creating area");
       }
     }
+    logger.info(`returning ${user.id} areas ${data}`);
     ctx.body = {
       data
     };

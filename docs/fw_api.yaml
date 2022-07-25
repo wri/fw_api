@@ -1491,6 +1491,35 @@ paths:
         name: teamId
         in: path
         required: true
+  '/v3/forest-watcher/area/areaTemplates/{areaId}':
+    get:
+      summary: Get All Templates by Area Id
+      tags:
+        - v3
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: string
+        '401':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+      operationId: get-v3-forest-watcher-area-areaTemplates
+      description: Return an array of template IDs that are associated with the supplied area id
+    parameters:
+      - schema:
+          type: string
+        name: areaId
+        in: path
+        required: true
   '/v3/forest-watcher/area/areaTeams/{areaId}':
     get:
       summary: Get All Teams Associated With An Area Id

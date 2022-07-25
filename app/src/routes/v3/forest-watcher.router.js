@@ -139,6 +139,7 @@ class ForestWatcherRouter {
         ctx.throw(e.status, "Error while retrieving areas");
       }
     }
+    logger.info(`returning ${user.id} areas ${data}`);
     ctx.body = {
       data
     };
@@ -229,7 +230,6 @@ class ForestWatcherRouter {
         ctx.throw(e.status, "Error while creating area");
       }
     }
-    logger.info(`returning ${user.id} areas ${data}`);
     ctx.body = {
       data
     };
@@ -312,6 +312,14 @@ class ForestWatcherRouter {
     ctx.status = 200;
   }
 
+  static async getAreaTemplates(ctx) {
+    let area = await AreasService.getArea(ctx.request.params.id);
+    if (!area) ctx.throw(404, "Area doesn't exist");
+    const data = await AreaTemplateRelationService.getAllTemplatesForArea(ctx.request.params.id);
+    ctx.body = { data };
+    ctx.status = 200;
+  }
+
   static async deleteAllTemplateRelations(ctx) {
     if (!ctx.request.body.areaId && !ctx.request.body.templateId) ctx.throw(400, "Invalid Request");
     await AreaTemplateRelationService.deleteAll(ctx.request.body);
@@ -376,6 +384,9 @@ const isAuthenticatedMiddleware = async (ctx, next) => {
 // multiple areas
 router.get("/area/teams", isAuthenticatedMiddleware, ForestWatcherRouter.getUserTeamsAreas);
 router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
+
+// templates associated with an area
+router.get("/area/areaTemplates/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getAreaTemplates);
 
 // teams associated with an area
 router.get("/area/areaTeams/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getAreaTeams);

@@ -917,47 +917,37 @@ paths:
                     items:
                       $ref: '#/components/schemas/Area'
               examples:
-                example-1:
+                Response example:
                   value:
-                    type: string
-                    id: string
-                    attributes:
-                      name: string
-                      application: string
-                      geostore:
-                        geojson:
-                          crs: {}
-                          type: string
-                          features:
-                            - {}
-                        hash: string
-                        provider: {}
-                        areaHa: 0
-                        bbox:
+                    data:
+                      - name: string
+                        application: string
+                        geostore: string
+                        userId: string
+                        createdAt: string
+                        updatedAt: string
+                        image: string
+                        datasets:
                           - {}
-                        lock: true
-                        info:
-                          use: {}
-                        id: string
-                      userId: string
-                      createdAt: string
-                      updatedAt: string
-                      image: string
-                      env: string
-                      datasets:
-                        - cache: true
-                          active: true
-                          _id: string
-                          slug: string
-                          name: string
-                          startDate: string
-                          endDate: string
-                      use: {}
-                      iso: {}
-                      coverage:
-                        - {}
-                      reportTemplates:
-                        - {}
+                        use: {}
+                        env: string
+                        iso: {}
+                        admin: {}
+                        tags:
+                          - {}
+                        status: string
+                        public: true
+                        fireAlerts: true
+                        deforestationAlerts: true
+                        webhookUrl: string
+                        monthlySummary: true
+                        subscriptionId: string
+                        email: string
+                        language: string
+                        confirmed: true
+                        teamId: string
+                        reportTemplate:
+                          - {}
         '401':
           $ref: '#/components/responses/Error'
         '404':
@@ -1508,6 +1498,11 @@ paths:
                     type: array
                     items:
                       type: string
+              examples:
+                example-1:
+                  value:
+                    data:
+                      - string
         '401':
           $ref: '#/components/responses/Error'
         '404':

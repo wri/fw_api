@@ -139,7 +139,7 @@ class ForestWatcherRouter {
         ctx.throw(e.status, "Error while retrieving areas");
       }
     }
-    if(data && data.length>0) logger.info(`returning ${user.id} areas, the first of which being ${data[0]}`);
+    if(data && data.length>0) logger.info(`returning ${user.id} areas, the first of which being ${...data}`);
     ctx.body = {
       data
     };

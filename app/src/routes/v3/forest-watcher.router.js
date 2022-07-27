@@ -324,7 +324,7 @@ class ForestWatcherRouter {
     let area = await AreasService.getArea(ctx.request.params.areaId);
     if (!area) ctx.throw(404, "Area doesn't exist");
     await AreaTemplateRelationService.deleteAll({areaId: ctx.request.params.areaId});
-    ctx.status = 200;
+    ctx.status = 204;
   }
 
   static async deleteAllTemplateRelations(ctx) {
@@ -352,6 +352,13 @@ class ForestWatcherRouter {
     let response = await AreaTeamRelationService.delete(ctx.request.params);
     if (!response) return ctx.throw(404, "This team is not linked to this area");
     ctx.status = 200;
+  }
+
+  static async deleteAreasTeamRelations(ctx) {
+    let area = await AreasService.getArea(ctx.request.params.areaId);
+    if (!area) ctx.throw(404, "Area doesn't exist");
+    await AreaTeamRelationService.deleteAll({areaId: ctx.request.params.areaId});
+    ctx.status = 204;
   }
 
   static async getAreaTeams(ctx) {
@@ -414,7 +421,10 @@ router.delete(
   ForestWatcherRouter.deleteTemplateRelation
 );
 router.delete("/area/templates", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTemplateRelations);
+
+// delete relations
 router.delete("/area/:areaId/templates", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAreasTemplateRelations);
+router.delete("/area/:areaId/teams", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAreasTeamRelations);
 
 // individual areas
 router.get("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getArea);

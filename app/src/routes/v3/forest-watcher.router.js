@@ -139,7 +139,7 @@ class ForestWatcherRouter {
         ctx.throw(e.status, "Error while retrieving areas");
       }
     }
-    if(data && data.length>0) logger.info(`returning ${user.id} areas, the first of which being ${...data}`);
+    if(data && data.length>0) logger.info(`returning ${user.id} areas, the first of which being ${[...data]}`);
     ctx.body = {
       data
     };
@@ -320,6 +320,13 @@ class ForestWatcherRouter {
     ctx.status = 200;
   }
 
+  static async deleteAreasTemplateRelations(ctx) {
+    let area = await AreasService.getArea(ctx.request.params.areaId);
+    if (!area) ctx.throw(404, "Area doesn't exist");
+    await AreaTemplateRelationService.deleteAll({areaId: ctx.request.params.areaId});
+    ctx.status = 200;
+  }
+
   static async deleteAllTemplateRelations(ctx) {
     if (!ctx.request.body.areaId && !ctx.request.body.templateId) ctx.throw(400, "Invalid Request");
     await AreaTemplateRelationService.deleteAll(ctx.request.body);
@@ -407,6 +414,7 @@ router.delete(
   ForestWatcherRouter.deleteTemplateRelation
 );
 router.delete("/area/templates", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTemplateRelations);
+router.delete("/area/:areaId/templates", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAreasTemplateRelations);
 
 // individual areas
 router.get("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getArea);

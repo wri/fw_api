@@ -955,6 +955,42 @@ paths:
       operationId: get-v3-forest-watcher-area-teams
       description: Retrieve a user's areas for the logged in user and also areas associated with their teams
     parameters: []
+  '/v3/forest-watcher/area/{areaId}/teams':
+    parameters:
+      - schema:
+          type: string
+        name: areaId
+        in: path
+        required: true
+    delete:
+      summary: Delete all team relations for area
+      operationId: delete-v3-forest-watcher-area-areaId-teams
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+      description: Deletes all team relations for an area given its area id
+  '/v3/forest-watcher/area/{areaId}/templates':
+    parameters:
+      - schema:
+          type: string
+        name: areaId
+        in: path
+        required: true
+    delete:
+      summary: Delete all template relations for area
+      operationId: delete-v3-forest-watcher-area-areaId-templates
+      responses:
+        '204':
+          description: No Content
+        '401':
+          $ref: '#/components/responses/Error'
+        '404':
+          $ref: '#/components/responses/Error'
+      description: Deletes all template relations for an area given its area id
   '/v3/forest-watcher/area/{areaId}':
     get:
       summary: Get Single Area By Id

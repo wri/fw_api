@@ -313,7 +313,7 @@ class ForestWatcherRouter {
   }
 
   static async getAreaTemplates(ctx) {
-    let area = await AreasService.getArea(ctx.request.params.id);
+    let area = await AreasService.getAreaMICROSERVICE(ctx.request.params.id);
     if (!area) ctx.throw(404, "Area doesn't exist");
     const data = await AreaTemplateRelationService.getAllTemplatesForArea(ctx.request.params.id);
     ctx.body = { data };
@@ -362,7 +362,7 @@ class ForestWatcherRouter {
   }
 
   static async getAreaTeams(ctx) {
-    let area = await AreasService.getArea(ctx.request.params.id);
+    let area = await AreasService.getAreaMICROSERVICE(ctx.request.params.id);
     if (!area) ctx.throw(404, "Area doesn't exist");
     const data = await AreaTeamRelationService.getAllTeamsForArea(ctx.request.params.id);
     ctx.body = { data };

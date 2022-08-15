@@ -130,6 +130,9 @@ class ForestWatcherRouter {
     if (user && user.id) {
       try {
         const areas = await AreasService.getUserAreas(user.id);
+        areas.forEach(area => {
+          if (area.id !== user.id) ctx.throw(503, "Incorrect areas found");
+        });
         try {
           data = await ForestWatcherFunctions.buildAreasResponse(areas);
         } catch (e) {
@@ -152,6 +155,9 @@ class ForestWatcherRouter {
     if (user && user.id) {
       try {
         const userAreas = await AreasService.getUserAreas(user.id);
+        userAreas.forEach(area => {
+          if (area.id !== user.id) ctx.throw(503, "Incorrect areas found");
+        });
         // get a users teams
         const userTeams = await TeamService.getUserTeams(user.id); // get list of user's teams
         userAreas.forEach(area => (area.attributes.teamId = null));

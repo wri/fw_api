@@ -27,7 +27,7 @@ class AreaTeamRelationService {
 
   static async delete(params) {
     const { areaId, teamId } = params;
-    let relation = await AreaTeamRelationModel.findOneAndDelete({ teamId, areaId });
+    let relation = await AreaTeamRelationModel.findOneAndRemove({ teamId, areaId });
     return Promise.resolve(relation);
   }
 

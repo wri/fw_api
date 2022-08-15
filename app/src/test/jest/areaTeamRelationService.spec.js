@@ -1,5 +1,5 @@
 const AreaTeamRelationService = require("../../services/areaTeamRelationService");
-const { AreaTeamRelationModel } = require("models");
+const AreaTeamRelationModel = require("models/areaTeamRelation.model");
 const { ObjectId } = require("mongoose").Types;
 const { getTestServer } = require("./utils/test-server");
 const { createAreaTeamRelation } = require("./utils/helpers");

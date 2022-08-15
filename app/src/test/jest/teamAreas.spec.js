@@ -6,7 +6,7 @@ const { USERS } = require("./utils/test.constants");
 const { getTestServer } = require("./utils/test-server");
 const { ObjectId } = require("mongoose").Types;
 const config = require("config");
-const { AreaTeamRelationModel } = require("models");
+const AreaTeamRelationModel = require("models/areaTeamRelation.model");
 
 chai.should();
 

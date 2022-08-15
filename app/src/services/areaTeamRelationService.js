@@ -1,4 +1,4 @@
-const { AreaTeamRelationModel } = require("models");
+const AreaTeamRelationModel = require("models/areaTeamRelation.model");
 const logger = require("logger");
 
 class AreaTeamRelationService {

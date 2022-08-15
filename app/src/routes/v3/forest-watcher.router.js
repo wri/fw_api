@@ -9,7 +9,7 @@ const moment = require("moment");
 const config = require("config");
 const AreaTemplateRelationService = require("services/areaTemplateRelationService");
 
-const { AreaTemplateRelationModel } = require("models");
+const AreaTemplateRelationModel = require("models/areaTemplateRelation.model");
 const AreaTeamRelationService = require("../../services/areaTeamRelationService");
 const TeamService = require("../../services/team.service");
 

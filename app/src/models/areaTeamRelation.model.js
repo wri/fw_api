@@ -9,6 +9,6 @@ const AreaTeamRelationSchema = new Schema({
 
 AreaTeamRelationSchema.index({ areaId: 1 });
 
-export const AreaTeamRelationModel = mongoose.model("AreaTeamRelation", AreaTeamRelationSchema);
+const AreaTeamRelationModel = mongoose.model("AreaTeamRelation", AreaTeamRelationSchema);
 
-export default AreaTeamRelationModel;
+module.exports = AreaTeamRelationModel;

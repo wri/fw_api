@@ -1,4 +1,4 @@
-const { AreaTemplateRelationModel } = require("models");
+const AreaTemplateRelationModel = require("models/areaTemplateRelation.model");
 const logger = require("logger");
 
 class AreaTemplateRelationService {

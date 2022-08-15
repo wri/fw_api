@@ -1,9 +1,15 @@
 const AreaTeamRelationService = require("../../services/areaTeamRelationService");
-const { AreaTeamRelationModel } = require("models");
+const AreaTeamRelationModel = require("models/areaTeamRelation.model");
 const { ObjectId } = require("mongoose").Types;
 const { getTestServer } = require("./utils/test-server");
 const { createAreaTeamRelation } = require("./utils/helpers");
 const { getAllTeamsForArea } = require("../../services/areaTeamRelationService");
+
+const sleep = ms => {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
+};
 
 describe("Create relation using the areas team relation service", function () {
   beforeEach(async function () {
@@ -23,12 +29,12 @@ describe("Create relation using the areas team relation service", function () {
     const teamId = new ObjectId();
 
     let relation = await AreaTeamRelationService.create({ areaId, teamId });
-    let dbRelation = await AreaTeamRelationModel.findOne();
+    let dbRelation = await AreaTeamRelationModel.find({});
 
     expect(relation).toHaveProperty("areaId", areaId.toString());
     expect(relation).toHaveProperty("teamId", teamId.toString());
-    expect(dbRelation).toHaveProperty("areaId", areaId.toString());
-    expect(dbRelation).toHaveProperty("teamId", teamId.toString());
+    expect(dbRelation[0]).toHaveProperty("areaId", areaId.toString());
+    expect(dbRelation[0]).toHaveProperty("teamId", teamId.toString());
   });
 
   it("Calling Create with an existing relation should return an error", async function () {
@@ -37,7 +43,7 @@ describe("Create relation using the areas team relation service", function () {
 
     let existingRelation = new AreaTeamRelationModel({ areaId, teamId });
     await existingRelation.save();
-
+    //await sleep(4500)
     await expect(AreaTeamRelationService.create({ areaId, teamId })).rejects.toThrowError(
       "This team is already assigned to this area"
     );
@@ -63,7 +69,10 @@ describe("Get all relations given an area id", function () {
 
   it("Returns an array of team ids given an area id", async function () {
     const areaId1 = new ObjectId(),
-      areaId2 = new ObjectId();
+      areaId2 = new ObjectId(),
+      team1 = new ObjectId(),
+      team2 = new ObjectId(),
+      team3 = new ObjectId();
 
     const relationOne = await createAreaTeamRelation(areaId1, new ObjectId());
     const relationTwo = await createAreaTeamRelation(areaId1, new ObjectId());

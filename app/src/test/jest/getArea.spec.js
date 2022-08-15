@@ -8,7 +8,7 @@ const { mockGetUserFromToken } = require("./utils/helpers");
 const config = require("config");
 const AreaTeamRelationService = require("../../services/areaTeamRelationService");
 const AreaTemplateRelationService = require("../../services/areaTemplateRelationService");
-const { AreaTeamRelationModel } = require("models");
+const AreaTeamRelationModel = require("models/areaTeamRelation.model");
 
 chai.should();
 

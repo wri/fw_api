@@ -1,4 +1,4 @@
-const { AreaTemplateRelationModel } = require("models");
+const AreaTemplateRelationModel = require("models/areaTemplateRelation.model");
 const logger = require("logger");
 
 class AreaTemplateRelationService {
@@ -20,7 +20,7 @@ class AreaTemplateRelationService {
 
   static async delete(params) {
     const { areaId, templateId } = params;
-    const relation = await AreaTemplateRelationModel.findOneAndDelete({ templateId, areaId });
+    const relation = await AreaTemplateRelationModel.findOneAndRemove({ templateId, areaId });
     return Promise.resolve(relation);
   }
 

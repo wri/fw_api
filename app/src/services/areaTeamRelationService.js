@@ -1,4 +1,4 @@
-const { AreaTeamRelationModel } = require("models");
+const AreaTeamRelationModel = require("models/areaTeamRelation.model");
 const logger = require("logger");
 
 class AreaTeamRelationService {
@@ -27,7 +27,7 @@ class AreaTeamRelationService {
 
   static async delete(params) {
     const { areaId, teamId } = params;
-    let relation = await AreaTeamRelationModel.findOneAndDelete({ teamId, areaId });
+    let relation = await AreaTeamRelationModel.findOneAndRemove({ teamId, areaId });
     return Promise.resolve(relation);
   }
 

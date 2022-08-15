@@ -1,6 +1,7 @@
 const nock = require("nock");
 const config = require("config");
-const { AreaTemplateRelationModel, AreaTeamRelationModel } = require("models");
+const AreaTeamRelationModel = require("models/areaTeamRelation.model");
+const AreaTemplateRelationModel = require("models/areaTemplateRelation.model");
 const { ObjectId } = require("mongoose").Types;
 
 const mockGetUserFromToken = userProfile => {

@@ -31,21 +31,31 @@ describe("Create area", function () {
   it("Create an area while being logged without a name value should return an error", async function () {
     mockGetUserFromToken(USERS.USER);
 
-    const response = await requester.post(`/v1/forest-watcher/area`).set("Authorization", `Bearer abcd`);
+    const filename = "image.png";
+    const fileData = Buffer.from("TestFileContent", "utf8");
+
+    const response = await requester
+      .post(`/v1/forest-watcher/area`)
+      .attach("image", fileData, filename)
+      .set("Authorization", `Bearer abcd`);
 
     response.status.should.equal(400);
     response.body.should.have.property("errors").and.be.an("array");
     response.body.errors[0].should.have
       .property("detail")
       .and.equal("- name: name can not be empty. - geojson: geojson can not be empty. - ");
-  });
+  }); 
 
   it("Create an area while being logged without a geojson value should return an error", async function () {
     mockGetUserFromToken(USERS.USER);
 
+    const filename = "image.png";
+    const fileData = Buffer.from("TestFileContent", "utf8");
+
     const response = await requester
       .post(`/v1/forest-watcher/area`)
       .field("name", "TestArea")
+      .attach("image", fileData, filename)
       .set("Authorization", `Bearer abcd`);
 
     response.status.should.equal(400);
@@ -54,15 +64,19 @@ describe("Create area", function () {
       .property("detail")
       //.and.equal("- geojson: geojson can not be empty. - image: file image can not be a empty file. - ");
       .and.equal("- geojson: geojson can not be empty. - ");
-  });
+  }); 
 
   it("Create an area while being logged without a valid geojson value should return an error", async function () {
     mockGetUserFromToken(USERS.USER);
+
+    const filename = "image.png";
+    const fileData = Buffer.from("TestFileContent", "utf8");
 
     const response = await requester
       .post(`/v1/forest-watcher/area`)
       .field("name", "TestArea")
       .field("geojson", "potato")
+      .attach("image", fileData, filename)
       .set("Authorization", `Bearer abcd`);
 
     response.status.should.equal(400);
@@ -71,25 +85,13 @@ describe("Create area", function () {
       .property("detail")
       //.and.equal("- geojson: geojson is not a json format. - image: file image can not be a empty file. - ");
       .and.equal("- geojson: geojson is not a json format. - ");
-  });
+  }); 
 
   it('Create an area while being logged without an "image" file value should return an error', async function () {
     mockGetUserFromToken(USERS.USER);
 
-    const response = await requester
-      .post(`/v1/forest-watcher/area`)
-      .field("name", "TestArea")
-      .field("geojson", "{}")
-      .set("Authorization", `Bearer abcd`);
-
-    response.status.should.equal(400);
-    response.body.should.have.property("errors").and.be.an("array");
-    //response.body.errors[0].should.have.property("detail").and.equal("- image: file image can not be a empty file. - ");
-    response.body.errors[0].should.have.property("detail").and.equal("- no file to check - ");
-  });
-
-  it('Create an area while being logged without a valid "image" file should return an error', async function () {
-    mockGetUserFromToken(USERS.USER);
+    const filename = "image.png";
+    const fileData = Buffer.from("TestFileContent", "utf8");
 
     const response = await requester
       .post(`/v1/forest-watcher/area`)
@@ -100,7 +102,7 @@ describe("Create area", function () {
     response.status.should.equal(400);
     response.body.should.have.property("errors").and.be.an("array");
     //response.body.errors[0].should.have.property("detail").and.equal("- image: file image can not be a empty file. - ");
-    response.body.errors[0].should.have.property("detail").and.equal("- no file to check - ");
+    response.body.errors[0].should.have.property("detail").and.equal("No image found");
   });
 
 /*   it("Create an area while being logged with the correct data should return the created area (happy case)", async function () {
@@ -265,7 +267,6 @@ describe("Create area", function () {
       });
 
     const filename = "image.png";
-
     const fileData = Buffer.from("TestFileContent", "utf8");
 
     const response = await requester

@@ -7,13 +7,13 @@ const { getTestServer } = require("./utils/test-server");
 const { mockGetUserFromToken } = require("./utils/helpers");
 const config = require("config");
 const AreaTeamRelationService = require("../../services/areaTeamRelationService");
-const { AreaTeamRelationModel } = require("models");
+const AreaTeamRelationModel = require("models/areaTeamRelation.model");
 
 chai.should();
 
 const requester = getTestServer();
 
-/* describe("Get areas", function () {
+describe("Get areas", function () {
   beforeAll(async function () {
     if (process.env.NODE_ENV !== "test") {
       throw Error(
@@ -147,7 +147,7 @@ const requester = getTestServer();
       .and.deep.equal({ ...geostoreAttributes, id: geostoreAttributes.hash });
     response.body.data[0].attributes.should.have.property("coverage").and.deep.equal(coverageAttributes.layers);
   });
-}); */
+});
 
 describe("Get users areas and team areas", function () {
 
@@ -162,7 +162,7 @@ describe("Get users areas and team areas", function () {
 
   });
 
-/*   it("Get team areas without being logged in should return a 401 error", async function () {
+  it("Get team areas without being logged in should return a 401 error", async function () {
     const response = await requester.get(`/v3/forest-watcher/area/teams`);
 
     expect(response.status).toBe(401);
@@ -171,7 +171,7 @@ describe("Get users areas and team areas", function () {
     expect(response.body.errors[0]).toHaveProperty("status", 401);
     expect(response.body.errors[0]).toHaveProperty("detail", "Unauthorized");
   });
- */
+
   it("Get team areas while logged in should return user areas and areas associated with their teams", async function () {
     mockGetUserFromToken(USERS.USER);
 
@@ -243,6 +243,14 @@ describe("Get users areas and team areas", function () {
         geostore: "d653e4fc0ed07a65b9db9b13477566fe"
       }
     }
+    const area3 = {
+      type: "area",
+      id: new ObjectId(),
+      attributes: {
+        userId: USERS.USER.id,
+        geostore: "d653e4fc0ed07a65b9db9b13477566fe"
+      }
+    }
 
     // create a team
     const team1 = {
@@ -251,7 +259,8 @@ describe("Get users areas and team areas", function () {
     }
 
     // create some team areas
-    await AreaTeamRelationService.create({areaId: area1.id, teamId: team1.id})
+    await AreaTeamRelationService.create({areaId: area2.id, teamId: team1.id})
+    await AreaTeamRelationService.create({areaId: area3.id, teamId: team1.id})
 
     nock(config.get("areasAPI.url"))
     .persist()
@@ -280,12 +289,18 @@ describe("Get users areas and team areas", function () {
         .reply(200, {
           data: area2
         });
+        nock(config.get("rwAreasAPI.url"))
+        .persist()
+          .get(`/area/${area3.id}`)
+          .reply(200, {
+            data: area3
+          });
 
     const response = await requester.get(`/v3/forest-watcher/area/teams`).set("Authorization", `Bearer abcd`);
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("data");
-    expect(response.body.data).toHaveLength(3);
+    expect(response.body.data).toHaveLength(4);
     expect(response.body.data[0]).toHaveProperty("type", "area");
     expect(response.body.data[0]).toHaveProperty("attributes");
     expect(response.body.data[0].attributes).toBeInstanceOf(Object);
@@ -297,7 +312,7 @@ describe("Get users areas and team areas", function () {
   });
 
   afterEach(async function () {
-    await AreaTeamRelationModel.deleteMany({}).exec();
+    await AreaTeamRelationModel.deleteMany({});
     nock.cleanAll();
   });
 

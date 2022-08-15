@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const { Schema } = mongoose;
 
@@ -9,6 +9,6 @@ const AreaTemplateRelationSchema = new Schema({
 
 AreaTemplateRelationSchema.index({ areaId: 1 });
 
-export const AreaTemplateRelationModel = mongoose.model("AreaTemplateRelation", AreaTemplateRelationSchema);
+const AreaTemplateRelationModel = mongoose.model("AreaTemplateRelation", AreaTemplateRelationSchema);
 
-export default AreaTemplateRelationModel;
+module.exports = AreaTemplateRelationModel;

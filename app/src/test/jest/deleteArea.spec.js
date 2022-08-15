@@ -1,5 +1,5 @@
-const { AreaTemplateRelationModel } = require("models");
-const { AreaTeamRelationModel } = require("models");
+const AreaTemplateRelationModel = require("models/areaTemplateRelation.model");
+const AreaTeamRelationModel = require("models/areaTeamRelation.model");
 const { ObjectId } = require("mongoose").Types;
 const { getTestServer } = require("./utils/test-server");
 const { USERS } = require("./utils/test.constants");

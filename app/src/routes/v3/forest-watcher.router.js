@@ -41,7 +41,7 @@ class ForestWatcherFunctions {
       const templateIds = await AreaTemplateRelationService.getAllTemplatesForArea(area.id);
       let templates = [];
       for await (const id of templateIds) {
-        if (!templatesHash[id]) templatesHash[id] = await TemplatesService.getTemplate(id)
+        if (!templatesHash[id]) templatesHash[id] = await TemplatesService.getTemplate(id);
         templates.push(templatesHash[id]);
       }
       templatesData.push(templates);

@@ -34,13 +34,15 @@ class ForestWatcherFunctions {
     const { geostoreObj, coverageObj } = objects;
     const areasWithGeostore = areas.filter(area => area.attributes.geostore);
     const promises = [];
+    const templatesHash = {};
 
     let templatesData = [];
     for await (const area of areasWithGeostore) {
       const templateIds = await AreaTemplateRelationService.getAllTemplatesForArea(area.id);
       let templates = [];
       for await (const id of templateIds) {
-        templates.push(await TemplatesService.getTemplate(id));
+        if (!templatesHash[id]) templatesHash[id] = await TemplatesService.getTemplate(id)
+        templates.push(templatesHash[id]);
       }
       templatesData.push(templates);
     }

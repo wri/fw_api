@@ -187,8 +187,8 @@ class ForestWatcherRouter {
   }
   static async getArea(ctx) {
     let area;
-    // can get an area user created or that is part of a team 
-    // see if area is a team area        
+    // can get an area user created or that is part of a team
+    // see if area is a team area
     // get user teams
     const user = await ForestWatcherFunctions.getUser(ctx);
     const userTeams = await TeamService.getUserTeams(user.id); // get list of user's teams
@@ -196,8 +196,9 @@ class ForestWatcherRouter {
     const areaTeams = await AreaTeamRelationService.getAllTeamsForArea(ctx.request.params.id); // get list of teams associated with area
     const filteredTeams = userTeams.filter(userTeam => areaTeams.includes(userTeam.id)); // match area teams to user teams
 
-    if(filteredTeams.length>0) area = await AreasService.getAreaMICROSERVICE(ctx.request.params.id) // get the area using the microservice token
-    else area = await AreasService.getArea(ctx.request.params.id) // assume the area is a user area. Throws an error if not allowed
+    if (filteredTeams.length > 0) area = await AreasService.getAreaMICROSERVICE(ctx.request.params.id);
+    // get the area using the microservice token
+    else area = await AreasService.getArea(ctx.request.params.id); // assume the area is a user area. Throws an error if not allowed
 
     area.teams = filteredTeams.map(team => {
       return { id: team.id, name: team.attributes.name };

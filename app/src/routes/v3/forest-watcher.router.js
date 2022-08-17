@@ -186,12 +186,20 @@ class ForestWatcherRouter {
     ctx.status = 200;
   }
   static async getArea(ctx) {
-    let area = await AreasService.getArea(ctx.request.params.id);
-    // get teams for area but only teams user is a member of
+    let area;
+    // can get an area user created or that is part of a team
+    // see if area is a team area
+    // get user teams
     const user = await ForestWatcherFunctions.getUser(ctx);
     const userTeams = await TeamService.getUserTeams(user.id); // get list of user's teams
-    const areaTeams = await AreaTeamRelationService.getAllTeamsForArea(area.id); // get list of teams associated with area
+    // see if there's a link between those teams and this area
+    const areaTeams = await AreaTeamRelationService.getAllTeamsForArea(ctx.request.params.id); // get list of teams associated with area
     const filteredTeams = userTeams.filter(userTeam => areaTeams.includes(userTeam.id)); // match area teams to user teams
+
+    if (filteredTeams.length > 0) area = await AreasService.getAreaMICROSERVICE(ctx.request.params.id);
+    // get the area using the microservice token
+    else area = await AreasService.getArea(ctx.request.params.id); // assume the area is a user area. Throws an error if not allowed
+
     area.teams = filteredTeams.map(team => {
       return { id: team.id, name: team.attributes.name };
     });
@@ -306,7 +314,7 @@ class ForestWatcherRouter {
   }
 
   static async addTemplateRelation(ctx) {
-    let area = await AreasService.getArea(ctx.request.params.areaId);
+    let area = await AreasService.getAreaMICROSERVICE(ctx.request.params.areaId);
     let template = await TemplatesService.getTemplate(ctx.request.params.templateId);
     if (!area) ctx.throw(404, "That area doesn't exist");
     if (!template) ctx.throw(404, "That template doesn't exist");

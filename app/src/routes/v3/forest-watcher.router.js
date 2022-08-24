@@ -448,6 +448,10 @@ router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, 
 router.patch("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.updateArea);
 router.delete("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.deleteArea);
 
+router.get("/area/forceError", async ctx => {
+  ctx.throw(404, "Error while fetching area");
+});
+
 router.get("/test", async ctx => {
   ctx.body = {
     relations: await AreaTemplateRelationModel.find()

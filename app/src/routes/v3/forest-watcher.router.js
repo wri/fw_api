@@ -232,12 +232,11 @@ class ForestWatcherRouter {
           user.id
         );
         logger.info("Created area", area, geostore, coverage);
-        // add the default template to the area's template set
+/*         // add the default template to the area's template set
         // get default template
         const template = await TemplatesService.getDefaultTemplate();
         // create the relation
-        console.log("*********", area.id, template.id);
-        await AreaTemplateRelationService.create({ areaId: area.id, templateId: template.id });
+        await AreaTemplateRelationService.create({ areaId: area.id, templateId: template.id }); */
         try {
           [data] = await ForestWatcherFunctions.buildAreasResponse([area], {
             geostore,

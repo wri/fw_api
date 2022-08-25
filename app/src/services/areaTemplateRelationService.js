@@ -1,6 +1,7 @@
 const AreaTemplateRelationModel = require("models/areaTemplateRelation.model");
 const logger = require("logger");
-const TemplateService = require("./template.service");
+const config = require("config");
+//const TemplateService = require("./template.service");
 
 class AreaTemplateRelationService {
   static async create(params) {
@@ -15,10 +16,10 @@ class AreaTemplateRelationService {
   static async getAllTemplatesForArea(areaId) {
     logger.info("Get area template ids for area id", areaId);
     const relations = await AreaTemplateRelationModel.find({ areaId });
-    // get default template
+    // get default template and add if not already included
     let templates = relations.map(relation => relation.templateId.toString())
-    const defaultTemplate = await TemplateService.getDefaultTemplate();
-    if(!templates.includes(defaultTemplate.id.toString())) templates.push(defaultTemplate.id.toString())
+    const defaultTemplate = config.get("defaultTemplate")
+    if(!templates.includes(defaultTemplate)) templates.push(defaultTemplate)
     logger.info("Got area template ids for area id", areaId, templates);
     return Promise.resolve(templates);
   }

@@ -15,5 +15,6 @@
     "port": 4400,
     "token": "MICROSERVICE_TOKEN"
   },
-  "alertsSupported": "umd_as_it_happens"
+  "alertsSupported": "umd_as_it_happens",
+  "defaultTemplate": "59b6a26b138f260012e9fdeb"
 }

@@ -31,6 +31,26 @@ class AreasService {
     }
   }
 
+  static async getEveryArea() {
+    logger.info("Get every area");
+    try {
+      let baseURL = config.get("rwAreasAPI.url");
+      const response = await axios.default({
+        baseURL,
+        url: `/area?all=true`,
+        method: "GET",
+        headers: {
+          authorization: loggedInUserService.token
+        }
+      });
+      const areas = response.data;
+      return areas && areas.data;
+    } catch (e) {
+      logger.error("Error while fetching areas", e);
+      throw e;
+    }
+  }
+
   static async getArea(areaId) {
     logger.info("Getting area with id ", areaId);
     try {

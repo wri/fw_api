@@ -232,7 +232,7 @@ class ForestWatcherRouter {
           user.id
         );
         logger.info("Created area", area, geostore, coverage);
-/*         // add the default template to the area's template set
+        /*         // add the default template to the area's template set
         // get default template
         const template = await TemplatesService.getDefaultTemplate();
         // create the relation
@@ -398,6 +398,14 @@ class ForestWatcherRouter {
     ctx.body = { data: ids };
     ctx.status = 200;
   }
+
+  static async transform() {
+    // need to get all areas and create team and template relations for each of them.
+    const areas = await AreasService.getEveryArea();
+    areas.forEach(area => {
+      if (area.reportTemplate) AreaTemplateRelationService.create({ areaId: area.id, templateId: area.reportTemplate });
+    });
+  }
 }
 
 const isAuthenticatedMiddleware = async (ctx, next) => {
@@ -416,42 +424,44 @@ const isAuthenticatedMiddleware = async (ctx, next) => {
   await next();
 };
 
+router.get("/transform", isAuthenticatedMiddleware, ForestWatcherRouter.transform);
+
 // multiple areas
-router.get("/area/teams", isAuthenticatedMiddleware, ForestWatcherRouter.getUserTeamsAreas);
-router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas);
+router.get("/area/teams", isAuthenticatedMiddleware, ForestWatcherRouter.getUserTeamsAreas); // DONE
+router.get("/area", isAuthenticatedMiddleware, ForestWatcherRouter.getUserAreas); // DONE
 
 // templates associated with an area
-router.get("/area/areaTemplates/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getAreaTemplates);
+router.get("/area/areaTemplates/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getAreaTemplates); // DONE
 
 // teams associated with an area
-router.get("/area/areaTeams/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getAreaTeams);
+router.get("/area/areaTeams/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getAreaTeams); // DONE
 
 // areas associated with a team
-router.get("/area/teamAreas/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getTeamAreas);
+router.get("/area/teamAreas/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getTeamAreas); // DONE
 
 // area team relations
-router.post("/area/:areaId/team/:teamId", isAuthenticatedMiddleware, ForestWatcherRouter.addTeamRelation);
-router.delete("/area/:areaId/team/:teamId", isAuthenticatedMiddleware, ForestWatcherRouter.deleteTeamRelation);
-router.delete("/area/teams", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTeamRelations);
+router.post("/area/:areaId/team/:teamId", isAuthenticatedMiddleware, ForestWatcherRouter.addTeamRelation); // DONE
+router.delete("/area/:areaId/team/:teamId", isAuthenticatedMiddleware, ForestWatcherRouter.deleteTeamRelation); // DONE
+router.delete("/area/teams", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTeamRelations); // DONE
 
 // area template relations
-router.post("/area/:areaId/template/:templateId", isAuthenticatedMiddleware, ForestWatcherRouter.addTemplateRelation);
+router.post("/area/:areaId/template/:templateId", isAuthenticatedMiddleware, ForestWatcherRouter.addTemplateRelation); // DONE
 router.delete(
   "/area/:areaId/template/:templateId",
   isAuthenticatedMiddleware,
   ForestWatcherRouter.deleteTemplateRelation
-);
-router.delete("/area/templates", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTemplateRelations);
+); // TODO
+router.delete("/area/templates", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAllTemplateRelations); // DONE
 
 // delete relations
-router.delete("/area/:areaId/templates", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAreasTemplateRelations);
-router.delete("/area/:areaId/teams", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAreasTeamRelations);
+router.delete("/area/:areaId/templates", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAreasTemplateRelations); // DONE
+router.delete("/area/:areaId/teams", isAuthenticatedMiddleware, ForestWatcherRouter.deleteAreasTeamRelations); // DONE
 
 // individual areas
-router.get("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getArea);
-router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea);
-router.patch("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.updateArea);
-router.delete("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.deleteArea);
+router.get("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.getArea); // DONE
+router.post("/area", isAuthenticatedMiddleware, AreaValidator.validateCreation, ForestWatcherRouter.createArea); // DONE
+router.patch("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.updateArea); // DONE
+router.delete("/area/:id", isAuthenticatedMiddleware, ForestWatcherRouter.deleteArea); // DONE
 
 router.get("/area/forceError", async ctx => {
   ctx.throw(404, "Error while fetching area");

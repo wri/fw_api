@@ -342,7 +342,7 @@ class ForestWatcherRouter {
   }
 
   static async deleteAreasTemplateRelations(ctx) {
-    let area = await AreasService.getArea(ctx.request.params.areaId);
+    let area = await AreasService.getAreaMICROSERVICE(ctx.request.params.areaId);
     if (!area) ctx.throw(404, "Area doesn't exist");
     await AreaTemplateRelationService.deleteAll({ areaId: ctx.request.params.areaId });
     ctx.status = 204;
@@ -376,7 +376,7 @@ class ForestWatcherRouter {
   }
 
   static async deleteAreasTeamRelations(ctx) {
-    let area = await AreasService.getArea(ctx.request.params.areaId);
+    let area = await AreasService.getAreaMICROSERVICE(ctx.request.params.areaId);
     if (!area) ctx.throw(404, "Area doesn't exist");
     await AreaTeamRelationService.deleteAll({ areaId: ctx.request.params.areaId });
     ctx.status = 204;

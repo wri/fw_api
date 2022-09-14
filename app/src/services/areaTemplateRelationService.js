@@ -17,9 +17,9 @@ class AreaTemplateRelationService {
     logger.info("Get area template ids for area id", areaId);
     const relations = await AreaTemplateRelationModel.find({ areaId });
     // get default template and add if not already included
-    let templates = relations.map(relation => relation.templateId.toString())
-    const defaultTemplate = config.get("defaultTemplate")
-    if(!templates.includes(defaultTemplate)) templates.push(defaultTemplate)
+    let templates = relations.map(relation => relation.templateId.toString());
+    const defaultTemplate = config.get("defaultTemplate");
+    if (!templates.includes(defaultTemplate)) templates.push(defaultTemplate);
     logger.info("Got area template ids for area id", areaId, templates);
     return Promise.resolve(templates);
   }

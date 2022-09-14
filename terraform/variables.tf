@@ -53,10 +53,6 @@ variable "auto_scaling_min_capacity" {
 variable "git_sha" {
   type = string
 }
-variable "node_path" {
-  type    = string
-  default = "app/src"
-}
 variable "node_env" {
   type    = string
   default = "dev"
@@ -73,7 +69,19 @@ variable "areas_api_url" {
   type    = string
   default = "https://api.resourcewatch.org/v1"
 }
+variable "rw_areas_api_url" {
+  type    = string
+  default = "https://api.resourcewatch.org/v2"
+}
 variable "geostore_api_url" {
+  type    = string
+  default = "https://api.resourcewatch.org/v1"
+}
+variable "forms_api_url" {
+  type    = string
+  default = "https://api.resourcewatch.org/v1"
+}
+variable "teams_api_url" {
   type    = string
   default = "https://api.resourcewatch.org/v1"
 }

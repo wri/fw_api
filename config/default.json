@@ -5,9 +5,16 @@
     "toFile": false,
     "dirLogFile": null
   },
+  "mongodb": {
+    "host": "MONGODB_HOST",
+    "port": "MONGODB_PORT",
+    "database": "api"
+  },
   "service": {
     "name": "Forest-watcher",
-    "port": 4400
+    "port": 4400,
+    "token": "MICROSERVICE_TOKEN"
   },
-  "alertsSupported": "umd_as_it_happens"
+  "alertsSupported": "umd_as_it_happens",
+  "defaultTemplate": "59b6a26b138f260012e9fdeb"
 }

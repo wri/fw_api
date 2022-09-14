@@ -5,10 +5,10 @@ auto_scaling_min_capacity = 1
 auto_scaling_max_capacity = 15
 
 container_port            = 80
-node_path                 = "app/src"
 node_env                  = "staging"
 suppress_no_config_warning= "true"
 control_tower_url         = "https://staging-api.resourcewatch.org"
+rw_areas_api_url          = "https://staging-api.resourcewatch.org/v2"
 areas_api_url             = "https://staging-api.resourcewatch.org/v1"
 geostore_api_url          = "https://staging-api.resourcewatch.org/v1"
 api_version               = "v1"

@@ -10,7 +10,6 @@ provider "aws" {
   region = var.region
 }
 
-
 # Docker image for FW Template app
 module "app_docker_image" {
   source     = "git::https://github.com/wri/gfw-terraform-modules.git//terraform/modules/container_registry?ref=v0.5.1"
@@ -45,6 +44,7 @@ module "fargate_autoscaling" {
   ]
   task_execution_role_policies = [
     data.terraform_remote_state.core.outputs.document_db_secrets_policy_arn,
+    data.terraform_remote_state.fw_core.outputs.microservice_token_secret_policy_arn
   ]
   container_definition = data.template_file.container_definition.rendered
 
@@ -52,7 +52,7 @@ module "fargate_autoscaling" {
   lb_target_group_arn = module.fargate_autoscaling.lb_target_group_arn
   listener_arn        = data.terraform_remote_state.fw_core.outputs.lb_listener_arn
   project_prefix      = var.project_prefix
-  path_pattern        = ["/v1/fw_api/healthcheck", "/v1/forest-watcher*"]
+  path_pattern        = ["/v1/fw_api/healthcheck", "/v1/forest-watcher*", "/v3/forest-watcher*"]
   health_check_path = "/v1/fw_api/healthcheck"
   priority = 6
 
@@ -60,8 +60,6 @@ module "fargate_autoscaling" {
     module.app_docker_image
   ]
 }
-
-
 
 data "template_file" "container_definition" {
   template = file("${path.root}/templates/container_definition.json.tmpl")
@@ -73,20 +71,25 @@ data "template_file" "container_definition" {
     log_group      = aws_cloudwatch_log_group.default.name
     aws_region     = var.region
     environment    = var.environment
+    document_db_endpoint       = data.terraform_remote_state.core.outputs.document_db_endpoint
+    document_db_port           = data.terraform_remote_state.core.outputs.document_db_port
+    db_secret_arn              = data.terraform_remote_state.core.outputs.document_db_secrets_arn
     
     # Environment variables
     port = var.container_port
-    node_path = var.node_path
     node_env = var.node_env
     logger_level = var.logger_level
     suppress_no_config_warning = var.suppress_no_config_warning
     control_tower_url = var.control_tower_url
     local_url = "http://127.0.0.1:${var.container_port}"
-    forms_api_url = "https://${data.terraform_remote_state.fw_core.outputs.public_url}/v1"
+    forms_api_url = "https://${data.terraform_remote_state.fw_core.outputs.public_url}/v3"
     areas_api_url = var.areas_api_url
     geostore_api_url = var.geostore_api_url
+    teams_api_url = "https://${data.terraform_remote_state.fw_core.outputs.public_url}/v3"
     api_version = var.api_version
+    rw_areas_api_url = var.rw_areas_api_url
     # Secrets
+    microservice_token_secret: data.terraform_remote_state.fw_core.outputs.microservice_token_secret_arn
     # none
   }
 

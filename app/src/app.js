@@ -8,11 +8,13 @@ const loader = require("loader");
 const convert = require("koa-convert");
 const ErrorSerializer = require("serializers/error.serializer");
 const loggedInUserService = require("./services/LoggedInUserService");
+const mongoose = require("mongoose");
 const koaBody = require("koa-body")({
   multipart: true,
   jsonLimit: "50mb",
   formLimit: "50mb",
-  textLimit: "50mb"
+  textLimit: "50mb",
+  fileLimit: "50mb"
 });
 const Sentry = require("@sentry/node");
 
@@ -35,6 +37,27 @@ app.on("error", (err, ctx) => {
   });
 });
 /** */
+
+let dbSecret = config.get("mongodb.secret");
+if (typeof dbSecret === "string") {
+  dbSecret = JSON.parse(dbSecret);
+}
+
+const mongoURL =
+  "mongodb://" +
+  `${dbSecret.username}:${dbSecret.password}` +
+  `@${config.get("mongodb.host")}:${config.get("mongodb.port")}` +
+  `/${config.get("mongodb.database")}` +
+  "?authSource=admin";
+
+const onDbReady = err => {
+  if (err) {
+    logger.error(err);
+    throw new Error(err);
+  }
+};
+
+mongoose.connect(mongoURL, onDbReady);
 
 app.use((ctx, next) => {
   return next().then(function () {
@@ -81,8 +104,9 @@ app.use(async (ctx, next) => {
 
 loader.loadRoutes(app);
 
-const server = app.listen(config.get("service.port"), () => {});
-
-logger.info("Server started in ", config.get("service.port"));
+const server = app.listen(config.get("service.port"), () => {
+  logger.info("Server started in ", config.get("service.port"));
+  logger.info("Server token ", config.get("service.token"));
+});
 
 module.exports = server;

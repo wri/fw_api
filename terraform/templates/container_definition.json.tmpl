@@ -9,10 +9,6 @@
       "value": "${port}"
     },
     {
-      "name": "NODE_PATH",
-      "value": "${node_path}"
-    },
-    {
       "name": "NODE_ENV",
       "value": "${node_env}"
     },
@@ -41,15 +37,40 @@
       "value": "${areas_api_url}"
     },
     {
+      "name": "RW_AREAS_API_URL",
+      "value": "${rw_areas_api_url}"
+    },
+    {
+      "name": "TEAMS_API_URL",
+      "value": "${teams_api_url}"
+    },
+    {
       "name": "GEOSTORE_API_URL",
       "value": "${geostore_api_url}"
     },
     {
       "name": "API_VERSION",
       "value": "${api_version}"
+    },
+    {
+      "name": "MONGODB_HOST",
+      "value": "${document_db_endpoint}"
+    },
+    {
+      "name": "MONGODB_PORT",
+      "value": "${document_db_port}"
     }
   ],
-  "secrets": [],
+  "secrets": [
+    {
+      "name": "DB_SECRET",
+      "valueFrom": "${db_secret_arn}"
+    },
+    {
+      "name": "MICROSERVICE_TOKEN",
+      "valueFrom": "${microservice_token_secret}"
+    }
+  ],
   "portMappings": [
     {
       "containerPort": ${container_port},

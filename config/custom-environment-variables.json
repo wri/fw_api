@@ -1,12 +1,16 @@
 {
   "service": {
-    "port": "PORT"
+    "port": "PORT",
+    "token": "MICROSERVICE_TOKEN"
   },
   "logger": {
     "level": "LOGGER_LEVEL"
   },
   "formsAPI": {
     "url": "FORMS_API_URL"
+  },
+  "teamsAPI": {
+    "url": "TEAMS_API_URL"
   },
   "areasAPI": {
     "url": "AREAS_API_URL"
@@ -16,5 +20,14 @@
   },
   "controlTower": {
     "url": "CONTROL_TOWER_URL"
+  },
+  "rwAreasAPI": {
+    "url": "RW_AREAS_API_URL"
+  },
+  "mongodb": {
+    "host": "MONGODB_HOST",
+    "port": "MONGODB_PORT",
+    "secret": "DB_SECRET",
+    "database": "DB_DATABASE"
   }
 }

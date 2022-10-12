@@ -54,7 +54,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Healthcheck'
-      operationId: get-fw_api-healthcheck
+      operationId: get-v3-fw_api-healthcheck
       security: []
       tags:
         - v3

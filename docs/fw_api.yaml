@@ -1498,17 +1498,6 @@ paths:
           $ref: '#/components/responses/Error'
         '404':
           $ref: '#/components/responses/Error'
-        '':
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: {}
-              examples:
-                example-1:
-                  value:
-                    data:
-                      - string
       operationId: get-v3-forest-watcher-area-teamAreas
       description: Return an array of area Ids that are associated with the supplied team id
     parameters:
@@ -1987,14 +1976,6 @@ paths:
           $ref: '#/components/responses/Error'
         '404':
           $ref: '#/components/responses/Error'
-        '':
-          description: Array of team ids
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
       operationId: get-v3-forest-watcher-area-areaTeams
       description: Retrieve teams for an area
     parameters:

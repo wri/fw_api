@@ -34,7 +34,8 @@ class AreasService {
           return !(wdpa || gadm);
         });
         return areasToReturn;
-      } else return [];
+      }
+      return [];
     } catch (e) {
       logger.error("Error while fetching areas", e);
       throw e;

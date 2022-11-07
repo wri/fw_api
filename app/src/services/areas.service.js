@@ -23,12 +23,15 @@ class AreasService {
         }
       });
       const areas = response.data;
-      logger.info("got user areas", areas);
       if (areas && areas.data) {
+        logger.info(`Got ${areas.data.length} areas`);
         // exclude areas that have wdpaid or admin object keys
         const areasToReturn = areas.data.filter(area => {
           const wdpa = !!area.attributes.wdpaid;
-          const gadm = !!area.attributes.admin && Object.keys(area.attributes.admin).length > 0;
+          const gadm =
+            !!area.attributes.admin &&
+            Object.keys(area.attributes.admin).length > 0 &&
+            !Object.values(area.attributes.admin).every(x => x === null);
           return !wdpa && !gadm;
         });
         return areasToReturn;

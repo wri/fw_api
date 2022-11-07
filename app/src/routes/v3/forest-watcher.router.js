@@ -147,7 +147,7 @@ class ForestWatcherRouter {
     }
     if (data && data.length > 0) logger.info(`returning ${user.id} areas, the first of which being ${[...data]}`);
     ctx.body = {
-      data: data.filter(area => area.attributes.geostore.areaHa < 2000)
+      data: data.filter(area => area.attributes.geostore.areaHa < 2000000)
     };
   }
 
@@ -182,7 +182,7 @@ class ForestWatcherRouter {
       }
     }
     ctx.body = {
-      data: data.filter(area => area.attributes.geostore.areaHa < 2000)
+      data: data.filter(area => area.attributes.geostore.areaHa < 2000000)
     };
     ctx.status = 200;
   }

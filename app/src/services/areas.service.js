@@ -27,14 +27,13 @@ class AreasService {
       if (areas && areas.data) {
         // exclude areas that have wdpaid or admin object keys
         const areasToReturn = areas.data.filter(area => {
-          let wdpa = false;
-          if (area.attributes.wdpaid) wdpa = true;
-          let gadm = false;
-          if (area.attributes.admin && Object.keys(area.attributes.admin).length > 0) gadm = true;
-          return !(wdpa || gadm);
+          const wdpa = !!area.attributes.wdpaid;
+          const gadm = !!area.attributes.admin && Object.keys(area.attributes.admin).length > 0;
+          return !wdpa && !gadm;
         });
         return areasToReturn;
-      } else return [];
+      }
+      return [];
     } catch (e) {
       logger.error("Error while fetching areas", e);
       throw e;
